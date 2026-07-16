@@ -7,7 +7,8 @@ publishing{
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/DOI-BOR/WTMP-Action-Panel")
+            //url = uri("https://maven.pkg.github.com/DOI-BOR/WTMP-Action-Panel")
+            url = uri("https://github.com/dloney/WTMP-Action-Panel")
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
                 password = System.getenv("GITHUB_TOKEN")
