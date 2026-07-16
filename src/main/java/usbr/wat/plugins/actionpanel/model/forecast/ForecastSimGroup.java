@@ -16,8 +16,13 @@ import hec2.wat.model.WatSimulation; // Base class representing a computable WAT
 
 import org.jdom.Element; // Core JDOM element class representing XML elements in the document structure
 
-import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup; // Parent abstract class with group-level loading/saving
-
+import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup; 			// Parent abstract class with group-level loading/saving
+import usbr.wat.plugins.actionpanel.model.forecast.BcData;					// Import the BC data class
+import usbr.wat.plugins.actionpanel.model.forecast.EnsembleSet;				// Import the forecast ensemble set class
+import usbr.wat.plugins.actionpanel.model.forecast.InitialConditions;		// Import the initial conditions class
+import usbr.wat.plugins.actionpanel.model.forecast.MeteorlogicData;			// Import the meterologic data class
+import usbr.wat.plugins.actionpanel.model.forecast.OperationsData;			// Import the operations data class
+import usbr.wat.plugins.actionpanel.model.forecast.TemperatureTargetSet;	// Import the temperature target set class
 
 /**
  * ForecastSimGroup is a simulation group subclass specifically designed for forecast analysis workflows.

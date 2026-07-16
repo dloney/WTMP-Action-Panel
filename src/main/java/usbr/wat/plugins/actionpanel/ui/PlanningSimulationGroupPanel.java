@@ -36,7 +36,7 @@ import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;            
  * with null before the new selection is processed.
  *
  */
-public class SimulationGroupPanel extends BaseSimulationGroupPanel {
+public class PlanningSimulationGroupPanel extends BaseSimulationGroupPanel {
 	/**
 	 * The parent simulation panel that owns this toolbar.
 	 * Stored separately from the base-class _parent field to provide a typed

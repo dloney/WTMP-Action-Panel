@@ -18,14 +18,14 @@ import rma.swing.RmaInsets;                          // Standard GridBagConstrai
 import rma.swing.RmaJPanel;                          // Base Swing panel class this component extends, matching ForecastPanel's base class
 import rma.util.RMASort;                             // RMA quicksort utility, used to sort the Simulation Group combo alphabetically
 
-import usbr.wat.plugins.actionpanel.ActionsWindow;                      // The parent Actions Window this panel is hosted within
-import usbr.wat.plugins.actionpanel.editors.NewSimulationGroupDialog;   // Existing dialog reused, unmodified, for creating/editing Simulation Groups
-import usbr.wat.plugins.actionpanel.commands.NewSimulationGroupCmd;     // Existing command class backing standard SimulationGroup creation
-import usbr.wat.plugins.actionpanel.model.SimulationGroup;              // The existing model type used for the Simulation Group row (per the clarified data model, Planning pairs a Set with a standard SimulationGroup, not a new subtype)
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;         // The Set model this panel's Set row manages
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSetContainer; // Holds and persists the full list of Sets for the current project
+import usbr.wat.plugins.actionpanel.ActionsWindow;                          // The parent Actions Window this panel is hosted within
+import usbr.wat.plugins.actionpanel.editors.NewSimulationGroupDialog;       // Existing dialog reused, unmodified, for creating/editing Simulation Groups
+import usbr.wat.plugins.actionpanel.commands.NewSimulationGroupCmd;         // Existing command class backing standard SimulationGroup creation
+import usbr.wat.plugins.actionpanel.model.SimulationGroup;                  // The existing model type used for the Simulation Group row (per the clarified data model, Planning pairs a Set with a standard SimulationGroup, not a new subtype)
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;             // The Set model this panel's Set row manages
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSetContainer;    // Holds and persists the full list of Sets for the current project
 import usbr.wat.plugins.actionpanel.ui.planning.temptarget.TempTargetPanel; // Temperature Targets sub-tab
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSimulationGroup; // The planning specific implementation fo the simulation group
+import usbr.wat.plugins.actionpanel.ui.PlanningSimulationGroupPanel;        // The planning specific implementation fo the simulation group
 
 /**
  * Top-level content of the Planning tab, added alongside "Prescribed Conditions" and
@@ -116,9 +116,6 @@ public class PlanningPanel extends RmaJPanel {
 
 		// Simulation Group
 		_simGroupPanel = new PlanningSimulationGroupPanel(_simulationPanel);
-
-		// Add the simulation group panel at the top; it does not claim vertical space
-		GridBagConstraints gbc = new GridBagConstraints();
 
 		gbc.gridx = GridBagConstraints.RELATIVE;
 		gbc.gridy = GridBagConstraints.RELATIVE;
@@ -220,7 +217,6 @@ public class PlanningPanel extends RmaJPanel {
 
 		_currentPanel = (AbstractPlanningPanel) selected; // Remember which sub-tab is now active
 		_currentPanel.panelActivated(); // Give the panel a chance to refresh any stale content
-		_summaryStrip.setActiveTab(_currentPanel.getTabName()); // Move the highlighted box to match
 	}
 
 	// --- Set row behavior ---
