@@ -219,9 +219,9 @@ public class PlanningPanel extends RmaJPanel {
 		// Register each sub-panel as a named tab in display order
 		_tabbedPane.addTab("Initial Conditions", _initialConditionsPanel);
 		_tabbedPane.addTab("Operations", _operationsPanel);
-		_tabbedPane.addTab("Meteorology", _metPanel);
+		_tabbedPane.addTab("Meteorology", _meteorologyPanel);
 		_tabbedPane.addTab("Boundary Conditions", _bcPanel);
-		_tabbedPane.addTab("Temperature Targets", _tempTargetsPanel);
+		_tabbedPane.addTab("Temperature Targets", _tempTargetPanel);
 		_tabbedPane.addTab("Simulation", _simulationPanel);
 
 		// Capture the initially selected tab as the current panel
@@ -231,8 +231,8 @@ public class PlanningPanel extends RmaJPanel {
 		_simulationPanel.setEnabled(false);
 		_initialConditionsPanel.setEnabled(false);
 		_operationsPanel.setEnabled(false);
-		_metPanel.setEnabled(false);
-		_tempTargetsPanel.setEnabled(false);
+		_meteorologyPanel.setEnabled(false);
+		_tempTargetPanel.setEnabled(false);
 		_bcPanel.setEnabled(false);
 		
 	}
