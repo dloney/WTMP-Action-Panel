@@ -87,7 +87,7 @@ import usbr.wat.plugins.actionpanel.ui.forecast.CsvReader; // Import CSV reader 
  *   Loading and parsing boundary condition, initial condition, and temperature target configuration files
  *   Copying source data (BCs, ICs, temp targets) with optional save/restore for ensemble generation
  *   Executing pre-compute and post-compute Python scripts via Jython interpreter
- *   Managing multiple ensemble sets through sequential processing loop<
+ *   Managing multiple ensemble sets through sequential processing loop
  *   Capturing compute results into collection DSS files with proper FPart identifiers
 
  *

@@ -22,9 +22,9 @@ import hec2.plugin.model.ModelAlternative; // Import model alternative represent
  * alternative and tracks whether scripts should be executed, enabling dynamic modification of inputs/outputs between
  * simulation runs or after compute operations.
  *
- * This class extends NamedType to support persistence and provides:<
+ * This class extends NamedType to support persistence and provides:
  *
- *   Map-based storage for model alternative-specific script configurations<
+ *   Map-based storage for model alternative-specific script configurations
  *   Methods to retrieve script files and execution flags per model alternative
  *   XML serialization methods for saving/loading configuration from disk
  *
@@ -153,7 +153,7 @@ public class ComputeSettings extends NamedType {
 	 * Creates "ScriptSetting" child elements for each alternative, including ModelAlternative identifier,
 	 * Script file path (or empty string if none configured), and RunScript boolean flag.
 	 *
-	 * @param preComputeElem The parent Element that will contain serialized script configuration data
+	 * @param element The parent Element that will contain serialized script configuration data
 	 */
 	public void saveData(Element element) {
 		Set<Entry<String, ScriptSettings>> entrySet = _scriptSettings.entrySet(); // Get all key-value pairs

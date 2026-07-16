@@ -17,8 +17,8 @@ import usbr.wat.plugins.actionpanel.ui.UsbrPanel; // Import UI panel component w
  *
  * Implementations of this interface must:
  *
- *   Create an Action object that can be added to the ActionsWindow menu for user access<
- *   Implement createReport() to generate reports based on simulation info, ensemble data, and formatting options<
+ *   Create an Action object that can be added to the ActionsWindow menu for user access
+ *   Implement createReport() to generate reports based on simulation info, ensemble data, and formatting options
  *
  */
 

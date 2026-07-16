@@ -65,10 +65,7 @@ import usbr.wat.plugins.actionpanel.ui.forecast.temptarget.TempTargetForecastTab
  * {@link #buildLowerPanel(EnabledJPanel)}.
  *
  * Concrete subclasses must implement the abstract methods that define data-specific
- * behaviour: {@link #tableRowSelected(int)}, {@link #tableRowDeleteClicked(int)},
- * {@link #delete(Object, boolean)}, {@link #removeData(ForecastSimGroup, Object)},
- * {@link #importForecastData(ImportForecastWindow)}, {@link #fillPanel(ForecastSimGroup)},
- * {@link #savePanel()}, {@link #clearPanel()}, and {@link #getTableForPanel()}.
+ * behaviour.
  *
  * @param <T> the type of data item managed by this panel; must extend {@link NamedType}
  *
