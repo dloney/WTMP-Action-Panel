@@ -59,7 +59,7 @@ public class PlanningSimulationGroupPanel extends BaseSimulationGroupPanel {
 	 *
 	 * @param parent the AbstractSimulationPanel that owns this toolbar; must not be null
 	 */
-	public SimulationGroupPanel(AbstractSimulationPanel parent) {
+	public PlanningSimulationGroupPanel(AbstractSimulationPanel parent) {
 		super(parent);
 
 		// Store a typed reference in addition to the base-class field
