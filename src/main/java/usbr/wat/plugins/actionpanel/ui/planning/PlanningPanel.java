@@ -26,6 +26,7 @@ import usbr.wat.plugins.actionpanel.model.SimulationGroup;              // The e
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;         // The Set model this panel's Set row manages
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSetContainer; // Holds and persists the full list of Sets for the current project
 import usbr.wat.plugins.actionpanel.ui.planning.temptarget.TempTargetPanel; // Temperature Targets sub-tab
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSimulationGroup; // The planning specific implementation fo the simulation group
 
 /**
  * Top-level content of the Planning tab, added alongside "Prescribed Conditions" and
@@ -65,10 +66,6 @@ public class PlanningPanel extends RmaJPanel {
 
 	// Backing store for all Sets defined in the current project
 	private final PlanningSetContainer _setContainer = new PlanningSetContainer();
-
-	// Upper category summary strip (Initial Conditions / Operations / Meteorology /
-	// Boundary Conditions / Temperature Target Sets — no Simulation box)
-	private CategorySummaryStripPanel _summaryStrip;
 
 	// Left-hand tab strip hosting the six sub-tab panels
 	private JTabbedPane _tabbedPane;
@@ -143,37 +140,20 @@ public class PlanningPanel extends RmaJPanel {
 		gbc.gridy = 0; // Top row
 		add(_setDeleteButton, gbc); // Place the Delete button, reusing the rest of gbc's settings
 
-		// --- Simulation Group row ---
-		JLabel simGroupLabel = new JLabel("Simulation Group:"); // Label preceding the Simulation Group combo
-		gbc.gridx = 0; // First column
-		gbc.gridy = 1; // Second row, below the Set row
-		gbc.weightx = 0.0; // No horizontal growth for the label
-		gbc.fill = GridBagConstraints.NONE; // Do not stretch the label
-		add(simGroupLabel, gbc); // Place the Simulation Group label
+		// --- Simulation Group  ---
+		_simGroupPanel = new PlanningSimulationGroupPanel(_simulationPanel);
 
-		_simGroupCombo = new JComboBox<>(); // Lists every SimulationGroup manager proxy in the project
-		gbc.gridx = 1; // Second column, same row
-		gbc.gridy = 1; // Second row
-		gbc.weightx = 1.0; // Allow the combo to absorb extra horizontal space
-		gbc.fill = GridBagConstraints.HORIZONTAL; // Stretch to fill available width
-		add(_simGroupCombo, gbc); // Place the Simulation Group combo
-
-		_simGroupEditButton = new JButton("Edit..."); // Edits the currently selected Simulation Group
-		gbc.gridx = 2; // Third column, same row
-		gbc.gridy = 1; // Second row
-		gbc.weightx = 0.0; // No horizontal growth for the button
-		gbc.fill = GridBagConstraints.NONE; // Do not stretch the button
-		add(_simGroupEditButton, gbc); // Place the Edit button
-
-		_simGroupNewButton = new JButton("New..."); // Opens the standard New Simulation Group dialog
-		gbc.gridx = 3; // Fourth column, same row
-		gbc.gridy = 1; // Second row
-		add(_simGroupNewButton, gbc); // Place the New button, reusing the rest of gbc's settings
-
-		_simGroupDeleteButton = new JButton("Delete..."); // Removes the currently selected Simulation Group
-		gbc.gridx = 4; // Fifth column, same row
-		gbc.gridy = 1; // Second row
-		add(_simGroupDeleteButton, gbc); // Place the Delete button, reusing the rest of gbc's settings
+		// Add the simulation group panel at the top; it does not claim vertical space
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = GridBagConstraints.RELATIVE;
+		gbc.gridy = GridBagConstraints.RELATIVE;
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		gbc.weightx = 1.0;
+		gbc.weighty = 0.0;
+		gbc.anchor = GridBagConstraints.NORTHWEST;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.insets = RmaInsets.INSETS5505;
+		add(_simGroupPanel, gbc);
 
 		// --- Category summary strip ---
 		// Build every sub-tab panel up front, since both the strip and the tabbed pane below need them

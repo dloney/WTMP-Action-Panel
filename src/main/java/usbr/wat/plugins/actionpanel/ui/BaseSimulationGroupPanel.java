@@ -26,11 +26,6 @@ import rma.util.RMASort;                 // RMA utility providing a quicksort im
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                              // Singleton plugin entry point providing access to the actions window
 import usbr.wat.plugins.actionpanel.actions.UpdateModelsAction;                     // Action that triggers a model update for the current actions window
-import usbr.wat.plugins.actionpanel.actions.forecast.DeleteForecastSimGroupAction;  // Action to delete a forecast simulation group (used by forecast subclass)
-import usbr.wat.plugins.actionpanel.actions.forecast.EditForecastSimGroupAction;    // Action to edit a forecast simulation group (used by forecast subclass)
-import usbr.wat.plugins.actionpanel.actions.forecast.NewForecastSimGroupAction;     // Action to create a new forecast simulation group (used by forecast subclass)
-import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup;                  // Base model class shared by all simulation group types
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;                // Forecast-specific simulation group model (imported for subclass context)
 
 
 /**
@@ -459,7 +454,7 @@ public abstract class BaseSimulationGroupPanel extends EnabledJPanel {
 	 * Returns the Class of the simulation group type that this panel manages.
 	 *
 	 * Used by loadSimulationGroupCombo to query the correct manager list from the project.
-	 * For example, a forecast-specific subclass would return ForecastSimGroup.class.
+	 * For example, a specific subclass would return a ForecastSimGroup.class or PlanningSimGroup.class.
 	 *
 	 * @return the concrete simulation group class managed by this panel subclass
 	 */
