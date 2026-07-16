@@ -184,55 +184,57 @@ public class PlanningPanel extends RmaJPanel {
 		_tempTargetPanel = new TempTargetPanel(this);
 		_simulationPanel = new SimulationPanel(this);
 
-		_summaryStrip = new CategorySummaryStripPanel(); // Row of mini preview boxes, one per non-Simulation tab
-		// Register each tab's own list model so the strip's boxes stay live automatically
-		_summaryStrip.addCategoryBox(_initialConditionsPanel.getTabName(), _initialConditionsPanel.getSummaryListModel());
-		_summaryStrip.addCategoryBox(_operationsPanel.getTabName(), _operationsPanel.getSummaryListModel());
-		_summaryStrip.addCategoryBox(_meteorologyPanel.getTabName(), _meteorologyPanel.getSummaryListModel());
-		_summaryStrip.addCategoryBox(_bcPanel.getTabName(), _bcPanel.getSummaryListModel());
-		_summaryStrip.addCategoryBox(_tempTargetPanel.getTabName(), _tempTargetPanel.getSummaryListModel());
+		// Create a new tabl plane
+		_tabbedPane = new JTabbedPane();
+		String pos = System.getProperty("WTMP.PlanningTabs.Placement");
 
-		gbc.gridx = 0; // First column
-		gbc.gridy = 2; // Third row, below both selector rows
-		gbc.gridwidth = 5; // Span all five columns used by the rows above
-		gbc.weightx = 1.0; // Allow horizontal growth
-		gbc.weighty = 0.0; // No vertical growth; the strip keeps a fixed height
-		gbc.anchor = GridBagConstraints.NORTHWEST; // Anchor content to the top-left of its cell
-		gbc.fill = GridBagConstraints.HORIZONTAL; // Stretch to fill available width
-		gbc.insets = RmaInsets.INSETS5505; // Standard spacing around the strip
-		add(_summaryStrip, gbc); // Place the category summary strip
+		// Default to LEFT placement; override if a recognised value is specified
+		int tabPlacement = JTabbedPane.LEFT;
+		if ("left".equalsIgnoreCase(pos)) {
+			tabPlacement = JTabbedPane.LEFT;
 
-		// --- Left-hand tabbed pane hosting the six sub-tabs, all initially disabled ---
-		// Disable every sub-tab until a Set is actually selected, matching the Forecast workflow's behavior
+		} else if ("right".equalsIgnoreCase(pos)) {
+			tabPlacement = JTabbedPane.RIGHT;
+
+		} else if ("bottom".equalsIgnoreCase(pos)) {
+			tabPlacement = JTabbedPane.BOTTOM;
+
+		} else if ("top".equalsIgnoreCase(pos)) {
+			tabPlacement = JTabbedPane.TOP;
+		}
+
+		_tabbedPane.setTabPlacement(tabPlacement);
+
+		// Add the tabbed pane below the group panel; it claims all remaining vertical space
+		gbc.gridx = GridBagConstraints.RELATIVE;
+		gbc.gridy = GridBagConstraints.RELATIVE;
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		gbc.weightx = 1.0;
+		gbc.weighty = 1.0;
+		gbc.anchor = GridBagConstraints.NORTHWEST;
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.insets = RmaInsets.INSETS5505;
+		add(_tabbedPane, gbc);
+
+		// Register each sub-panel as a named tab in display order
+		_tabbedPane.addTab("Initial Conditions", _initialConditionsPanel);
+		_tabbedPane.addTab("Operations", _operationsPanel);
+		_tabbedPane.addTab("Meteorology", _metPanel);
+		_tabbedPane.addTab("Boundary Conditions", _bcPanel);
+		_tabbedPane.addTab("Temperature Targets", _tempTargetsPanel);
+		_tabbedPane.addTab("Simulation", _simulationPanel);
+
+		// Capture the initially selected tab as the current panel
+		_currentPanel = (AbstractForecastPanel) _tabbedPane.getSelectedComponent();
+
+		// Disable all sub-panels until a simulation group is loaded
+		_simulationPanel.setEnabled(false);
 		_initialConditionsPanel.setEnabled(false);
 		_operationsPanel.setEnabled(false);
-		_meteorologyPanel.setEnabled(false);
+		_metPanel.setEnabled(false);
+		_tempTargetsPanel.setEnabled(false);
 		_bcPanel.setEnabled(false);
-		_tempTargetPanel.setEnabled(false);
-		_simulationPanel.setEnabled(false);
-
-		_tabbedPane = new JTabbedPane(); // Hosts the six sub-tab panels
-		_tabbedPane.setTabPlacement(JTabbedPane.LEFT); // Tabs run down the left side, matching the mockup
-		// Add each sub-tab in the mockup's specified order
-		_tabbedPane.addTab(_initialConditionsPanel.getTabName(), _initialConditionsPanel);
-		_tabbedPane.addTab(_operationsPanel.getTabName(), _operationsPanel);
-		_tabbedPane.addTab(_meteorologyPanel.getTabName(), _meteorologyPanel);
-		_tabbedPane.addTab(_bcPanel.getTabName(), _bcPanel);
-		_tabbedPane.addTab(_tempTargetPanel.getTabName(), _tempTargetPanel);
-		_tabbedPane.addTab(_simulationPanel.getTabName(), _simulationPanel);
-
-		gbc.gridx = 0; // First column
-		gbc.gridy = 3; // Fourth row, below the summary strip
-		gbc.gridwidth = 5; // Span all five columns used by the rows above
-		gbc.weightx = 1.0; // Allow horizontal growth
-		gbc.weighty = 1.0; // Allow vertical growth so the tabbed pane fills remaining space
-		gbc.anchor = GridBagConstraints.NORTHWEST; // Anchor content to the top-left of its cell
-		gbc.fill = GridBagConstraints.BOTH; // Stretch in both directions
-		gbc.insets = RmaInsets.INSETS5505; // Standard spacing around the tabbed pane
-		add(_tabbedPane, gbc); // Place the tabbed pane, filling the remainder of the panel
-
-		_currentPanel = (AbstractPlanningPanel) _tabbedPane.getSelectedComponent(); // The tab selected by default (Initial Conditions)
-		_summaryStrip.setActiveTab(_currentPanel.getTabName()); // Highlight that tab's box in the strip immediately
+		
 	}
 
 	/**
