@@ -225,7 +225,7 @@ public class PlanningPanel extends RmaJPanel {
 		_tabbedPane.addTab("Simulation", _simulationPanel);
 
 		// Capture the initially selected tab as the current panel
-		_currentPanel = (AbstractForecastPanel) _tabbedPane.getSelectedComponent();
+		_currentPanel = (AbstractPlanningPanel) _tabbedPane.getSelectedComponent();
 
 		// Disable all sub-panels until a simulation group is loaded
 		_simulationPanel.setEnabled(false);
