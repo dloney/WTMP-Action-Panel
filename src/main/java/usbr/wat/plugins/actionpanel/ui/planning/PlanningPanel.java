@@ -116,6 +116,7 @@ public class PlanningPanel extends RmaJPanel {
 		add(_setPanel, gbc); // Place the Set panel
 
 		// Simulation Group
+		_simulationPanel = new SimulationPanel(this);
 		_simGroupPanel = new PlanningSimulationGroupPanel(_simulationPanel);
 
 		gbc.gridx = GridBagConstraints.RELATIVE;
@@ -136,7 +137,6 @@ public class PlanningPanel extends RmaJPanel {
 		_meteorologyPanel = new MeteorologyPanel(this);
 		_bcPanel = new BcPanel(this);
 		_tempTargetPanel = new TempTargetPanel(this);
-		_simulationPanel = new SimulationPanel(this);
 
 		// Create a new tabl plane
 		_tabbedPane = new JTabbedPane();
