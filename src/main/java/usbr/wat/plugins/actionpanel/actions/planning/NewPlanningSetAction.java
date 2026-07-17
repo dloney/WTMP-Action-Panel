@@ -27,11 +27,16 @@ public class NewPlanningSetAction extends AbstractAction {
 	 *
 	 * @param setPanel the panel that will display and persist the new Set
 	 */
-	public NewPlanningSetAction(PlanningSetPanel setPanel) {
+	public NewPlanningSetAction(AbstractSimulationPanel simulationPanel, SimulationGroupPanel simGroupPanel) {
 		// Set the action's display label used by Swing components
 		super("New...");
 
-		// Store the reference to the owning panel
+		// Start disabled until the UI logic enables it (for example, when valid context exists)
+		setEnabled(false);
+
+		// Store references to the owning panels
+		_parent = simulationPanel;
+
 		_setPanel = setPanel;
 	}
 

@@ -22,54 +22,61 @@ public class EditPlanningSetAction extends AbstractAction {
 	/**
 	 * Panel that displays and manages Sets within the planning workflow.
 	 */
-	private final PlanningSetPanel _setPanel;
+	private final SimulationPanel _parentPanel;
 
 	/**
 	 * Creates the edit-planning-set action with a user-visible name.
 	 *
 	 * @param setPanel the panel whose currently selected Set will be edited
 	 */
-	public EditPlanningSetAction(PlanningSetPanel setPanel) {
+	public EditPlanningSetAction(SimulationPanel parentPanel) {
 		// Set the action's display label used by Swing components
-		super("Edit...");
+		super("Edit Planning Set...");
 
-		// Store the reference to the owning panel
-		_setPanel = setPanel;
+		// Store the parent panel reference for later updates
+		_parentPanel = parentPanel;
 	}
 
 	/**
-	 * Handles the user-triggered event to edit the currently selected Set.
-	 *
-	 * Does nothing if no Set is currently selected. Otherwise constructs the dialog
-	 * pre-populated with the selected Set, shows it, and if confirmed, persists the Set
-	 * list and re-selects the (possibly renamed) Set.
+	 * Handles the user-triggered event to edit planning sets.
 	 *
 	 * @param e the action event initiating the request
 	 */
-	@Override
 	public void actionPerformed(ActionEvent e) {
-		// Nothing to edit if no Set is currently selected
-		PlanningSet selected = _setPanel.getSelectedSet();
-		if (selected == null) {
-			return;
-		}
+		// Delegate to the core editing workflow
+		editPlanningSetAction();
+	}
 
-		// Create the dialog, pre-populated with the selected Set
-		NewPlanningSetDialog dlg = new NewPlanningSetDialog(
-				ActionPanelPlugin.getInstance().getActionsWindow(), selected);
+	/**
+	 * Opens the planning-set editing dialog and applies user selections to the UI.
+	 *
+	 * Creates the dialog, populates it with the current forecast simulation group
+	 * and the selected simulation, then upon confirmation sets the selected planning
+	 * sets back onto the parent panel for display.
+	 */
+	public void editPlanningSetAction() {
+		// Create the edit dialog using the plugin's actions window as the parent
+		EditPlanningSetWindow dlg = new EditPlanningSetWindow(ActionPanelPlugin.getInstance().getActionsWindow());
 
-		// Display the dialog to the user; blocks until it is closed
+		// Retrieve the active forecast simulation group from the forecast panel
+		ForecastSimGroup simGroup = ActionPanelPlugin.getInstance().getActionsWindow().getForecastPanel().getSimulationGroup();
+
+		// Retrieve the currently selected forecast simulation
+		WatSimulation simulation = ActionPanelPlugin.getInstance().getActionsWindow().getForecastPanel().getSelectedSimulation();
+
+		// Pre-populate the dialog with the simulation group and selected simulation
+		dlg.fillForm(simGroup, simulation);
+
+		// Display the dialog to the user
 		dlg.setVisible(true);
 
-		// Abort if the user cancels the dialog
+		// If the user canceled, do not apply changes
 		if (dlg.isCanceled()) {
 			return;
 		}
 
-		// Persist the edited Set list, then refresh and re-select the (possibly renamed) Set;
-		// addSet is a no-op on the container since the edit happened in place, but its
-		// refresh-and-select behavior is exactly what is needed here.
-		_setPanel.saveSetsQuietly();
-		_setPanel.addSet(dlg.getPlanningSet(), true);
+		// Fill the parent panel with the planning sets selected/edited in the dialog
+		List<PlanningSet> planningSets = simGroup.getPlanningSets(simulation);
+		_parentPanel.setPlanningSets(planningSets);
 	}
 }

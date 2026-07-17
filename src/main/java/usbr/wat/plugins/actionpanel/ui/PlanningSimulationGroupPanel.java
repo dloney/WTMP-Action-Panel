@@ -133,6 +133,7 @@ public class PlanningSimulationGroupPanel extends BaseSimulationGroupPanel {
 	 *
 	 * @return a new EditPlanningSimGroupAction instance
 	 */
+	// TODO: sim group action needs to be renamed
 	@Override
 	protected Action getEditSimGroupAction() {
 		return new EditPlanningSimGroupAction();

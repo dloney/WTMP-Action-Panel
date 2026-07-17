@@ -637,7 +637,6 @@ public class SimulationPanel extends AbstractSimulationPanel
 	@Override
 	public void setPlanningSet(PlanningSet planningSet) {
 		super.setPlanningSet(planningSet); // Update the shared _planningSet field and enabled state
-		_listModel.clear(); // Discard whatever was shown for the previous Set
 		// TODO: populate from the real Planning-workflow operations data source once defined.
 	}
 

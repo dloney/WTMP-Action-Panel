@@ -132,7 +132,6 @@ public class PlanningSetPanel extends BaseSetPanel {
 	 *
 	 * @return a new EditPlanningSetAction instance
 	 */
-	@Override
 	protected Action getEditSetAction() {
 		return new EditPlanningSetAction();
 	}

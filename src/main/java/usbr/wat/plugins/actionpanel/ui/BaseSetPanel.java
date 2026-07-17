@@ -434,7 +434,7 @@ public abstract class BaseSetPanel extends EnabledJPanel {
 
 		// Replace the combo model entirely to avoid stale or duplicate entries
 		RmaListModel<ManagerProxy> newModel = new RmaListModel<>(false, setProxies);
-		_setpCombo.setModel(newModel);
+		_setCombo.setModel(newModel);
 
 		if (newModel.contains(curProxy)) {
 			// Restore the previous selection if the group still exists

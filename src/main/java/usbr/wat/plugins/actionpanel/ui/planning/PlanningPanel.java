@@ -9,16 +9,18 @@ import javax.swing.DefaultComboBoxModel;            // Backing model for the Set
 import javax.swing.JButton;                         // Edit/New/Delete buttons for both the Set and Simulation Group rows
 import javax.swing.JComboBox;                       // Set selector and Simulation Group selector
 import javax.swing.JLabel;                          // Row labels
-import javax.swing.JOptionPane;                      // Used to confirm Set/Simulation Group deletion
-import javax.swing.JTabbedPane;                      // Left-hand tab strip hosting the six sub-tab panels
+import javax.swing.JOptionPane;                     // Used to confirm Set/Simulation Group deletion
+import javax.swing.JTabbedPane;                     // Left-hand tab strip hosting the six sub-tab panels
+
+import hec2.wat.model.WatSimulation;                // Provides WatSimulation for representing the currently selected WAT simulation
 
 import com.rma.model.ManagerProxy;                  // Lightweight proxy wrapping each managed SimulationGroup, used as combo-box items
 import com.rma.model.Project;                       // Represents the currently open WAT study; provides manager and proxy lookups
-import rma.swing.RmaInsets;                          // Standard GridBagConstraints insets constants
-import rma.swing.RmaJPanel;                          // Base Swing panel class this component extends, matching ForecastPanel's base class
-import rma.util.RMASort;                             // RMA quicksort utility, used to sort the Simulation Group combo alphabetically
+import rma.swing.RmaInsets;                         // Standard GridBagConstraints insets constants
+import rma.swing.RmaJPanel;                         // Base Swing panel class this component extends, matching ForecastPanel's base class
 
 import usbr.wat.plugins.actionpanel.ActionsWindow;                          // The parent Actions Window this panel is hosted within
+import usbr.wat.plugins.actionpanel.model.ResultsData;                      // Provides ResultsData for returning the list of selected simulation results
 import usbr.wat.plugins.actionpanel.editors.NewSimulationGroupDialog;       // Existing dialog reused, unmodified, for creating/editing Simulation Groups
 import usbr.wat.plugins.actionpanel.commands.NewSimulationGroupCmd;         // Existing command class backing standard SimulationGroup creation
 import usbr.wat.plugins.actionpanel.model.SimulationGroup;                  // The existing model type used for the Simulation Group row (per the clarified data model, Planning pairs a Set with a standard SimulationGroup, not a new subtype)
@@ -308,15 +310,15 @@ public class PlanningPanel extends RmaJPanel {
 	}
 
 	/**
-	 * Programmatically selects the tab that hosts the given {@link AbstractForecastPanel},
+	 * Programmatically selects the tab that hosts the given {@link AbstractPlanningPanel},
 	 * switching the visible tab to that panel.
 	 *
 	 * Does nothing if {@code panel} is {@code null}.
 	 *
-	 * @param panel the {@link AbstractForecastPanel} tab to select; must be one of the
+	 * @param panel the {@link AbstractPlanningPanel} tab to select; must be one of the
 	 *              panels registered as a tab in the tabbed pane
 	 */
-	public void setSelectedTab(AbstractForecastPanel panel) {
+	public void setSelectedTab(AbstractPlanningPanel panel) {
 		if (panel != null) {
 			// Switch the tabbed pane's selection to the specified panel component
 			_tabbedPane.setSelectedComponent(panel);
@@ -377,16 +379,16 @@ public class PlanningPanel extends RmaJPanel {
 
 	/**
 	 * Refreshes the Simulation tab's table, ensemble set list, and analysis window
-	 * after a change to the given {@link ForecastSimGroup}'s ensemble sets, then
+	 * after a change to the given {@link PlanningSimGroup}'s ensemble sets, then
 	 * re-enables the panel and restores the simulation table selection.
 	 *
 	 * Called after a boundary condition set deletion or other operation that causes
 	 * ensemble sets to be added or removed as a side effect.
 	 *
-	 * @param fsg the {@link ForecastSimGroup} whose updated ensemble sets should be
+	 * @param fsg the {@link PlanningSimGroup} whose updated ensemble sets should be
 	 *            reflected in the Simulation tab
 	 */
-	public void refreshSimulationPanel(ForecastSimGroup fsg) {
+	public void refreshSimulationPanel(PlanningSimGroup fsg) {
 		// Capture the currently highlighted simulation before the table is refreshed
 		WatSimulation simulation = getSelectedSimulation();
 
