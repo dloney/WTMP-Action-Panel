@@ -306,22 +306,7 @@ public class PlanningPanel extends RmaJPanel {
 	 * alphabetically, mirroring the loading behavior of
 	 * {@code usbr.wat.plugins.actionpanel.ui.BaseSimulationGroupPanel#loadSimulationGroupCombo()}.
 	 */
-	private void loadSimulationGroupCombo() {
-		Project prj = Project.getCurrentProject(); // The currently open WAT study
-		if (prj == null) {
-			return; // No project open yet; nothing to load
-		}
-
-		List<ManagerProxy> proxies = prj.getManagerProxyListForType(SimulationGroup.class); // Every standard SimulationGroup in the project
-		RMASort.quickSort(proxies); // Sort alphabetically for a predictable, easy-to-scan combo box
-
-		_simGroupCombo.setModel(new DefaultComboBoxModel<>(proxies.toArray(new ManagerProxy[0]))); // Rebuild the combo's model
-		if (_simGroupCombo.getItemCount() > 0) {
-			_simGroupCombo.setSelectedIndex(0); // Default to the first available group
-		} else {
-			simGroupSelected(); // No groups at all; clear every sub-tab's Simulation Group state
-		}
-	}
+	public void loadSimulationGroupCombo() {_simGroupPanel.loadSimulationGroupCombo();}
 
 	/**
 	 * Opens the standard New Simulation Group dialog (unchanged from the rest of the
