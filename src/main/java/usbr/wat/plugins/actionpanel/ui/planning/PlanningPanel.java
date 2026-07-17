@@ -48,33 +48,26 @@ import usbr.wat.plugins.actionpanel.ui.PlanningSimulationGroupPanel;        // T
 @SuppressWarnings("serial")
 public class PlanningPanel extends RmaJPanel {
 
-	// The parent ActionsWindow that hosts this panel
-	private final ActionsWindow _parent;
+	// The parent ActionsWindow that hosts this forecast panel
+	private ActionsWindow _parent;
 
-	// --- Set row ---
-	private PlanningSetPanel _setPanel;
+	// The simulation group selection panel displayed above the tabbed pane
+	private PlanningSimulationGroupPanel _simGroupPanel;
 
-	// --- Simulation Group row ---
-	private JComboBox<ManagerProxy> _simGroupCombo;
-	private JButton _simGroupEditButton;
-	private JButton _simGroupNewButton;
-	private JButton _simGroupDeleteButton;
-
-	// Backing store for all Sets defined in the current project
-	private final PlanningSetContainer _setContainer = new PlanningSetContainer();
-
-	// Left-hand tab strip hosting the six sub-tab panels
+	// The tabbed pane containing all six forecast sub-panel tabs
 	private JTabbedPane _tabbedPane;
 
-	private InitialConditionsPanel _initialConditionsPanel;
-	private OperationsPanel _operationsPanel;
-	private MeteorologyPanel _meteorologyPanel;
-	private BcPanel _bcPanel;
-	private TempTargetPanel _tempTargetPanel;
-	private SimulationPanel _simulationPanel;
+	private InitialConditionsPanel _initialConditionsPanel;				// The Initial Conditions tab panel
+	private OperationsPanel _operationsPanel;							// The Operations tab panel
+	private MeteorologyPanel _metPanel;									// The Meteorology tab panel
+	private BcPanel _bcPanel;											// The Boundary Conditions tab panel
+	private TempTargetPanel _tempTargetsPanel;							// The Temperature Targets tab panel
+	private SimulationPanel _simulationPanel;							// The Simulation tab panel
+	private PlanningSimGroup _simGroup;									// The currently active forecast simulation group; null when no group is selected
 
-	// The AbstractPlanningPanel tab currently selected, used to notify it of activation
+	// The AbstractPlanningPanel tab that is currently selected; used to save state on tab switch
 	private AbstractPlanningPanel _currentPanel;
+
 
 	/**
 	 * Constructs the Planning panel, stores the parent {@link ActionsWindow} reference,
@@ -89,8 +82,8 @@ public class PlanningPanel extends RmaJPanel {
 
 		buildControls(); // Build the Set row, Simulation Group row, summary strip, and tabbed pane
 		addListeners(); // Wire up button clicks and selection changes
-		_setPanel.loadSets(); // Populate the Set combo from any previously saved Sets
-		loadSimulationGroupCombo(); // Populate the Simulation Group combo from the project's managers
+		//_setPanel.loadSets(); // Populate the Set combo from any previously saved Sets
+		//loadSimulationGroupCombo(); // Populate the Simulation Group combo from the project's managers
 	}
 
 	/**
@@ -100,8 +93,21 @@ public class PlanningPanel extends RmaJPanel {
 	private void buildControls() {
 		GridBagConstraints gbc = new GridBagConstraints(); // Shared constraints object, reused/mutated per row
 
-		// Create a new simulation group panel
+		// Create a new group subpanel
 		_simulationPanel = new SimulationPanel(_parent, this);
+		_initialConditionsPanel = new InitialConditionsPanel(this);
+		_operationsPanel = new OperationsPanel(this);
+		_meteorologyPanel = new MeteorologyPanel(this);
+		_bcPanel = new BcPanel(this);
+		_tempTargetPanel = new TempTargetPanel(this);
+
+		// Disable all sub-panels until a simulation group is loaded
+		_simulationPanel.setEnabled(false);
+		_initialConditionsPanel.setEnabled(false);
+		_operationsPanel.setEnabled(false);
+		_metPanel.setEnabled(false);
+		_tempTargetsPanel.setEnabled(false);
+		_bcPanel.setEnabled(false);
 
 		// Create the climate/operations set
 		_setPanel = new PlanningSetPanel(this, _setContainer);
@@ -133,11 +139,6 @@ public class PlanningPanel extends RmaJPanel {
 
 		// --- Category summary strip ---
 		// Build every sub-tab panel up front, since both the strip and the tabbed pane below need them
-		_initialConditionsPanel = new InitialConditionsPanel(this);
-		_operationsPanel = new OperationsPanel(this);
-		_meteorologyPanel = new MeteorologyPanel(this);
-		_bcPanel = new BcPanel(this);
-		_tempTargetPanel = new TempTargetPanel(this);
 
 		// Create a new tabl plane
 		_tabbedPane = new JTabbedPane();
@@ -182,14 +183,6 @@ public class PlanningPanel extends RmaJPanel {
 		// Capture the initially selected tab as the current panel
 		_currentPanel = (AbstractPlanningPanel) _tabbedPane.getSelectedComponent();
 
-		// Disable all sub-panels until a simulation group is loaded
-		_simulationPanel.setEnabled(false);
-		_initialConditionsPanel.setEnabled(false);
-		_operationsPanel.setEnabled(false);
-		_meteorologyPanel.setEnabled(false);
-		_tempTargetPanel.setEnabled(false);
-		_bcPanel.setEnabled(false);
-		
 	}
 
 	/**
@@ -226,6 +219,53 @@ public class PlanningPanel extends RmaJPanel {
 	// PlanningSetPanel (see _setPanel), matching how BaseSimulationGroupPanel owns that
 	// behavior for the Simulation Group row. PlanningPanel's only remaining responsibility
 	// for the Set row is reacting to the panel's selection callback below.
+
+	/**
+	 * Returns the currently active {@link ForecastSimGroup}, or {@code null} if no
+	 * simulation group has been selected.
+	 *
+	 * @return the active {@link ForecastSimGroup}, or {@code null}
+	 */
+	public ForecastSimGroup getSimulationGroup() {
+		return _simGroup;
+	}
+
+	/**
+	 * Sets the active {@link ForecastSimGroup} and propagates it to all sub-panels.
+	 *
+	 * If {@code fsg} is non-null, all sub-panels are populated with its data. If
+	 * {@code fsg} is {@code null}, all sub-panels are cleared and
+	 * {@link #clearPanel()} is called to reset all lower-panel controls.
+	 *
+	 * @param fsg the {@link ForecastSimGroup} to display, or {@code null} to clear
+	 *            all panels
+	 */
+	public void setSimulationGroup(ForecastSimGroup fsg) {
+		_simGroup = fsg;
+
+		if (fsg != null) {
+			// Populate every sub-panel with the new simulation group's data
+			_simGroupPanel.setSimulationGroup(fsg);
+			_simulationPanel.setSimulationGroup(fsg, false);
+			_initialConditionsPanel.setSimulationGroup(fsg);
+			_operationsPanel.setSimulationGroup(fsg);
+			_metPanel.setSimulationGroup(fsg);
+			_tempTargetsPanel.setSimulationGroup(fsg);
+			_bcPanel.setSimulationGroup(fsg);
+
+		} else {
+			// Clear all sub-panels by passing null as the simulation group
+			_simulationPanel.setSimulationGroup(null, false);
+			_initialConditionsPanel.setSimulationGroup(null);
+			_operationsPanel.setSimulationGroup(null);
+			_metPanel.setSimulationGroup(null);
+			_tempTargetsPanel.setSimulationGroup(null);
+			_bcPanel.setSimulationGroup(null);
+
+			// Reset all lower-panel controls to their empty state
+			clearPanel();
+		}
+	}
 
 	/**
 	 * Returns the Set panel that manages the Set row's combo box and New/Edit/Delete buttons.
