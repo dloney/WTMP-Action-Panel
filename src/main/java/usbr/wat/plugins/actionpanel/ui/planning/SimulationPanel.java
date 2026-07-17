@@ -630,6 +630,18 @@ public class SimulationPanel extends AbstractSimulationPanel
 	}
 
 	/**
+	 * Sets the planning set within the tab
+	 *
+	 * @param planningSet
+	 */
+	@Override
+	public void setPlanningSet(PlanningSet planningSet) {
+		super.setPlanningSet(planningSet); // Update the shared _planningSet field and enabled state
+		_listModel.clear(); // Discard whatever was shown for the previous Set
+		// TODO: populate from the real Planning-workflow operations data source once defined.
+	}
+
+	/**
 	 * Registers all event listeners required by this panel:
 	 * a DocumentListener on the ensemble members field to control checkbox enablement,
 	 * and a ListSelectionListener on the simulation table to refresh the ensemble rows.

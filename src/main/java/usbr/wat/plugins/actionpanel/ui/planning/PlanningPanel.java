@@ -27,7 +27,7 @@ import usbr.wat.plugins.actionpanel.model.planning.PlanningSetContainer;    // H
 import usbr.wat.plugins.actionpanel.ui.planning.temptarget.TempTargetPanel; // Temperature Targets sub-tab
 import usbr.wat.plugins.actionpanel.ui.PlanningSimulationGroupPanel;        // The planning specific implementation fo the simulation group
 import usbr.wat.plugins.actionpanel.ui.PlanningSetPanel;					// The planning specific implmentation of alternative sets
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;        // Provides ForecastSimGroup as the top-level data container for all forecast data
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;        // Provides PlanninSimGroup as the top-level data container for all planning data
 
 /**
  * Top-level content of the Planning tab, added alongside "Prescribed Conditions" and
@@ -50,7 +50,7 @@ import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;        // P
 @SuppressWarnings("serial")
 public class PlanningPanel extends RmaJPanel {
 
-	// The parent ActionsWindow that hosts this forecast panel
+	// The parent ActionsWindow that hosts this planning panel
 	private ActionsWindow _parent;
 
 	// The simulation group selection panel displayed above the tabbed pane
@@ -59,7 +59,7 @@ public class PlanningPanel extends RmaJPanel {
 	// Create the alternative set group
 	private PlanningSetPanel _setPanel;
 
-	// The tabbed pane containing all six forecast sub-panel tabs
+	// The tabbed pane containing all six planning sub-panel tabs
 	private JTabbedPane _tabbedPane;
 
 	private InitialConditionsPanel _initialConditionsPanel;				// The Initial Conditions tab panel
@@ -115,7 +115,7 @@ public class PlanningPanel extends RmaJPanel {
 		_bcPanel.setEnabled(false);
 
 		// Create the climate/operations set
-		_setPanel = new PlanningSetPanel(this, _setContainer);
+		_setPanel = new PlanningSetPanel(_simulationPanel);
 
 		gbc.gridx = GridBagConstraints.RELATIVE;
 		gbc.gridy = GridBagConstraints.RELATIVE;
@@ -197,10 +197,10 @@ public class PlanningPanel extends RmaJPanel {
 		// The Set row's New/Edit/Delete buttons and combo-box selection are now wired
 		// internally by PlanningSetPanel itself, matching the Simulation Group row's pattern.
 
-		_simGroupNewButton.addActionListener(e -> newSimulationGroup()); // Opens the standard New Simulation Group dialog
-		_simGroupEditButton.addActionListener(e -> editSimulationGroup()); // Opens the standard Edit Simulation Group dialog
-		_simGroupDeleteButton.addActionListener(e -> deleteSimulationGroup()); // Removes the selected Simulation Group
-		_simGroupCombo.addActionListener(e -> simGroupSelected()); // Propagates selection changes to every sub-tab
+		//_simGroupNewButton.addActionListener(e -> newSimulationGroup()); // Opens the standard New Simulation Group dialog
+		//_simGroupEditButton.addActionListener(e -> editSimulationGroup()); // Opens the standard Edit Simulation Group dialog
+		//_simGroupDeleteButton.addActionListener(e -> deleteSimulationGroup()); // Removes the selected Simulation Group
+		//_simGroupCombo.addActionListener(e -> simGroupSelected()); // Propagates selection changes to every sub-tab
 
 		_tabbedPane.addChangeListener(e -> tabSelectionChanged()); // Keeps the summary strip and panelActivated() hook in sync
 	}
@@ -226,23 +226,23 @@ public class PlanningPanel extends RmaJPanel {
 	// for the Set row is reacting to the panel's selection callback below.
 
 	/**
-	 * Returns the currently active {@link ForecastSimGroup}, or {@code null} if no
+	 * Returns the currently active {@link PlanningSimGroup}, or {@code null} if no
 	 * simulation group has been selected.
 	 *
-	 * @return the active {@link ForecastSimGroup}, or {@code null}
+	 * @return the active {@link PlanningSimGroup}, or {@code null}
 	 */
-	public ForecastSimGroup getSimulationGroup() {
+	public PlanningSimGroup getSimulationGroup() {
 		return _simGroup;
 	}
 
 	/**
-	 * Sets the active {@link ForecastSimGroup} and propagates it to all sub-panels.
+	 * Sets the active {@link PlanningSimGroup} and propagates it to all sub-panels.
 	 *
 	 * If {@code fsg} is non-null, all sub-panels are populated with its data. If
 	 * {@code fsg} is {@code null}, all sub-panels are cleared and
 	 * {@link #clearPanel()} is called to reset all lower-panel controls.
 	 *
-	 * @param fsg the {@link ForecastSimGroup} to display, or {@code null} to clear
+	 * @param fsg the {@link PlanningSimGroup} to display, or {@code null} to clear
 	 *            all panels
 	 */
 	public void setSimulationGroup(PlanningSimGroup fsg) {
@@ -299,86 +299,134 @@ public class PlanningPanel extends RmaJPanel {
 		_simulationPanel.setPlanningSet(set);
 	}
 
-	// --- Simulation Group row behavior ---
-
 	/**
-	 * Reloads the Simulation Group combo box from the project's manager list, sorted
-	 * alphabetically, mirroring the loading behavior of
-	 * {@code usbr.wat.plugins.actionpanel.ui.BaseSimulationGroupPanel#loadSimulationGroupCombo()}.
+	 * Reloads the simulation group combo box in the {@link SimulationGroupPanel} to
+	 * reflect any changes in the available simulation groups.
 	 */
-	public void loadSimulationGroupCombo() {_simGroupPanel.loadSimulationGroupCombo();}
-
-	/**
-	 * Opens the standard New Simulation Group dialog (unchanged from the rest of the
-	 * plugin), configured for the standard {@link SimulationGroup} type, and on success
-	 * refreshes the combo box and selects the new group.
-	 */
-	private void newSimulationGroup() {
-		NewSimulationGroupDialog dlg = new NewSimulationGroupDialog(_parent, true, "New Simulation Group"); // Reuse the existing dialog as-is
-		dlg.setSimulationGroupClass(SimulationGroup.class); // Ensure it creates a standard SimulationGroup, not a ForecastSimGroup
-		dlg.setSimulationGroupFactory(NewSimulationGroupCmd.class); // Backing command class for standard group creation
-		dlg.setVisible(true); // Blocks until the dialog is closed
-
-		loadSimulationGroupCombo(); // Refresh the combo box regardless of outcome, in case a group was created
+	public void loadSimulationGroupCombo() {
+		_simGroupPanel.loadSimulationGroupCombo();
 	}
 
 	/**
-	 * Opens the standard Edit Simulation Group dialog for the currently selected group.
-	 */
-	private void editSimulationGroup() {
-		ManagerProxy proxy = (ManagerProxy) _simGroupCombo.getSelectedItem(); // Nothing to edit if none selected
-		if (proxy == null) {
-			return;
-		}
-
-		SimulationGroup group = (SimulationGroup) proxy.loadManager(); // Resolve the live object from its proxy
-		NewSimulationGroupDialog dlg = new NewSimulationGroupDialog(_parent, true, "Edit Simulation Group"); // Reuse the existing dialog as-is
-		dlg.setSimulationGroupClass(SimulationGroup.class); // Ensure it edits a standard SimulationGroup
-		dlg.setSimulationGroupFactory(NewSimulationGroupCmd.class); // Backing command class for standard group editing
-		dlg.setVisible(true); // Blocks until the dialog is closed
-
-		loadSimulationGroupCombo(); // Refresh the combo box regardless of outcome, in case the group changed
-	}
-
-	/**
-	 * Deletes the currently selected Simulation Group after confirmation.
+	 * Programmatically selects the tab that hosts the given {@link AbstractForecastPanel},
+	 * switching the visible tab to that panel.
 	 *
-	 * <p><b>Extension point:</b> this should delegate to the same deletion pathway used
-	 * elsewhere in the plugin (see
-	 * {@code usbr.wat.plugins.actionpanel.actions.DeleteSimulationGroupAction}) so
-	 * cascading cleanup (associated files, tree nodes, etc.) is handled consistently;
-	 * wiring that in is left for integration since it requires the live
-	 * {@code ActionsWindow}/tree context this panel does not otherwise need.</p>
+	 * Does nothing if {@code panel} is {@code null}.
+	 *
+	 * @param panel the {@link AbstractForecastPanel} tab to select; must be one of the
+	 *              panels registered as a tab in the tabbed pane
 	 */
-	private void deleteSimulationGroup() {
-		ManagerProxy proxy = (ManagerProxy) _simGroupCombo.getSelectedItem(); // Nothing to delete if none selected
-		if (proxy == null) {
-			return;
+	public void setSelectedTab(AbstractForecastPanel panel) {
+		if (panel != null) {
+			// Switch the tabbed pane's selection to the specified panel component
+			_tabbedPane.setSelectedComponent(panel);
 		}
-
-		int confirm = JOptionPane.showConfirmDialog(this,
-				"Delete the selected Simulation Group?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
-		if (confirm != JOptionPane.YES_OPTION) {
-			return; // User declined the confirmation prompt
-		}
-
-		// TODO: delegate to DeleteSimulationGroupAction (or equivalent) for full cascading cleanup.
-		loadSimulationGroupCombo(); // Refresh the combo box; real deletion still needs to be wired up above
 	}
 
 	/**
-	 * Propagates the newly selected Simulation Group to every sub-tab panel.
+	 * Returns the list of {@link WatSimulation} instances currently selected in the
+	 * Simulation tab's simulation table.
+	 *
+	 * @return a {@link List} of selected {@link WatSimulation} objects; may be empty
+	 * but never {@code null}
 	 */
-	private void simGroupSelected() {
-		ManagerProxy proxy = (ManagerProxy) _simGroupCombo.getSelectedItem(); // May be null if the combo is empty
-		SimulationGroup group = proxy != null ? (SimulationGroup) proxy.loadManager() : null; // Resolve the live object, or null
-
-		// Every sub-tab needs to know about the newly paired Simulation Group, regardless of which is currently visible
-		_initialConditionsPanel.setSimulationGroup(group);
-		_operationsPanel.setSimulationGroup(group);
-		_meteorologyPanel.setSimulationGroup(group);
-		_bcPanel.setSimulationGroup(group);
-		_tempTargetsPanel.setSimulationGroup(group);
-		_simulationPanel.setSimulationGroup(group);
+	public List<WatSimulation> getSelectedSimulations() {
+		return _simulationPanel.getSelectedSimulations();
 	}
+
+	/**
+	 * Returns the list of {@link ResultsData} items currently selected in the
+	 * Simulation tab's results table.
+	 *
+	 * @return a {@link List} of selected {@link ResultsData} objects; may be empty
+	 * but never {@code null}
+	 */
+	public List<ResultsData> getSelectedResults() {
+		return _simulationPanel.getSelectedResults();
+	}
+
+	/**
+	 * Returns the {@link SimulationPanel} that is hosted in the Simulation tab.
+	 *
+	 * @return the {@link SimulationPanel}; never {@code null} after construction
+	 */
+	public SimulationPanel getSimulationPanel() {
+		return _simulationPanel;
+	}
+
+	/**
+	 * Notifies the {@link SimulationGroupPanel} that the simulation group represented
+	 * by the given {@link ManagerProxy} has been deleted, so it can update the combo
+	 * box accordingly.
+	 *
+	 * @param proxy the {@link ManagerProxy} representing the deleted simulation group
+	 */
+	public void simulationGroupDeleted(ManagerProxy proxy) {
+		_simGroupPanel.simulationGroupDeleted(proxy);
+	}
+
+	/**
+	 * Returns the single {@link WatSimulation} currently highlighted (selected) in the
+	 * Simulation tab's simulation table.
+	 *
+	 * @return the highlighted {@link WatSimulation}, or {@code null} if none is selected
+	 */
+	public WatSimulation getSelectedSimulation() {
+		return _simulationPanel.getSelectedSimulation();
+	}
+
+	/**
+	 * Refreshes the Simulation tab's table, ensemble set list, and analysis window
+	 * after a change to the given {@link ForecastSimGroup}'s ensemble sets, then
+	 * re-enables the panel and restores the simulation table selection.
+	 *
+	 * Called after a boundary condition set deletion or other operation that causes
+	 * ensemble sets to be added or removed as a side effect.
+	 *
+	 * @param fsg the {@link ForecastSimGroup} whose updated ensemble sets should be
+	 *            reflected in the Simulation tab
+	 */
+	public void refreshSimulationPanel(ForecastSimGroup fsg) {
+		// Capture the currently highlighted simulation before the table is refreshed
+		WatSimulation simulation = getSelectedSimulation();
+
+		// Reload the simulation table rows from the updated simulation group data
+		_simulationPanel.fillSimulationTable();
+
+		// Update the ensemble set list for the currently selected simulation
+		_simulationPanel.setEnsembleSets(fsg.getEnsembleSets(simulation));
+
+		// Refresh the analysis window to reflect the updated ensemble set state
+		_simulationPanel.fillAnalysisWindow();
+
+		// Re-enable the panel now that the refresh is complete
+		setEnabled(true);
+
+		// Restore the previously highlighted row in the simulation table
+		_simulationPanel.refreshSimTableSelection();
+	}
+
+	/**
+	 * Extends the superclass visibility handling to clear all panels and notify the
+	 * simulation panel of a closing event when this panel becomes visible with no
+	 * simulation group loaded.
+	 *
+	 * This guards against the panel being shown in a stale state after a project close
+	 * or simulation group removal.
+	 *
+	 * @param visible {@code true} to show the panel; {@code false} to hide it
+	 */
+	@Override
+	public void setVisible(boolean visible) {
+		if (visible && _simGroup == null) {
+			// No simulation group is loaded; reset all panels to their empty state
+			clearPanel();
+
+			// Notify the simulation panel that it is closing so it can clean up
+			_simulationPanel.closing();
+		}
+
+		super.setVisible(visible);
+	}
+
 }

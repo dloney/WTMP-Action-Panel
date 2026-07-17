@@ -88,14 +88,11 @@ public class PlanningSetPanel extends EnabledJPanel {
 	 * @param parent       the PlanningPanel that owns this toolbar; must not be null
 	 * @param setContainer the shared container of Sets for the current project; must not be null
 	 */
-	public PlanningSetPanel(PlanningPanel parent, PlanningSetContainer setContainer) {
-		super(new GridBagLayout());
+	public PlanningSetPanel(AbstractSimulationPanel parent) {
+		super(parent);
 
+		// Store a typed reference in addition to the base-class field
 		_parent = parent;
-		_setContainer = setContainer;
-
-		buildControls();
-		addListeners();
 	}
 
 
