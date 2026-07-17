@@ -21,48 +21,104 @@ import usbr.wat.plugins.actionpanel.ui.planning.PlanningSetPanel; // Panel that 
 public class DeletePlanningSetAction extends AbstractAction {
 
 	/**
-	 * Panel that hosts Sets and is notified when the selected Set is deleted.
+	 * Owning actions window used as the dialog parent and context source.
 	 */
-	private final PlanningSetPanel _parentPanel;
+	private final ActionsWindow _parent;
+
+	/**
+	 * Panel that hosts planning simulation groups and receives deletion notifications.
+	 */
+	private final BaseSimulationGroupPanel _parentPanel;
 
 	/**
 	 * Creates the delete-planning-set action with a user-visible name.
 	 *
 	 * @param parentPanel the panel that will be notified when the selected Set is deleted
 	 */
-	public DeletePlanningSetAction(PlanningSetPanel parentPanel) {
+	public DeletePlanningSetAction(BaseSimulationGroupPanel parentPanel, ActionsWindow paren) {
 		// Initialize the action with its display label
 		super("Delete...");
+
+		// Store the parent window reference
+		_parent = parent;
 
 		// Store the parent panel reference
 		_parentPanel = parentPanel;
 	}
 
 	/**
-	 * Handles the user-triggered event to delete the currently selected Set.
-	 *
-	 * Does nothing if no Set is currently selected. Otherwise confirms with the user,
-	 * removes the Set from the panel's container, persists the change, and refreshes the
-	 * panel's combo box.
+	 * Handles the user-triggered event to delete selected planning simulation groups.
+	 * <p>
+	 * Shows an {@code ObjectChooser} in delete mode for {@link PlanningSet} entries,
+	 * deletes each selected group and its simulations, notifies the parent panel, and
+	 * refreshes the planning panel's group list.
 	 *
 	 * @param e the action event initiating the deletion request
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// Nothing to delete if no Set is currently selected
-		PlanningSet selected = _parentPanel.getSelectedSet();
-		if (selected == null) {
+		// Retrieve all manager proxies for PlanningSet from the current project
+		List<ManagerProxy> sets = Project.getCurrentProject().getManagerProxyListForType(PlanningSet.class);
+
+		// Create the chooser dialog in delete mode with the available proxies
+		ObjectChooser chooser = new ObjectChooser(ActionPanelPlugin.getInstance().getActionsWindow(), true, sets, ObjectChooser.DELETE);
+
+		// Title the chooser appropriately for deletion
+		chooser.setTitle("Delete Sets");
+
+		// Display the chooser dialog
+		chooser.setVisible(true);
+
+		// Abort if the user cancels the dialog
+		if (chooser.isCanceled()) {
 			return;
 		}
 
-		int confirm = JOptionPane.showConfirmDialog(_parentPanel,
-				"Delete Set \"" + selected.getName() + "\"?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
-		if (confirm != JOptionPane.YES_OPTION) {
-			return; // User declined the confirmation prompt
+		// Retrieve the selected objects to delete
+		Object[] objects = chooser.getSelectedObjects();
+
+		// If nothing was selected, do nothing
+		if (objects == null) {
+			return;
 		}
 
-		// Remove the Set from the container, persist, and refresh dependent UI
-		_parentPanel.setRemoved(selected);
-		_parentPanel.saveSetsQuietly();
+		// Access the current project (not used below, but retained from original logic)
+		Project prj = Project.getCurrentProject();
+
+		// Loop variables for proxy and manager operations
+		ManagerProxy proxy = null;
+		Manager manager;
+
+		// Iterate over each selected proxy and perform deletion
+		for (int i = 0; i < objects.length; i++) {
+			// Cast the selected object to a manager proxy
+			proxy = (ManagerProxy) objects[i];
+
+			// Load the concrete manager from the proxy
+			manager = proxy.loadManager();
+
+			// Only operate on simulation groups
+			if (manager instanceof AbstractSet) {
+				// Collect simulations before deleting the group
+				List<WatSimulation> sims = ((AbstractSet) manager).getSimulations();
+
+				// Delete the group manager first
+				DeleteManagerFactory.deleteManager(manager);
+
+				// Delete each simulation manager (iterate backward to avoid index shifting)
+				for (int n = sims.size() - 1; n >= 0; n--) {
+					DeleteManagerFactory.deleteManager(sims.get(n));
+				}
+			}
+		}
+
+		// Notify the parent panel of the deletion, if available
+		if (_parentPanel != null) {
+			_parentPanel.setpDeleted(proxy);
+		}
+
+		// Refresh the planning panel's simulation group combo/list
+		ActionPanelPlugin.getInstance().getActionsWindow().getPlanningPanel().loadsetCombo();
+
 	}
 }

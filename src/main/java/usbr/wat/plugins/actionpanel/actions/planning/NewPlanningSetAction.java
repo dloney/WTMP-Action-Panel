@@ -8,6 +8,8 @@ import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                      // P
 import usbr.wat.plugins.actionpanel.editors.planning.NewPlanningSetDialog;  // New/Edit dialog for a Set
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;             // The Set model this action creates
 import usbr.wat.plugins.actionpanel.ui.planning.PlanningSetPanel;           // Panel that lists and manages Sets within the planning workflow
+import usbr.wat.plugins.actionpanel.ui.AbstractSimulationPanel;             // Base panel type that exposes simulation group operations to the UI
+import usbr.wat.plugins.actionpanel.ui.PlanningSetPanel;                    // UI panel that lists and manages SimulationGroup entries in the forecast workflow
 
 /**
  * Action that creates a new {@link PlanningSet}.
@@ -27,7 +29,7 @@ public class NewPlanningSetAction extends AbstractAction {
 	 *
 	 * @param setPanel the panel that will display and persist the new Set
 	 */
-	public NewPlanningSetAction(AbstractSimulationPanel simulationPanel, SimulationGroupPanel simGroupPanel) {
+	public NewPlanningSetAction(AbstractSimulationPanel simulationPanel, PlanningSetPanel setPanel) {
 		// Set the action's display label used by Swing components
 		super("New...");
 

@@ -63,6 +63,7 @@ import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup;              
 import usbr.wat.plugins.actionpanel.model.ResultsData;                          // Provides ResultsData for retrieving the currently selected simulation results
 import usbr.wat.plugins.actionpanel.model.planning.EnsembleSet;                 // Provides EnsembleSet, the model object linking boundary conditions to a set of ensemble members
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;            // Provides PlanningSimGroup, the top-level model for a planning simulation group
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;                 // Provides PlanningSet, the top-level model for a planning simulation group
 import usbr.wat.plugins.actionpanel.ui.AbstractSimulationPanel;                 // Provides AbstractSimulationPanel, the base class supplying the simulation tree table and legend
 import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                               // Provides UsbrPanel, the marker interface for USBR-specific panel implementations
 import usbr.wat.plugins.actionpanel.ui.tree.SimulationTreeTable;                // Provides SimulationTreeTable, the custom tree-table used to display WAT simulations

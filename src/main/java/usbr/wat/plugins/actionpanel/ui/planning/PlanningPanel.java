@@ -431,4 +431,23 @@ public class PlanningPanel extends RmaJPanel {
 		super.setVisible(visible);
 	}
 
+	/**
+	 * Resets the lower-panel controls of all sub-panels and clears the shared upper
+	 * tables of the currently active panel.
+	 *
+	 * Called when the simulation group is set to {@code null} or when the panel
+	 * becomes visible with no simulation group loaded.
+	 */
+	private void clearPanel() {
+		// Reset every sub-panel's lower-panel content to its empty default state
+		_initialConditionsPanel.clearPanel();
+		_operationsPanel.clearPanel();
+		_metPanel.clearPanel();
+		_bcPanel.clearPanel();
+		_tempTargetsPanel.clearPanel();
+
+		// Clear all rows from the shared upper tables of the currently active panel
+		_currentPanel.clearTables();
+	}
+
 }

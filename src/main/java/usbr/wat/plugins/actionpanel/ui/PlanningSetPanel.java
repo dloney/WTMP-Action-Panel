@@ -11,11 +11,11 @@ import com.rma.model.ManagerProxy;   // Lightweight proxy wrapping a managed mod
 import rma.swing.RmaInsets;          // Constants for common GridBagLayout inset configurations
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                              // Singleton plugin entry point providing access to the actions window
-import usbr.wat.plugins.actionpanel.actions.planning.DeletePlanningSetAction;  // Action that deletes the selected planning simulation group
-import usbr.wat.plugins.actionpanel.actions.planning.EditPlanningSetAction;    // Action that opens the editor for the selected planning simulation group
-import usbr.wat.plugins.actionpanel.actions.planning.NewPlanningSetAction;     // Action that opens the creation dialog for a new planning simulation group
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;               // Planning-specific simulation group model managed by this panel
-
+import usbr.wat.plugins.actionpanel.actions.planning.DeletePlanningSetAction;  		// Action that deletes the selected planning simulation group
+import usbr.wat.plugins.actionpanel.actions.planning.EditPlanningSetAction;    		// Action that opens the editor for the selected planning simulation group
+import usbr.wat.plugins.actionpanel.actions.planning.NewPlanningSetAction;     		// Action that opens the creation dialog for a new planning simulation group
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;               		// Planning-specific simulation group model managed by this panel
+import usbr.wat.plugins.actionpanel.ui.AbstractSimulationPanel.java;				// Provides the abstract simulation panel class
 
 /**
  * Concrete simulation group toolbar panel for the planning workflow.
