@@ -26,7 +26,6 @@ import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;             // T
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSetContainer;    // Holds and persists the full list of Sets for the current project
 import usbr.wat.plugins.actionpanel.ui.planning.temptarget.TempTargetPanel; // Temperature Targets sub-tab
 import usbr.wat.plugins.actionpanel.ui.PlanningSimulationGroupPanel;        // The planning specific implementation fo the simulation group
-import usbr.wat.plugins.actionpanel.ui.PlanningSimulationGru
 
 /**
  * Top-level content of the Planning tab, added alongside "Prescribed Conditions" and
