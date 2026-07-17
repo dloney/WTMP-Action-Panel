@@ -90,11 +90,11 @@ public class NewPlanningSimGroupAction extends AbstractAction {
 		// Retrieve the newly created simulation group from the dialog
 		AbstractSimulationGroup sg = dlg.getSimulationGroup();
 
-		// Set the new group as the active selection in the forecast panel
+		// Set the new group as the active selection in the planning panel
 		ActionPanelPlugin.getInstance()
 				.getActionsWindow()
-				.getForecastPanel()
-				.setSimulationGroup((ForecastSimGroup) sg);
+				.getPlanningPanel()
+				.setSimulationGroup((PlanningSimGroup) sg);
 
 		// Add the new group to the UI list and optionally select it
 		_simGroupPanel.addSimulationGroup(sg, true);

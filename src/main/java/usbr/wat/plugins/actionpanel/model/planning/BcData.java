@@ -1,4 +1,4 @@
-package usbr.wat.plugins.actionpanel.model.forecast;
+package usbr.wat.plugins.actionpanel.model.planning;
 
 import java.nio.file.Path; // Import Path interface for representing file system paths and location references
 import java.nio.file.Paths; // Import Paths factory class for creating Path objects from string representations
