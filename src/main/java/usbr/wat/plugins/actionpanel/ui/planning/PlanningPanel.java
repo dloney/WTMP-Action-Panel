@@ -26,6 +26,8 @@ import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;             // T
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSetContainer;    // Holds and persists the full list of Sets for the current project
 import usbr.wat.plugins.actionpanel.ui.planning.temptarget.TempTargetPanel; // Temperature Targets sub-tab
 import usbr.wat.plugins.actionpanel.ui.PlanningSimulationGroupPanel;        // The planning specific implementation fo the simulation group
+import usbr.wat.plugins.actionpanel.ui.PlanningSetPanel;					// The planning specific implmentation of alternative sets
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;        // Provides ForecastSimGroup as the top-level data container for all forecast data
 
 /**
  * Top-level content of the Planning tab, added alongside "Prescribed Conditions" and
@@ -54,16 +56,19 @@ public class PlanningPanel extends RmaJPanel {
 	// The simulation group selection panel displayed above the tabbed pane
 	private PlanningSimulationGroupPanel _simGroupPanel;
 
+	// Create the alternative set group
+	private PlanningSetPanel _setPanel;
+
 	// The tabbed pane containing all six forecast sub-panel tabs
 	private JTabbedPane _tabbedPane;
 
 	private InitialConditionsPanel _initialConditionsPanel;				// The Initial Conditions tab panel
 	private OperationsPanel _operationsPanel;							// The Operations tab panel
-	private MeteorologyPanel _metPanel;									// The Meteorology tab panel
+	private MeteorologyPanel _meteorologyPanel;									// The Meteorology tab panel
 	private BcPanel _bcPanel;											// The Boundary Conditions tab panel
 	private TempTargetPanel _tempTargetsPanel;							// The Temperature Targets tab panel
 	private SimulationPanel _simulationPanel;							// The Simulation tab panel
-	private PlanningSimGroup _simGroup;									// The currently active forecast simulation group; null when no group is selected
+	private PlanningSimGroup _simGroup;									// The currently active planning simulation group; null when no group is selected
 
 	// The AbstractPlanningPanel tab that is currently selected; used to save state on tab switch
 	private AbstractPlanningPanel _currentPanel;
@@ -99,13 +104,13 @@ public class PlanningPanel extends RmaJPanel {
 		_operationsPanel = new OperationsPanel(this);
 		_meteorologyPanel = new MeteorologyPanel(this);
 		_bcPanel = new BcPanel(this);
-		_tempTargetPanel = new TempTargetPanel(this);
+		_tempTargetsPanel = new TempTargetPanel(this);
 
 		// Disable all sub-panels until a simulation group is loaded
 		_simulationPanel.setEnabled(false);
 		_initialConditionsPanel.setEnabled(false);
 		_operationsPanel.setEnabled(false);
-		_metPanel.setEnabled(false);
+		_meteorologyPanel.setEnabled(false);
 		_tempTargetsPanel.setEnabled(false);
 		_bcPanel.setEnabled(false);
 
@@ -177,7 +182,7 @@ public class PlanningPanel extends RmaJPanel {
 		_tabbedPane.addTab("Operations", _operationsPanel);
 		_tabbedPane.addTab("Meteorology", _meteorologyPanel);
 		_tabbedPane.addTab("Boundary Conditions", _bcPanel);
-		_tabbedPane.addTab("Temperature Targets", _tempTargetPanel);
+		_tabbedPane.addTab("Temperature Targets", _tempTargetsPanel);
 		_tabbedPane.addTab("Simulation", _simulationPanel);
 
 		// Capture the initially selected tab as the current panel
@@ -240,7 +245,7 @@ public class PlanningPanel extends RmaJPanel {
 	 * @param fsg the {@link ForecastSimGroup} to display, or {@code null} to clear
 	 *            all panels
 	 */
-	public void setSimulationGroup(ForecastSimGroup fsg) {
+	public void setSimulationGroup(PlanningSimGroup fsg) {
 		_simGroup = fsg;
 
 		if (fsg != null) {
@@ -249,7 +254,7 @@ public class PlanningPanel extends RmaJPanel {
 			_simulationPanel.setSimulationGroup(fsg, false);
 			_initialConditionsPanel.setSimulationGroup(fsg);
 			_operationsPanel.setSimulationGroup(fsg);
-			_metPanel.setSimulationGroup(fsg);
+			_meteorologyPanel.setSimulationGroup(fsg);
 			_tempTargetsPanel.setSimulationGroup(fsg);
 			_bcPanel.setSimulationGroup(fsg);
 
@@ -258,7 +263,7 @@ public class PlanningPanel extends RmaJPanel {
 			_simulationPanel.setSimulationGroup(null, false);
 			_initialConditionsPanel.setSimulationGroup(null);
 			_operationsPanel.setSimulationGroup(null);
-			_metPanel.setSimulationGroup(null);
+			_meteorologyPanel.setSimulationGroup(null);
 			_tempTargetsPanel.setSimulationGroup(null);
 			_bcPanel.setSimulationGroup(null);
 
@@ -290,7 +295,7 @@ public class PlanningPanel extends RmaJPanel {
 		_operationsPanel.setPlanningSet(set);
 		_meteorologyPanel.setPlanningSet(set);
 		_bcPanel.setPlanningSet(set);
-		_tempTargetPanel.setPlanningSet(set);
+		_tempTargetsPanel.setPlanningSet(set);
 		_simulationPanel.setPlanningSet(set);
 	}
 
@@ -388,7 +393,7 @@ public class PlanningPanel extends RmaJPanel {
 		_operationsPanel.setSimulationGroup(group);
 		_meteorologyPanel.setSimulationGroup(group);
 		_bcPanel.setSimulationGroup(group);
-		_tempTargetPanel.setSimulationGroup(group);
+		_tempTargetsPanel.setSimulationGroup(group);
 		_simulationPanel.setSimulationGroup(group);
 	}
 }
