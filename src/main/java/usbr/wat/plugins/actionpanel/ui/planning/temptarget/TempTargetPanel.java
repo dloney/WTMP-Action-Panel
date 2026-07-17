@@ -45,12 +45,12 @@ import rma.swing.table.RmaTableModel;     // Provides addRow, insertRow, deleteR
 import rma.util.RMAConst;                 // Provides the HEC_UNDEFINED_DOUBLE sentinel value used in user-defined value arrays
 
 import usbr.wat.plugins.actionpanel.model.planning.EnsembleSet;              // Identifies ensemble sets that depend on a temperature target set
-import usbr.wat.plugins.actionpanel.model.planning.ForecastSimGroup;         // Top-level model holding temperature target sets and analysis period
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;         // Top-level model holding temperature target sets and analysis period
 import usbr.wat.plugins.actionpanel.model.planning.TemperatureTargetSet;     // Model object displayed and saved by this panel
 import usbr.wat.plugins.actionpanel.model.planning.TemperatureTargetTimeStep; // Provides the REGULAR_HOURLY constant used during interpolation
-import usbr.wat.plugins.actionpanel.ui.planning.AbstractForecastPanel;       // Base class supplying the upper table and shared forecast UI
-import usbr.wat.plugins.actionpanel.ui.planning.ImportForecastWindow;        // Base dialog type accepted by importForecastData
-import usbr.wat.plugins.actionpanel.ui.planning.ForecastPanel;               // Parent panel that owns this tab and holds the simulation group
+import usbr.wat.plugins.actionpanel.ui.planning.AbstractPlanningPanel;       // Base class supplying the upper table and shared planning UI
+import usbr.wat.plugins.actionpanel.ui.planning.ImportPlanningWindow;        // Base dialog type accepted by importPlanningData
+import usbr.wat.plugins.actionpanel.ui.planning.PlanningPanel;               // Parent panel that owns this tab and holds the simulation group
 
 /**
  * Panel that displays and manages the Temperature Target tab within the Planning

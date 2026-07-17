@@ -5,8 +5,8 @@ import java.awt.event.ActionEvent;   // Event type delivered when a user trigger
 import javax.swing.AbstractAction;   // Swing base class for encapsulating an action that can be attached to UI components
 import javax.swing.JOptionPane;      // Used to confirm Set deletion
 
-import usbr.wat.plugins.actionpanel.model.PlanningSet;     // The Set model this action deletes
-import usbr.wat.plugins.actionpanel.ui.planning.PlanningSetPanel;   // Panel that hosts Sets and receives deletion notifications
+import usbr.wat.plugins.actionpanel.model.model.PlanningSet;     // The Set model this action deletes
+import usbr.wat.plugins.actionpanel.ui.PlanningSetPanel;   // Panel that hosts Sets and receives deletion notifications
 import usbr.wat.plugins.actionpanel.ui.BaseSimulationGroupPanel;    // Base class that gets implemented
 import usbr.wat.plugins.actionpanel.ActionsWindow; 					// Import the action windows class
 

@@ -31,7 +31,7 @@ import usbr.wat.plugins.actionpanel.model.planning.BcData;              // Provi
 import usbr.wat.plugins.actionpanel.model.planning.EnsembleSet;         // Provides EnsembleSet for identifying ensemble sets that depend on boundary condition data
 import usbr.wat.plugins.actionpanel.model.planning.PlanningConfigFiles; // Provides PlanningConfigFiles for resolving project-relative config file paths
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;    // Provides PlanningSimGroup, the top-level model grouping all planning simulation data
-import usbr.wat.plugins.actionpanel.model.planning.MeteorlogicData;     // Provides MeteorlogicData, the model object representing a single meteorologic dataset
+import usbr.wat.plugins.actionpanel.model.planning.MeteorlogyPanel;     // Provides MeteorlogicData, the model object representing a single meteorologic dataset
 import usbr.wat.plugins.actionpanel.ui.MetPlotPanel;                    // Provides MetPlotPanel for rendering time-series plots of meteorologic station data
 
 /**
