@@ -24,8 +24,9 @@ import rma.swing.RmaJDescriptionField;   // RMA text field intended for multi-li
 import rma.swing.list.RmaListModel;      // RMA list model used as the combo-box backing model
 import rma.util.RMASort;                 // RMA utility providing a quicksort implementation for manager proxy lists
 
-import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                              // Singleton plugin entry point providing access to the actions window
-import usbr.wat.plugins.actionpanel.actions.UpdateModelsAction;                     // Action that triggers a model update for the current actions window
+import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                  // Singleton plugin entry point providing access to the actions window
+import usbr.wat.plugins.actionpanel.actions.UpdateModelsAction;         // Action that triggers a model update for the current actions window
+import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup; 		// Import the abstract simulation group to allow cross workflow operation
 
 
 /**
