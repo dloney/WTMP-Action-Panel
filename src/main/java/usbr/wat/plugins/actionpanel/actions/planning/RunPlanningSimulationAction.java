@@ -22,10 +22,10 @@ import hec2.wat.model.WatSimulation;                                            
 import usbr.wat.plugins.actionpanel.ActionsWindow;                                              // Main actions window used as the UI parent for dialogs and context
 import usbr.wat.plugins.actionpanel.editors.iterationCompute.UsgsComputeSelectorDialog;         // Dialog that lets users select computations to run and monitors progress (import present even if unused here)
 import usbr.wat.plugins.actionpanel.model.UsbrComputable;                                       // Interface for computable tasks consumed by forecast compute workflows (import present even if unused here)
-import usbr.wat.plugins.actionpanel.model.forecast.EnsembleSet;                                 // Forecast model representing a collection of ensemble members grouped for computation
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastActionComputable;                    // Computable wrapper used to initiate forecast calculations from actions
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;                            // Forecast-specific simulation group type used by the forecast panel
-import usbr.wat.plugins.actionpanel.ui.forecast.SimulationPanel;                                // Panel for forecast workflows that displays and manages simulations and ensemble sets
+import usbr.wat.plugins.actionpanel.model.planning.EnsembleSet;                                 // Forecast model representing a collection of ensemble members grouped for computation
+import usbr.wat.plugins.actionpanel.model.planning.PlanningActionComputable;                    // Computable wrapper used to initiate forecast calculations from actions
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;                            // Forecast-specific simulation group type used by the forecast panel
+import usbr.wat.plugins.actionpanel.ui.planning.SimulationPanel;                                // Panel for forecast workflows that displays and manages simulations and ensemble sets
 
 /**
  * Action that runs planning computations for the selected simulation and ensemble sets.
