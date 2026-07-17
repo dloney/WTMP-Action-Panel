@@ -61,9 +61,8 @@ import usbr.wat.plugins.actionpanel.SimulationActionsPanel;                     
 import usbr.wat.plugins.actionpanel.actions.planning.EditEnsembleSetAction;     // Provides EditEnsembleSetAction, the Swing Action for the Edit Ensemble Set button
 import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup;              // Provides AbstractSimulationGroup, the base type for simulation groupings
 import usbr.wat.plugins.actionpanel.model.ResultsData;                          // Provides ResultsData for retrieving the currently selected simulation results
-import usbr.wat.plugins.actionpanel.model.planning.EnsembleSet;                 // Provides EnsembleSet, the model object linking boundary conditions to a set of ensemble members
+import usbr.wat.plugins.actionpanel.model.plannign.EnsembleSet;                 // Provides EnsembleSet, the model object linking boundary conditions to a set of ensemble members
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;            // Provides PlanningSimGroup, the top-level model for a planning simulation group
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;                 // Provides PlanningSet, the top-level model for a planning simulation group
 import usbr.wat.plugins.actionpanel.ui.AbstractSimulationPanel;                 // Provides AbstractSimulationPanel, the base class supplying the simulation tree table and legend
 import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                               // Provides UsbrPanel, the marker interface for USBR-specific panel implementations
 import usbr.wat.plugins.actionpanel.ui.tree.SimulationTreeTable;                // Provides SimulationTreeTable, the custom tree-table used to display WAT simulations
@@ -628,17 +627,6 @@ public class SimulationPanel extends AbstractSimulationPanel
 			}
 		}
 		return null;
-	}
-
-	/**
-	 * Sets the planning set within the tab
-	 *
-	 * @param planningSet
-	 */
-	@Override
-	public void setPlanningSet(PlanningSet planningSet) {
-		super.setPlanningSet(planningSet); // Update the shared _planningSet field and enabled state
-		// TODO: populate from the real Planning-workflow operations data source once defined.
 	}
 
 	/**

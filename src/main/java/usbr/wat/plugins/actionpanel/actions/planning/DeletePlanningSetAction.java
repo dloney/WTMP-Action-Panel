@@ -5,8 +5,9 @@ import java.awt.event.ActionEvent;   // Event type delivered when a user trigger
 import javax.swing.AbstractAction;   // Swing base class for encapsulating an action that can be attached to UI components
 import javax.swing.JOptionPane;      // Used to confirm Set deletion
 
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;   // The Set model this action deletes
-import usbr.wat.plugins.actionpanel.ui.planning.PlanningSetPanel; // Panel that hosts Sets and receives deletion notifications
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;     // The Set model this action deletes
+import usbr.wat.plugins.actionpanel.ui.planning.PlanningSetPanel;   // Panel that hosts Sets and receives deletion notifications
+import usbr.wat.plugins.actionpanel.ActionsWindow; 					// Import the action windows class
 
 /**
  * Action that deletes the {@link PlanningSet} currently selected in the owning
@@ -35,7 +36,7 @@ public class DeletePlanningSetAction extends AbstractAction {
 	 *
 	 * @param parentPanel the panel that will be notified when the selected Set is deleted
 	 */
-	public DeletePlanningSetAction(BaseSimulationGroupPanel parentPanel, ActionsWindow paren) {
+	public DeletePlanningSetAction(BaseSimulationGroupPanel parentPanel, ActionsWindow parent) {
 		// Initialize the action with its display label
 		super("Delete...");
 
