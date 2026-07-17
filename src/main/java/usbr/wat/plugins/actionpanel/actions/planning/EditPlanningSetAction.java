@@ -7,8 +7,9 @@ import javax.swing.AbstractAction;   // Swing base class for encapsulating an ac
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                      // Plugin entry point used to obtain the Actions window and global context
 import usbr.wat.plugins.actionpanel.editors.planning.NewPlanningSetDialog;  // New/Edit dialog for a Set
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;             // The Set model this action edits
-import usbr.wat.plugins.actionpanel.ui.planning.PlanningSetPanel;           // Panel that lists and manages Sets within the planning workflow
+import usbr.wat.plugins.actionpanel.ui.PlanningSetPanel;           // Panel that lists and manages Sets within the planning workflow
 import usbr.wat.plugins.actionpanel.ui.forecast.SimulationPanel;            // Panel for planning workflows that displays and manages simulations and ensemble sets
+
 
 /**
  * Action that opens the editor to modify the currently selected {@link PlanningSet}.
