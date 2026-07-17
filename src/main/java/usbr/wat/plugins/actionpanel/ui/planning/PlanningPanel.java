@@ -100,6 +100,9 @@ public class PlanningPanel extends RmaJPanel {
 	private void buildControls() {
 		GridBagConstraints gbc = new GridBagConstraints(); // Shared constraints object, reused/mutated per row
 
+		// Create a new simulation group panel
+		_simulationPanel = new SimulationPanel(_parent, this);
+
 		// Create the climate/operations set
 		_setPanel = new PlanningSetPanel(this, _setContainer);
 
@@ -115,7 +118,6 @@ public class PlanningPanel extends RmaJPanel {
 		add(_setPanel, gbc); // Place the Set panel
 
 		// Simulation Group
-		_simulationPanel = new SimulationPanel(this);
 		_simGroupPanel = new PlanningSimulationGroupPanel(_simulationPanel);
 
 		gbc.gridx = GridBagConstraints.RELATIVE;
