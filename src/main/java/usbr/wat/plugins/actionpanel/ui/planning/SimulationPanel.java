@@ -1,4 +1,4 @@
-package usbr.wat.plugins.actionpanel.ui.forecast;
+package usbr.wat.plugins.actionpanel.ui.planning;
 
 import java.awt.EventQueue;                         // Provides EventQueue for dispatching UI updates to the Swing Event Dispatch Thread
 import java.awt.GridBagConstraints;                 // Provides GridBagConstraints for controlling component placement within a GridBagLayout
