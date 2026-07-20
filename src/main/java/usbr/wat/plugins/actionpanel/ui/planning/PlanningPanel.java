@@ -153,8 +153,6 @@ public class PlanningPanel extends RmaJPanel {
 
 		// Wrap the simulation panel in the group selection combo box panel
 		_simGroupPanel = new SimulationGroupPanel(_simulationPanel);
-
-		// Add the simulation group panel at the top; it does not claim vertical space
 		add(_simGroupPanel, gbc);
 
 		// Create the tabbed pane and configure its tab placement from the system property

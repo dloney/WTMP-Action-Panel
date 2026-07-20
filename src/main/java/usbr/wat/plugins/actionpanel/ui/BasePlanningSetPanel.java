@@ -147,7 +147,7 @@ public abstract class BasePlanningSetPanel extends EnabledJPanel {
 	 */
 	protected void buildControls() {
 		// --- "Simulation Group:" label ---
-		_setLabel = new JLabel("Simulation Group:");
+		_setLabel = new JLabel("Planning Set:");
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx = GridBagConstraints.RELATIVE;
 		gbc.gridy = GridBagConstraints.RELATIVE;
