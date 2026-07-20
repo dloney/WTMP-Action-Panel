@@ -21,7 +21,7 @@ public class EditPlanningSetAction extends AbstractAction {
 	/**
 	 * Creates the edit-planning-simulation-group action with a user-visible name.
 	 */
-	public EditPlanningSEtAction() {
+	public EditPlanningSetAction() {
 		// Set the action's display label used by Swing components
 		super("Edit...");
 	}
