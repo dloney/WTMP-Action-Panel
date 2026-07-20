@@ -15,6 +15,7 @@ import usbr.wat.plugins.actionpanel.actions.planning.DeletePlanningSimGroupActio
 import usbr.wat.plugins.actionpanel.actions.planning.EditPlanningSimGroupAction;    // Action that opens the editor for the selected planning simulation group
 import usbr.wat.plugins.actionpanel.actions.planning.NewPlanningSimGroupAction;     // Action that opens the creation dialog for a new planning simulation group
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;                // Planning-specific simulation group model managed by this panel
+import usbr.wat.plugins.actionpanel.ui.BaseSimulationGroupPanel;					// Imports the common class between this and forecast
 
 
 /**

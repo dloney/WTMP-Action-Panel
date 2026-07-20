@@ -15,6 +15,7 @@ import usbr.wat.plugins.actionpanel.actions.forecast.DeleteForecastSimGroupActio
 import usbr.wat.plugins.actionpanel.actions.forecast.EditForecastSimGroupAction;    // Action that opens the editor for the selected forecast simulation group
 import usbr.wat.plugins.actionpanel.actions.forecast.NewForecastSimGroupAction;     // Action that opens the creation dialog for a new forecast simulation group
 import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;                // Forecast-specific simulation group model managed by this panel
+import usbr.wat.plugins.actionpanel.ui.BaseSimulationGroupPanel;					// Imports the common class between this and forecast
 
 
 /**
