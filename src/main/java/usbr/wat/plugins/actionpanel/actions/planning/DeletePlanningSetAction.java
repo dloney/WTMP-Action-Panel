@@ -1,14 +1,23 @@
 package usbr.wat.plugins.actionpanel.actions.planning;
 
-import java.awt.event.ActionEvent;   // Event type delivered when a user triggers a bound action (for example, a button press)
+import java.awt.event.ActionEvent;                                              // Event type delivered when a user triggers a bound action (for example, a button press)
 
-import javax.swing.AbstractAction;   // Swing base class for encapsulating an action that can be attached to UI components
-import javax.swing.JOptionPane;      // Used to confirm Set deletion
+import java.util.List;                                                          // Collections interface used for lists of manager proxies and simulations
+import javax.swing.AbstractAction;                                              // Swing base class for encapsulating an action that can be attached to UI components
 
-import usbr.wat.plugins.actionpanel.model.model.PlanningSet;     // The Set model this action deletes
-import usbr.wat.plugins.actionpanel.ui.PlanningSetPanel;   // Panel that hosts Sets and receives deletion notifications
-import usbr.wat.plugins.actionpanel.ui.BaseSimulationGroupPanel;    // Base class that gets implemented
-import usbr.wat.plugins.actionpanel.ActionsWindow; 					// Import the action windows class
+import com.rma.client.ObjectChooser;                                            // Dialog utility that presents objects for selection or deletion
+import com.rma.factories.DeleteManagerFactory;                                  // Factory providing deletion operations for managers and their proxies
+import com.rma.model.Manager;                                                   // Base manager type representing a managed model object
+import com.rma.model.ManagerProxy;                                              // Proxy wrapper that exposes manager instances and metadata
+import com.rma.model.Project;                                                   // Accessor for the current project and project-level operations
+
+import hec2.wat.model.WatSimulation;                                            // WAT model type representing a single simulation scenario or run
+
+import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                          // Plugin entry point used to obtain the Actions window and global context
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;     			// The Set model this action deletes
+import usbr.wat.plugins.actionpanel.ui.PlanningSetPanel;   						// Panel that hosts Sets and receives deletion notifications
+import usbr.wat.plugins.actionpanel.ui.BaseSimulationGroupPanel;    			// Base class that gets implemented
+import usbr.wat.plugins.actionpanel.ActionsWindow; 								// Import the action windows class
 
 /**
  * Action that deletes the {@link PlanningSet} currently selected in the owning

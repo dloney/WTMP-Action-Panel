@@ -24,12 +24,11 @@ import usbr.wat.plugins.actionpanel.model.ResultsData;                      // P
 import usbr.wat.plugins.actionpanel.editors.NewSimulationGroupDialog;       // Existing dialog reused, unmodified, for creating/editing Simulation Groups
 import usbr.wat.plugins.actionpanel.commands.NewSimulationGroupCmd;         // Existing command class backing standard SimulationGroup creation
 import usbr.wat.plugins.actionpanel.model.SimulationGroup;                  // The existing model type used for the Simulation Group row (per the clarified data model, Planning pairs a Set with a standard SimulationGroup, not a new subtype)
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;             // The Set model this panel's Set row manages
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSetContainer;    // Holds and persists the full list of Sets for the current project
-import usbr.wat.plugins.actionpanel.ui.planning.temptarget.TempTargetPanel; // Temperature Targets sub-tab
 import usbr.wat.plugins.actionpanel.ui.PlanningSimulationGroupPanel;        // The planning specific implementation fo the simulation group
 import usbr.wat.plugins.actionpanel.ui.PlanningSetPanel;					// The planning specific implmentation of alternative sets
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;        // Provides PlanninSimGroup as the top-level data container for all planning data
+import usbr.wat.plugins.actionpanel.model.planning.*;        				// Provides all planning classes from the plannin model
+import usbr.wat.plugins.actionpanel.ui.planning.*;							// Provides all planning classes from the planning ui
+import usbr.wat.plugins.actionpanel.ui.planning.temptarget.*;				// Provides all planning temperature target classes in the planning ui
 
 /**
  * Top-level content of the Planning tab, added alongside "Prescribed Conditions" and
