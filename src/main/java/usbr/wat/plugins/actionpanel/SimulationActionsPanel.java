@@ -21,7 +21,7 @@ import usbr.wat.plugins.actionpanel.model.ReportPlugin;                         
 import usbr.wat.plugins.actionpanel.model.ReportsManager;                               // Manager that provides registered reporting plugins available to the UI
 import usbr.wat.plugins.actionpanel.ui.CalibrationPanel;                                // Panel type for prescribed conditions workflows
 import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                                       // Base USBR panel type implemented by calibration and forecast panels
-import usbr.wat.plugins.actionpanel.ui.forecast.SimulationPanel;                        // Panel type for forecast workflows and ensemble simulations
+import usbr.wat.plugins.actionpanel.ui.forecast.SimulationPanel;                        // Panel type for forecast workflows and ensemble simulations  // TODO: Rename this so that it allows planning import
 
 /**
  * Panel hosting simulation-related actions for the WTMP plugin.
@@ -81,11 +81,15 @@ public class SimulationActionsPanel extends EnabledJPanel {
 	 */
 	private void buildControls() {
 		// Create the appropriate "Run Simulation" action depending on workflow context
-		if ( _parentPanel instanceof CalibrationPanel) {
+		if (_parentPanel instanceof CalibrationPanel) {
 			_runSimulationAction = new RunSimulationAction(_parent, _parentPanel);
 
+		} else if (_parentPanel instanceof usbr.wat.plugins.actionpanel.ui.planning.SimulationPanel) {
+			_runSimulationAction = new RunPlanningSimulationAction(
+					_parent, (usbr.wat.plugins.actionpanel.ui.planning.SimulationPanel) _parentPanel);
+
 		} else {
-			_runSimulationAction = new RunForecastSimulationAction(_parent, (SimulationPanel)_parentPanel);
+			_runSimulationAction = new RunForecastSimulationAction(_parent, (SimulationPanel) _parentPanel);
 		}
 
 		// Button that triggers the run simulation action
