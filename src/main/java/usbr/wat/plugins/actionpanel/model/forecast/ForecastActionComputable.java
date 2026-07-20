@@ -72,7 +72,7 @@ import usbr.wat.plugins.actionpanel.actions.forecast.RunForecastSimulationAction
 import usbr.wat.plugins.actionpanel.model.BaseComputeSettings; // Import base settings interface for iteration configuration access
 import usbr.wat.plugins.actionpanel.model.ComputeSettings; // Import compute settings class managing Python script configurations
 import usbr.wat.plugins.actionpanel.model.ComputeType; // Import enum type specifying standard/iterative/position analysis modes
-import usbr.wat.plugins.actionpanel.model.IcPathMap; // Import initial condition path mapping utility for IC data copy operations
+import usbr.wat.plugins.actionpanel.model.forecast.IcPathMap; // Import initial condition path mapping utility for IC data copy operations
 import usbr.wat.plugins.actionpanel.model.ModelAltIterationSettings; // Import iteration settings class defining member array configuration
 import usbr.wat.plugins.actionpanel.model.UsbrComputable; // Import user-specific computable interface extending base computational methods
 import usbr.wat.plugins.actionpanel.ui.forecast.CsvReader; // Import CSV reader utility for parsing configuration files

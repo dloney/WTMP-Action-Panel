@@ -844,7 +844,7 @@ public class NewPlanningSetDialog extends RmaJDialog {
 		Project proj = Project.getCurrentProject();
 
 		// Only validate the name for uniqueness when creating a new group (not editing)
-		if (_sets == null) {
+		if (_set == null) {
 			String name = _nameDescPanel.getName();
 
 			// Check if a PlanningSet or PlanningSet with this name already exists

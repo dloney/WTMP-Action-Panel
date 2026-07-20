@@ -72,8 +72,43 @@ public class PlanningSet extends AbstractPlanningSet {
 	private Map<String, Map<String, int[]>> _ensembleSetIndexing = new HashMap<>(); // Nested map: simName -> (enSetName -> [startCollection, endCollection])
 
 	// Default constructor with empty initialization
-	public PlanningSet() {
-		super(); // Invoke superclass default constructor
+	public PlanningSet() {super(); // Invoke superclass default constructor
+	}
+
+	/**
+	 * Serializes this Set's full state into a new child element appended to the given
+	 * parent element. Used by PlanningSetContainer to store multiple Sets together in
+	 * one shared XML document, as an alternative to the one-file-per-Set persistence
+	 * that AbstractPlanningSet.saveData(RmaFile) provides.
+	 *
+	 * Reuses finishSaving(Element), which already knows how to write every planning-specific
+	 * piece of this Set's data (temp targets, initial conditions, ops/met/bc data, ensemble
+	 * sets) — the same method the file-based save path calls.
+	 *
+	 * @param parent the element this Set's data should be appended under as a new child
+	 */
+	public void saveData(Element parent) {
+		Element elem = new Element(getPlanningSetType()); // "PlanningSet"
+		parent.addContent(elem);
+
+		XMLUtilities.saveNamedType(elem, this); // Persist name/description metadata
+
+		finishSaving(elem); // Reuse the existing hook — writes all planning-specific data
+	}
+
+	/**
+	 * Populates this Set's state from an element previously produced by saveData(Element).
+	 * Counterpart to saveData(Element), for loading Sets back out of a PlanningSetContainer
+	 * document (each <PlanningSet> child element, one per Set).
+	 *
+	 * @param elem the <PlanningSet> element to load this instance's data from
+	 */
+	public void loadData(Element elem) {
+		initForLoading(); // Reset transient loading state (e.g. clears _tempTargetSets)
+
+		XMLUtilities.loadNamedType(elem, this); // Restore name/description metadata
+
+		finishLoading(elem); // Reuse the existing hook — reads all planning-specific data
 	}
 
 	/**

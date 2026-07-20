@@ -1258,4 +1258,9 @@ public class SimulationPanel extends AbstractSimulationPanel
 			_ap.removeModifiableListener(_apModListener);
 		}
 	}
+
+	// TODO: doc string
+	private void setPlanningSet(PlanningSet set) {
+		_parent.setPlanningSet(set);
+	}
 }
