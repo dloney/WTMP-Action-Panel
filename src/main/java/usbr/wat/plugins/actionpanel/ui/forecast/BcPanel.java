@@ -35,7 +35,7 @@ import usbr.wat.plugins.actionpanel.model.forecast.ForecastConfigFiles;     // P
 import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;        // Provides ForecastSimGroup as the top-level data container holding all forecast data for a simulation
 import usbr.wat.plugins.actionpanel.model.forecast.MeteorlogicData;         // Provides MeteorlogicData for looking up the meteorology record referenced by a boundary condition set
 import usbr.wat.plugins.actionpanel.model.forecast.OperationsData;          // Provides OperationsData for looking up the operations record referenced by a boundary condition set
-import usbr.wat.plugins.actionpanel.ui.BoundaryConditionPlotPanel;          // Provides BoundaryConditionPlotPanel for rendering the time-series plot of the selected BC set
+import usbr.wat.plugins.actionpanel.ui.forecast.BoundaryConditionPlotPanel;          // Provides BoundaryConditionPlotPanel for rendering the time-series plot of the selected BC set
 
 /**
  * The forecast panel responsible for displaying, creating, and deleting boundary

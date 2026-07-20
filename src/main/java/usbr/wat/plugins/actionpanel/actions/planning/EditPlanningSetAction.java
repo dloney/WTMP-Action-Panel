@@ -1,8 +1,8 @@
 package usbr.wat.plugins.actionpanel.actions.planning;
 
 import java.awt.event.ActionEvent;   // Event type delivered when a user triggers a bound action (for example, a button press)
-
 import javax.swing.AbstractAction;   // Swing base class for encapsulating an action that can be attached to UI components
+import hec2.wat.model.WatSimulation;                                            // WAT model type representing a single simulation scenario or run
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                      // Plugin entry point used to obtain the Actions window and global context
 import usbr.wat.plugins.actionpanel.editors.planning.NewPlanningSetDialog;  // New/Edit dialog for a Set
@@ -52,7 +52,7 @@ public class EditPlanningSetAction extends AbstractAction {
 	/**
 	 * Opens the planning-set editing dialog and applies user selections to the UI.
 	 *
-	 * Creates the dialog, populates it with the current forecast simulation group
+	 * Creates the dialog, populates it with the current planning simulation group
 	 * and the selected simulation, then upon confirmation sets the selected planning
 	 * sets back onto the parent panel for display.
 	 */
@@ -60,11 +60,11 @@ public class EditPlanningSetAction extends AbstractAction {
 		// Create the edit dialog using the plugin's actions window as the parent
 		EditPlanningSetWindow dlg = new EditPlanningSetWindow(ActionPanelPlugin.getInstance().getActionsWindow());
 
-		// Retrieve the active forecast simulation group from the forecast panel
-		ForecastSimGroup simGroup = ActionPanelPlugin.getInstance().getActionsWindow().getForecastPanel().getSimulationGroup();
+		// Retrieve the active planning simulation group from the planning panel
+		PlanningSet simGroup = ActionPanelPlugin.getInstance().getActionsWindow().getPlanningPanel().getSet();
 
-		// Retrieve the currently selected forecast simulation
-		WatSimulation simulation = ActionPanelPlugin.getInstance().getActionsWindow().getForecastPanel().getSelectedSimulation();
+		// Retrieve the currently selected planning simulation
+		WatSimulation simulation = ActionPanelPlugin.getInstance().getActionsWindow().getSetPanel().getSelectedSimulation();
 
 		// Pre-populate the dialog with the simulation group and selected simulation
 		dlg.fillForm(simGroup, simulation);

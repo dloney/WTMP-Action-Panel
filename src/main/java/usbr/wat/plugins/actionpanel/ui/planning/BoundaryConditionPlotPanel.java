@@ -37,21 +37,21 @@ import rma.swing.RmaInsets;              // Constants for common GridBagLayout i
 import rma.swing.RmaJComboBox;           // RMA-enhanced combo box with typed model support
 import rma.swing.RmaNavigationPanel;     // RMA panel providing previous/next navigation buttons wired to a combo box
 
-import usbr.wat.plugins.actionpanel.model.forecast.BcData;                       // Model object describing a boundary condition data pairing (ops + met)
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;             // Forecast simulation group providing the group name used in the pathname file path
-import usbr.wat.plugins.actionpanel.ui.forecast.BoundaryConditionLocationPair;   // Value object pairing a location name, parameter, and DSS pathname
+import usbr.wat.plugins.actionpanel.model.planning.BcData;                       // Model object describing a boundary condition data pairing (ops + met)
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;             // Planning simulation group providing the group name used in the pathname file path
+import usbr.wat.plugins.actionpanel.ui.planning.BoundaryConditionLocationPair;   // Value object pairing a location name, parameter, and DSS pathname
 
 
 /**
  * Panel that displays a time-series plot of boundary condition data for a selected
- * location within a forecast simulation group.
+ * location within a planning simulation group.
  *
  * The panel consists of three vertically stacked sections:
  *   A "Location:" combo box paired with a navigation panel for stepping through locations.
  *   A G2dPanel that renders the time-series plot for the selected location.
  *
  * Data flow:
- *   fillPanel is called with a ForecastSimGroup and a BcData object. It builds the
+ *   fillPanel is called with a PlanningSimGroup and a BcData object. It builds the
  *   absolute path to a CSV pathname file that lists all boundary condition locations
  *   for the given group and data pairing, reads that file via
  *   readBoundaryConditionLocationPathPairs, and populates the combo box. Selecting
@@ -86,9 +86,9 @@ public class BoundaryConditionPlotPanel extends EnabledJPanel {
 	private BcData _bcData;
 
 	/**
-	 * The forecast simulation group that owns the active boundary condition data.
+	 * The planning simulation group that owns the active boundary condition data.
 	 */
-	private ForecastSimGroup _fsg;
+	private PlanningSimGroup _fsg;
 
 	/**
 	 * The location pair that was most recently selected in the combo box.
@@ -363,17 +363,17 @@ public class BoundaryConditionPlotPanel extends EnabledJPanel {
 
 
 	/**
-	 * Populates the panel with boundary condition data for the given forecast simulation
+	 * Populates the panel with boundary condition data for the given planning simulation
 	 * group and triggers an immediate plot refresh.
 	 *
 	 * Stores the group and data references, enables or disables the panel based on
 	 * whether bcData is non-null, reloads the location combo box, then programmatically
 	 * fires a combo-box selection event to draw the initial plot.
 	 *
-	 * @param fsg    the forecast simulation group that owns the boundary condition data
+	 * @param fsg    the planning simulation group that owns the boundary condition data
 	 * @param bcData the boundary condition data to display; pass null to clear the panel
 	 */
-	public void fillPanel(ForecastSimGroup fsg, BcData bcData) {
+	public void fillPanel(PlanningSimGroup fsg, BcData bcData) {
 		_fsg = fsg;
 		_bcData = bcData;
 
@@ -393,7 +393,7 @@ public class BoundaryConditionPlotPanel extends EnabledJPanel {
 	 * from the pathname text file associated with the given BcData.
 	 *
 	 * The pathname file path is constructed as:
-	 * forecast/simGroups/{groupName}/{opsDataName}-{metDataName}.txt
+	 * planning/simGroups/{groupName}/{opsDataName}-{metDataName}.txt
 	 * and resolved to an absolute path within the current project. If the file cannot
 	 * be read a CONFIG-level log entry is written and the combo box is left empty.
 	 *
@@ -411,7 +411,7 @@ public class BoundaryConditionPlotPanel extends EnabledJPanel {
 		if (bcData != null) {
 			// Build the relative path to the CSV pathname file for this group and data pairing
 			String delim = "/";
-			String pathnameDataFile = "forecast/simGroups/" + _fsg.getName() + delim
+			String pathnameDataFile = "planning/simGroups/" + _fsg.getName() + delim
 					+ bcData.getOpsDataName() + "-" + bcData.getMetDataName() + ".txt";
 
 			// Resolve to an absolute path within the active project directory

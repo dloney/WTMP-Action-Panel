@@ -18,6 +18,7 @@ import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;     			// The Se
 import usbr.wat.plugins.actionpanel.ui.PlanningSetPanel;   						// Panel that hosts Sets and receives deletion notifications
 import usbr.wat.plugins.actionpanel.ui.BaseSimulationGroupPanel;    			// Base class that gets implemented
 import usbr.wat.plugins.actionpanel.ActionsWindow; 								// Import the action windows class
+import usbr.wat.plugins.actionpanel.model.AbstractSet;							// Imports the abstract set class
 
 /**
  * Action that deletes the {@link PlanningSet} currently selected in the owning

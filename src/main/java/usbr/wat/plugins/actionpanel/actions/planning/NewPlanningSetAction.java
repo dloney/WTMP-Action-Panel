@@ -1,7 +1,6 @@
 package usbr.wat.plugins.actionpanel.actions.planning;
 
 import java.awt.event.ActionEvent;   // Event type delivered when a user triggers a bound action (for example, a button press)
-
 import javax.swing.AbstractAction;   // Swing base class for encapsulating an action that can be attached to UI components
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                      // Plugin entry point used to obtain the Actions window and global context
@@ -22,6 +21,11 @@ public class NewPlanningSetAction extends AbstractAction {
 	 * Panel that displays and manages Sets within the planning workflow.
 	 */
 	private final PlanningSetPanel _setPanel;
+
+	/**
+	 * Parent simulation panel used to provide UI context for this action.
+	 */
+	private AbstractSimulationPanel _parent;
 
 	/**
 	 * Creates the new-planning-set action with a user-visible name.
