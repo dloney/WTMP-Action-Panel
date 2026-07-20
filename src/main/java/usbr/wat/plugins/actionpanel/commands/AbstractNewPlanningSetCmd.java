@@ -103,7 +103,7 @@ public abstract class AbstractNewPlanningSetCmd extends AbstractNewManagerComman
 		WatSimulation newSim;
 
 		// Copy each selected simulation into the new group
-		for (int i = 0; i < _sims.size(); i++ ) {
+		/*for (int i = 0; i < _sims.size(); i++ ) {
 			// Source simulation to copy
 			sim = _sims.get(i);
 
@@ -112,7 +112,7 @@ public abstract class AbstractNewPlanningSetCmd extends AbstractNewManagerComman
 
 			// Register the new simulation with the group
 			planningSet.addSimulation(newSim);
-		}
+		}*/
 
 		// Persist changes to the project
 		_project.saveProject();

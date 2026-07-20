@@ -1261,7 +1261,7 @@ public class SimulationPanel extends AbstractSimulationPanel
 	}
 
 	// TODO: doc string
-	private void setPlanningSet(PlanningSet set) {
+	public void setPlanningSet(PlanningSet set) {
 		_parentPanel.setPlanningSet(set);
 	}
 }
