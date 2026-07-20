@@ -1,123 +1,137 @@
 package usbr.wat.plugins.actionpanel.ui.planning;
 
-import java.awt.Component;                      // Return type of JTabbedPane.getSelectedComponent(), used to resolve the active sub-tab
-import java.awt.GridBagConstraints;               // Layout constraints for positioning each row/section of this panel
-import java.awt.GridBagLayout;                     // Flexible grid-based layout manager
-import java.util.List;                             // Ordered collection interface for the project's SimulationGroup manager proxies
+import java.awt.Component;                                                      // Provides Component as the generic type returned by JTabbedPane.getSelectedComponent()
+import java.awt.GridBagConstraints;                                             // Provides GridBagConstraints for specifying layout parameters within the GridBagLayout
+import java.awt.GridBagLayout;                                                  // Provides GridBagLayout as the layout manager for this panel
 
-import javax.swing.DefaultComboBoxModel;            // Backing model for the Set combo box
-import javax.swing.JButton;                         // Edit/New/Delete buttons for both the Set and Simulation Group rows
-import javax.swing.JComboBox;                       // Set selector and Simulation Group selector
-import javax.swing.JLabel;                          // Row labels
-import javax.swing.JOptionPane;                     // Used to confirm Set/Simulation Group deletion
-import javax.swing.JTabbedPane;                     // Left-hand tab strip hosting the six sub-tab panels
+import java.util.List;                                                          // Provides the List interface for ordered collections of simulations and results data
 
-import hec2.wat.model.WatSimulation;                // Provides WatSimulation for representing the currently selected WAT simulation
+import javax.swing.JTabbedPane;                                                 // Provides JTabbedPane for the multi-tab planning data navigation area
 
-import com.rma.model.ManagerProxy;                  // Lightweight proxy wrapping each managed SimulationGroup, used as combo-box items
-import com.rma.model.Project;                       // Represents the currently open WAT study; provides manager and proxy lookups
-import rma.swing.RmaInsets;                         // Standard GridBagConstraints insets constants
-import rma.swing.RmaJPanel;                         // Base Swing panel class this component extends, matching ForecastPanel's base class
+import com.rma.model.ManagerProxy;                                              // Provides ManagerProxy as the handle passed to the simulation-group-deleted notification
+import hec2.wat.model.WatSimulation;                                            // Provides WatSimulation for representing the currently selected WAT simulation
 
-import usbr.wat.plugins.actionpanel.ActionsWindow;                          // The parent Actions Window this panel is hosted within
-import usbr.wat.plugins.actionpanel.model.ResultsData;                      // Provides ResultsData for returning the list of selected simulation results
-import usbr.wat.plugins.actionpanel.editors.NewSimulationGroupDialog;       // Existing dialog reused, unmodified, for creating/editing Simulation Groups
-import usbr.wat.plugins.actionpanel.commands.NewSimulationGroupCmd;         // Existing command class backing standard SimulationGroup creation
-import usbr.wat.plugins.actionpanel.model.SimulationGroup;                  // The existing model type used for the Simulation Group row (per the clarified data model, Planning pairs a Set with a standard SimulationGroup, not a new subtype)
-import usbr.wat.plugins.actionpanel.ui.PlanningSimulationGroupPanel;        // The planning specific implementation fo the simulation group
-import usbr.wat.plugins.actionpanel.ui.PlanningSetPanel;					// The planning specific implmentation of alternative sets
-import usbr.wat.plugins.actionpanel.model.planning.*;        				// Provides all planning classes from the plannin model
-import usbr.wat.plugins.actionpanel.ui.planning.*;							// Provides all planning classes from the planning ui
-import usbr.wat.plugins.actionpanel.ui.planning.temptarget.*;				// Provides all planning temperature target classes in the planning ui
+import rma.swing.RmaInsets;                                                     // Provides RmaInsets for standard inset constants used in GridBagConstraints
+import rma.swing.RmaJPanel;                                                     // Provides RmaJPanel as the base Swing panel class this component extends
+
+import usbr.wat.plugins.actionpanel.ActionsWindow;                              // Provides ActionsWindow as the parent window that hosts this planning panel
+import usbr.wat.plugins.actionpanel.model.ResultsData;                          // Provides ResultsData for returning the list of selected simulation results
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;            // Provides PlanningSimGroup as the top-level data container for all planning data
+import usbr.wat.plugins.actionpanel.ui.SimulationGroupPanel;                    // Provides SimulationGroupPanel for the simulation group selection combo box above the tabs
+import usbr.wat.plugins.actionpanel.ui.planning.temptarget.TempTargetPanel;     // Provides TempTargetPanel as the temperature targets tab panel
 
 /**
- * Top-level content of the Planning tab, added alongside "Prescribed Conditions" and
- * "Forecast Conditions" in {@link ActionsWindow}.
+ * The top-level planning panel that hosts all planning data entry and review tabs
+ * within the WTMP action panel UI.
  *
- * Structurally mirrors {@code usbr.wat.plugins.actionpanel.ui.forecast.ForecastPanel}:
- * a selector row above a left-placed {@link JTabbedPane} of six sub-tabs (Initial
- * Conditions, Operations, Meteorology, Boundary Conditions, Temperature Targets,
- * Simulation), with a {@link CategorySummaryStripPanel} showing the current status of the
- * first five sub-tabs (mirroring the same strip already present in the Forecast Conditions
- * workflow).
+ * {@code PlanningPanel} extends {@link RmaJPanel} and acts as the central coordinator
+ * for all planning-related sub-panels. It consists of:
  *
- * Unlike the Forecast panel, Planning exposes <b>two</b> independent selector rows at the
- * top: a <b>Set</b> row and a <b>Simulation Group</b> row. Per the clarified data model, a
- * Set (the climate-side forcing data — CalSim, Climate Scenario, and Hydrology) and a
- * Simulation Group (the model configuration that data is applied to) are independent, and
- * together form a unique pairing; both selectors are therefore shown side by side rather
- * than one nested inside the other.
+ *   A {@link SimulationGroupPanel} above the tabs that provides a combo box for
+ *       selecting the active planning simulation group.
+ *   A {@link JTabbedPane} containing six tabs: Initial Conditions, Operations,
+ *       Meteorology, Boundary Conditions, Temperature Targets, and Simulation.
+ *
+ * The tab placement (left, right, top, or bottom) is configurable via the JVM system
+ * property {@code WTMP.PlanningTabs.Placement}; it defaults to {@code LEFT} if the
+ * property is absent or unrecognised.
+ *
+ * When the active tab changes, the previously active panel's state is saved and the
+ * newly active panel is notified via {@link AbstractPlanningPanel#panelActivated()}.
+ * When a new {@link PlanningSimGroup} is set, all sub-panels are populated with its
+ * data. Setting the group to {@code null} clears all panels.
+ *
+ * @see AbstractPlanningPanel
+ * @see SimulationGroupPanel
+ * @see PlanningSimGroup
  */
-@SuppressWarnings("serial")
 public class PlanningPanel extends RmaJPanel {
-
 	// The parent ActionsWindow that hosts this planning panel
 	private ActionsWindow _parent;
 
 	// The simulation group selection panel displayed above the tabbed pane
-	private PlanningSimulationGroupPanel _simGroupPanel;
-
-	// Create the alternative set group
-	private PlanningSetPanel _setPanel;
+	private SimulationGroupPanel _simGroupPanel;
 
 	// The tabbed pane containing all six planning sub-panel tabs
 	private JTabbedPane _tabbedPane;
 
-	private InitialConditionsPanel _initialConditionsPanel;				// The Initial Conditions tab panel
-	private OperationsPanel _operationsPanel;							// The Operations tab panel
-	private MeteorologyPanel _meteorologyPanel;									// The Meteorology tab panel
-	private BcPanel _bcPanel;											// The Boundary Conditions tab panel
-	private TempTargetPanel _tempTargetsPanel;							// The Temperature Targets tab panel
-	private SimulationPanel _simulationPanel;							// The Simulation tab panel
-	private PlanningSimGroup _simGroup;									// The currently active planning simulation group; null when no group is selected
+	// The Initial Conditions tab panel
+	private InitialConditionsPanel _initialConditionsPanel;
+
+	// The Operations tab panel
+	private OperationsPanel _operationsPanel;
+
+	// The Meteorology tab panel
+	private MeteorologyPanel _metPanel;
+
+	// The Boundary Conditions tab panel
+	private BcPanel _bcPanel;
+
+	// The Temperature Targets tab panel
+	private TempTargetPanel _tempTargetsPanel;
+
+	// The Simulation tab panel
+	private SimulationPanel _simulationPanel;
+
+	// The currently active planning simulation group; null when no group is selected
+	private PlanningSimGroup _simGroup;
 
 	// The AbstractPlanningPanel tab that is currently selected; used to save state on tab switch
 	private AbstractPlanningPanel _currentPanel;
 
-
 	/**
-	 * Constructs the Planning panel, stores the parent {@link ActionsWindow} reference,
-	 * builds all sub-panels and rows, wires listeners, and attempts to load any Sets
-	 * already saved for the current project.
+	 * Constructs a {@code PlanningPanel}, lays it out with a {@link GridBagLayout},
+	 * stores the parent {@link ActionsWindow} reference, builds all sub-panel controls,
+	 * and wires the tab change listener.
 	 *
-	 * @param parent the {@link ActionsWindow} that owns and hosts this panel; must not be null
+	 * @param parent the {@link ActionsWindow} that owns and hosts this panel;
+	 *               must not be {@code null}
 	 */
 	public PlanningPanel(ActionsWindow parent) {
-		super(new GridBagLayout()); // This panel lays out its own rows/sections with GridBagLayout
-		_parent = parent; // Remember the owning ActionsWindow, needed by the Set/SimGroup dialogs
+		// Initialise the base RmaJPanel with a GridBagLayout
+		super(new GridBagLayout());
 
-		buildControls(); // Build the Set row, Simulation Group row, summary strip, and tabbed pane
-		addListeners(); // Wire up button clicks and selection changes
-		//_setPanel.loadSets(); // Populate the Set combo from any previously saved Sets
-		//loadSimulationGroupCombo(); // Populate the Simulation Group combo from the project's managers
+		// Store the parent reference for use by sub-panels that need the actions window
+		_parent = parent;
+
+		// Build and lay out all sub-panels and the tabbed pane
+		buildControls();
+
+		// Attach the tab change listener
+		addListeners();
 	}
 
 	/**
-	 * Builds and lays out the Set row, Simulation Group row, category summary strip, and
-	 * left-hand tabbed pane.
+	 * Builds and lays out all Swing controls within this panel.
+	 *
+	 * Constructs all six sub-panels (all initially disabled), wraps the simulation
+	 * panel in a {@link SimulationGroupPanel}, adds the group panel above a
+	 * {@link JTabbedPane}, and adds each sub-panel as a named tab. The tab placement
+	 * is read from the {@code WTMP.PlanningTabs.Placement} system property and
+	 * defaults to {@link JTabbedPane#LEFT} if unset or unrecognised.
 	 */
 	private void buildControls() {
-		GridBagConstraints gbc = new GridBagConstraints(); // Shared constraints object, reused/mutated per row
-
-		// Create a new group subpanel
+		// Instantiate all six planning sub-panels
 		_simulationPanel = new SimulationPanel(_parent, this);
 		_initialConditionsPanel = new InitialConditionsPanel(this);
 		_operationsPanel = new OperationsPanel(this);
-		_meteorologyPanel = new MeteorologyPanel(this);
-		_bcPanel = new BcPanel(this);
+		_metPanel = new MeteorologyPanel(this);
 		_tempTargetsPanel = new TempTargetPanel(this);
+		_bcPanel = new BcPanel(this);
 
 		// Disable all sub-panels until a simulation group is loaded
 		_simulationPanel.setEnabled(false);
 		_initialConditionsPanel.setEnabled(false);
 		_operationsPanel.setEnabled(false);
-		_meteorologyPanel.setEnabled(false);
+		_metPanel.setEnabled(false);
 		_tempTargetsPanel.setEnabled(false);
 		_bcPanel.setEnabled(false);
 
-		// Create the climate/operations set
-		_setPanel = new PlanningSetPanel(_simulationPanel);
+		// Wrap the simulation panel in the group selection combo box panel
+		_simGroupPanel = new SimulationGroupPanel(_simulationPanel);
 
+		// Add the simulation group panel at the top; it does not claim vertical space
+		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx = GridBagConstraints.RELATIVE;
 		gbc.gridy = GridBagConstraints.RELATIVE;
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -126,27 +140,9 @@ public class PlanningPanel extends RmaJPanel {
 		gbc.anchor = GridBagConstraints.NORTHWEST;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = RmaInsets.INSETS5505;
-
-		add(_setPanel, gbc); // Place the Set panel
-
-		// Simulation Group
-		_simGroupPanel = new PlanningSimulationGroupPanel(_simulationPanel);
-
-		gbc.gridx = GridBagConstraints.RELATIVE;
-		gbc.gridy = GridBagConstraints.RELATIVE;
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		gbc.weightx = 1.0;
-		gbc.weighty = 0.0;
-		gbc.anchor = GridBagConstraints.NORTHWEST;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.insets = RmaInsets.INSETS5505;
-
 		add(_simGroupPanel, gbc);
 
-		// --- Category summary strip ---
-		// Build every sub-tab panel up front, since both the strip and the tabbed pane below need them
-
-		// Create a new tabl plane
+		// Create the tabbed pane and configure its tab placement from the system property
 		_tabbedPane = new JTabbedPane();
 		String pos = System.getProperty("WTMP.PlanningTabs.Placement");
 
@@ -181,50 +177,53 @@ public class PlanningPanel extends RmaJPanel {
 		// Register each sub-panel as a named tab in display order
 		_tabbedPane.addTab("Initial Conditions", _initialConditionsPanel);
 		_tabbedPane.addTab("Operations", _operationsPanel);
-		_tabbedPane.addTab("Meteorology", _meteorologyPanel);
+		_tabbedPane.addTab("Meteorology", _metPanel);
 		_tabbedPane.addTab("Boundary Conditions", _bcPanel);
 		_tabbedPane.addTab("Temperature Targets", _tempTargetsPanel);
 		_tabbedPane.addTab("Simulation", _simulationPanel);
 
 		// Capture the initially selected tab as the current panel
 		_currentPanel = (AbstractPlanningPanel) _tabbedPane.getSelectedComponent();
-
 	}
 
 	/**
-	 * Attaches listeners for the Set row, Simulation Group row, and left-hand tab changes.
+	 * Registers the tab change listener that saves the previously active panel's state
+	 * and activates the newly selected panel when the user switches tabs.
 	 */
 	private void addListeners() {
-		// The Set row's New/Edit/Delete buttons and combo-box selection are now wired
-		// internally by PlanningSetPanel itself, matching the Simulation Group row's pattern.
-
-		//_simGroupNewButton.addActionListener(e -> newSimulationGroup()); // Opens the standard New Simulation Group dialog
-		//_simGroupEditButton.addActionListener(e -> editSimulationGroup()); // Opens the standard Edit Simulation Group dialog
-		//_simGroupDeleteButton.addActionListener(e -> deleteSimulationGroup()); // Removes the selected Simulation Group
-		//_simGroupCombo.addActionListener(e -> simGroupSelected()); // Propagates selection changes to every sub-tab
-
-		_tabbedPane.addChangeListener(e -> tabSelectionChanged()); // Keeps the summary strip and panelActivated() hook in sync
+		// Delegate all tab selection changes to the tabSelectionChanged handler
+		_tabbedPane.addChangeListener(e -> tabSelectionChanged());
 	}
 
 	/**
-	 * Handles a left-hand tab selection change: notifies the newly selected sub-tab
-	 * panel that it has become active and updates the summary strip's highlighted box.
+	 * Handles tab selection changes in the tabbed pane.
+	 *
+	 * When the newly selected component is an {@link AbstractPlanningPanel}:
+	 *
+	 *   Saves the previously active panel's state via {@link AbstractPlanningPanel#savePanel()}.
+	 *   Notifies the newly selected panel via {@link AbstractPlanningPanel#panelActivated()} so it can update the
+	 *       enabled/highlighted state of the shared upper tables.
+	 *   Updates {@code _currentPanel} to the new panel.
+	 *
+	 * Non-{@code AbstractPlanningPanel} components (if any) are ignored.
 	 */
 	private void tabSelectionChanged() {
-		Component selected = _tabbedPane.getSelectedComponent(); // The panel now showing in the tabbed pane
-		if (!(selected instanceof AbstractPlanningPanel)) {
-			return; // Defensive guard; every tab added above is an AbstractPlanningPanel
+		Component comp = _tabbedPane.getSelectedComponent();
+
+		if (comp instanceof AbstractPlanningPanel) {
+			// Save the previously active panel's state before switching away from it
+			if (_currentPanel != null) {
+				_currentPanel.savePanel();
+			}
+
+			// Notify the newly selected panel so it updates its enabled table highlight
+			AbstractPlanningPanel panel = (AbstractPlanningPanel) comp;
+			panel.panelActivated();
+
+			// Track the newly active panel for the next tab switch
+			_currentPanel = panel;
 		}
-
-		_currentPanel = (AbstractPlanningPanel) selected; // Remember which sub-tab is now active
-		_currentPanel.panelActivated(); // Give the panel a chance to refresh any stale content
 	}
-
-	// --- Set row behavior ---
-	// Loading, persisting, and combo-box maintenance for Sets are now owned by
-	// PlanningSetPanel (see _setPanel), matching how BaseSimulationGroupPanel owns that
-	// behavior for the Simulation Group row. PlanningPanel's only remaining responsibility
-	// for the Set row is reacting to the panel's selection callback below.
 
 	/**
 	 * Returns the currently active {@link PlanningSimGroup}, or {@code null} if no
@@ -255,7 +254,7 @@ public class PlanningPanel extends RmaJPanel {
 			_simulationPanel.setSimulationGroup(fsg, false);
 			_initialConditionsPanel.setSimulationGroup(fsg);
 			_operationsPanel.setSimulationGroup(fsg);
-			_meteorologyPanel.setSimulationGroup(fsg);
+			_metPanel.setSimulationGroup(fsg);
 			_tempTargetsPanel.setSimulationGroup(fsg);
 			_bcPanel.setSimulationGroup(fsg);
 
@@ -264,7 +263,7 @@ public class PlanningPanel extends RmaJPanel {
 			_simulationPanel.setSimulationGroup(null, false);
 			_initialConditionsPanel.setSimulationGroup(null);
 			_operationsPanel.setSimulationGroup(null);
-			_meteorologyPanel.setSimulationGroup(null);
+			_metPanel.setSimulationGroup(null);
 			_tempTargetsPanel.setSimulationGroup(null);
 			_bcPanel.setSimulationGroup(null);
 
@@ -274,30 +273,22 @@ public class PlanningPanel extends RmaJPanel {
 	}
 
 	/**
-	 * Returns the Set panel that manages the Set row's combo box and New/Edit/Delete buttons.
+	 * Resets the lower-panel controls of all sub-panels and clears the shared upper
+	 * tables of the currently active panel.
 	 *
-	 * @return the PlanningSetPanel instance owned by this panel
+	 * Called when the simulation group is set to {@code null} or when the panel
+	 * becomes visible with no simulation group loaded.
 	 */
-	public PlanningSetPanel getSetPanel() {
-		return _setPanel;
-	}
+	private void clearPanel() {
+		// Reset every sub-panel's lower-panel content to its empty default state
+		_initialConditionsPanel.clearPanel();
+		_operationsPanel.clearPanel();
+		_metPanel.clearPanel();
+		_bcPanel.clearPanel();
+		_tempTargetsPanel.clearPanel();
 
-	/**
-	 * Propagates the newly selected Set to every sub-tab panel and, for temperature
-	 * targets, allows the tab to refresh its mode/detail controls accordingly.
-	 *
-	 * Called back by {@link PlanningSetPanel} whenever its combo-box selection changes.
-	 *
-	 * @param set the newly selected Set, or null if none is selected
-	 */
-	public void setSelectedSet(PlanningSet set) {
-		// Every sub-tab needs to know about the newly active Set, regardless of which is currently visible
-		_initialConditionsPanel.setPlanningSet(set);
-		_operationsPanel.setPlanningSet(set);
-		_meteorologyPanel.setPlanningSet(set);
-		_bcPanel.setPlanningSet(set);
-		_tempTargetsPanel.setPlanningSet(set);
-		_simulationPanel.setPlanningSet(set);
+		// Clear all rows from the shared upper tables of the currently active panel
+		_currentPanel.clearTables();
 	}
 
 	/**
@@ -429,24 +420,4 @@ public class PlanningPanel extends RmaJPanel {
 
 		super.setVisible(visible);
 	}
-
-	/**
-	 * Resets the lower-panel controls of all sub-panels and clears the shared upper
-	 * tables of the currently active panel.
-	 *
-	 * Called when the simulation group is set to {@code null} or when the panel
-	 * becomes visible with no simulation group loaded.
-	 */
-	private void clearPanel() {
-		// Reset every sub-panel's lower-panel content to its empty default state
-		_initialConditionsPanel.clearPanel();
-		_operationsPanel.clearPanel();
-		_metPanel.clearPanel();
-		_bcPanel.clearPanel();
-		_tempTargetsPanel.clearPanel();
-
-		// Clear all rows from the shared upper tables of the currently active panel
-		_currentPanel.clearTables();
-	}
-
 }

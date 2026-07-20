@@ -48,7 +48,7 @@ import usbr.wat.plugins.actionpanel.ui.MetPlotPanel;                    // Provi
  * @see MeteorlogicData
  * @see MetPlotPanel
  */
-public class MeteorologyPanel extends AbstracPlanningPanel<MeteorlogicData> {
+public class MeteorologyPanel extends AbstractPlanningPanel<MeteorlogicData> {
 	/**
 	 * Logger instance scoped to this class for structured, levelled log output.
 	 */
