@@ -36,7 +36,7 @@ public class EditPlanningSetAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// Create the dialog in edit mode with a specific title
-		NewPlanningSeetDialog dlg = new NewPlanningSetDialog(
+		NewPlanningSetDialog dlg = new NewPlanningSetDialog(
 				ActionPanelPlugin.getInstance().getActionsWindow(),
 				true,
 				"Edit Simulation Group"
