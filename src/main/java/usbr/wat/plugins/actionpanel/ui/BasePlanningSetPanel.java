@@ -470,7 +470,7 @@ public abstract class BasePlanningSetPanel extends EnabledJPanel {
 	 * @param set       the newly created simulation group to add; may be null
 	 * @param selectSet true to select the group immediately after adding it
 	 */
-	public void addSet(AbstractSet set, boolean selectSet) {
+	public void addSet(AbstractPlanningSet set, boolean selectSet) {
 		// Check that the simulation group exists
 		if (set == null) {
 			return;

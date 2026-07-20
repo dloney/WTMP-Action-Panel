@@ -106,7 +106,7 @@ public class PlanningSetPanel extends BasePlanningSetPanel {
 	 * @return a DeletePlanningSetAction configured with this panel and the actions window
 	 */
 	@Override
-	protected Action getDeletePlanningSetAction(BaseSetPanel parent) {
+	protected Action getDeletePlanningSetAction(BasePlanningSetPanel parent) {
 		return new DeletePlanningSetAction(
 				parent, ActionPanelPlugin.getInstance().getActionsWindow());
 	}
