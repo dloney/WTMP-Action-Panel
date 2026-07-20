@@ -48,8 +48,7 @@ public class ActionPanelPlugin
 		_instance = this;
 
 		// If the configuration flag is set, perform Git configuration from the provided XML
-		if ( Boolean.getBoolean(BaseSimulationGroupPanel.GIT_DASH_D_FLAG))
-		{
+		if ( Boolean.getBoolean(BaseSimulationGroupPanel.GIT_DASH_D_FLAG)) {
 			configureGitConfiguration();
 		}
 

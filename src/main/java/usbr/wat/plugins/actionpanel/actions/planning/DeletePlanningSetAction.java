@@ -16,7 +16,7 @@ import hec2.wat.model.WatSimulation;                                            
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                          // Plugin entry point used to obtain the Actions window and global context
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;     			// The Set model this action deletes
 import usbr.wat.plugins.actionpanel.ui.PlanningSetPanel;   						// Panel that hosts Sets and receives deletion notifications
-import usbr.wat.plugins.actionpanel.ui.BaseSimulationGroupPanel;    			// Base class that gets implemented
+import usbr.wat.plugins.actionpanel.ui.BaseSetPanel;    			// Base class that gets implemented
 import usbr.wat.plugins.actionpanel.ActionsWindow; 								// Import the action windows class
 import usbr.wat.plugins.actionpanel.model.AbstractSet;							// Imports the abstract set class
 
@@ -40,14 +40,14 @@ public class DeletePlanningSetAction extends AbstractAction {
 	/**
 	 * Panel that hosts planning simulation groups and receives deletion notifications.
 	 */
-	private final BaseSimulationGroupPanel _parentPanel;
+	private final BaseSetPanel _parentPanel;
 
 	/**
 	 * Creates the delete-planning-set action with a user-visible name.
 	 *
 	 * @param parentPanel the panel that will be notified when the selected Set is deleted
 	 */
-	public DeletePlanningSetAction(BaseSimulationGroupPanel parentPanel, ActionsWindow parent) {
+	public DeletePlanningSetAction(BaseSetPanel parentPanel, ActionsWindow parent) {
 		// Initialize the action with its display label
 		super("Delete...");
 

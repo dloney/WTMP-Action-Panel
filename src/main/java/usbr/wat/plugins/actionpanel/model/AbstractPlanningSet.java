@@ -19,7 +19,7 @@ import hec2.wat.model.WatSimulation; // Import simulation model representing the
 
 
 /**
- * AbstractSet is an abstract base class that manages collections of WatSimulation objects.
+ * AbstractPlanningSet is an abstract base class that manages collections of WatSimulation objects.
  * It provides functionality for adding, removing, and retrieving simulations with optional analysis periods.
  * The class handles XML persistence by implementing the AbstractXMLManager interface and provides methods
  * for serializing the group state to external files (fsimgrp extension).
@@ -33,7 +33,7 @@ import hec2.wat.model.WatSimulation; // Import simulation model representing the
  */
 
 @SuppressWarnings("serial")
-public abstract class AbstractSet extends AbstractXMLManager {
+public abstract class AbstractPlanningSet extends AbstractXMLManager {
 	// File extension constant used when saving simulation group data to disk
 	public static final String FILE_EXT = "fsimgrp"; // Extension for simulation group files
 
@@ -50,7 +50,7 @@ public abstract class AbstractSet extends AbstractXMLManager {
 	private String _apName; // Analysis period name identifier stored as string
 
 	// Default constructor calls parent with empty initialization
-	public AbstractSet() {
+	public AbstractPlanningSet() {
 		super();
 	}
 
