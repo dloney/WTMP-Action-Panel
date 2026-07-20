@@ -26,7 +26,7 @@ import rma.util.RMASort;                 // RMA utility providing a quicksort im
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                  // Singleton plugin entry point providing access to the actions window
 import usbr.wat.plugins.actionpanel.actions.UpdateModelsAction;         // Action that triggers a model update for the current actions window
-import usbr.wat.plugins.actionpanel.model.AbstracPlanningtSet; 		// Import the abstract simulation group to allow cross workflow operation
+import usbr.wat.plugins.actionpanel.model.AbstractPlanningSet; 		// Import the abstract simulation group to allow cross workflow operation
 
 
 /**

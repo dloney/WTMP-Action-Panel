@@ -5,10 +5,9 @@ import java.awt.event.ActionEvent;                                              
 import javax.swing.AbstractAction;                                                  // Swing base class for encapsulating an action that can be attached to UI components
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                              // Plugin entry point used to obtain the Actions window and global context
-import usbr.wat.plugins.actionpanel.editors.NewSimulationGroupDialog;               // Dialog used to create or edit a simulation group's metadata and settings
-import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup;                  // Base type representing a simulation group used by the actions
-import usbr.wat.plugins.actionpanel.model.SimulationGroup;                          // Concrete type representing a simulation group (import present even if unused directly here)
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;                // Planning-specific simulation group type used by the planning panel
+import usbr.wat.plugins.actionpanel.editors.NewPlanningSetDialog;                   // Dialog used to create or edit a simulation group's metadata and settings
+import usbr.wat.plugins.actionpanel.model.AbstractPlanningSet;                      // Base type representing a simulation group used by the actions
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;                     // Planning-specific simulation group type used by the planning panel
 
 /**
  * Action that opens the editor to modify a planning {@link PlanningSet}.
@@ -37,7 +36,7 @@ public class EditPlanningSetAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// Create the dialog in edit mode with a specific title
-		NewSimulationGroupDialog dlg = new NewSimulationGroupDialog(
+		NewPlanningSeetDialog dlg = new NewPlanningSetDialog(
 				ActionPanelPlugin.getInstance().getActionsWindow(),
 				true,
 				"Edit Simulation Group"
@@ -47,7 +46,7 @@ public class EditPlanningSetAction extends AbstractAction {
 		PlanningSet planningSet = ActionPanelPlugin.getInstance()
 				.getActionsWindow()
 				.getPlanningPanel()
-				.getSimulationGroup();
+				.getPlanningSet();
 
 		// Pre-populate the dialog fields with the existing group data
 		dlg.fillForm(planningSet);
@@ -61,12 +60,12 @@ public class EditPlanningSetAction extends AbstractAction {
 		}
 
 		// Get the updated simulation group from the dialog
-		AbstractSimulationGroup sg = dlg.getSimulationGroup();
+		AbstractPlanningSet sg = dlg.getPlanningSet();
 
 		// Apply the updated group back to the planning panel
 		ActionPanelPlugin.getInstance()
 				.getActionsWindow()
 				.getPlanningPanel()
-				.setSimulationGroup((PlanningSet) sg);
+				.setPlanningSet((PlanningSet) sg);
 	}
 }

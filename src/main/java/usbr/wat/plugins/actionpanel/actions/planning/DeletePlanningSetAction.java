@@ -112,7 +112,7 @@ public class DeletePlanningSetAction extends AbstractAction {
 			// Only operate on simulation groups
 			if (manager instanceof AbstractPlanningSet) {
 				// Collect simulations before deleting the group
-				List<WatSimulation> sims = ((AbstracPlanningtSet) manager).getSimulations();
+				List<WatSimulation> sims = ((AbstractPlanningSet) manager).getSimulations();
 
 				// Delete the group manager first
 				DeleteManagerFactory.deleteManager(manager);

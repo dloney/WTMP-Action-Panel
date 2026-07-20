@@ -41,9 +41,8 @@ import rma.swing.RmaJTable;                                                     
 import rma.swing.list.RmaListModel;                                                 // List model backed by RMA data for use in combo boxes and lists
 import rma.util.RMAIO;                                                              // RMA I/O utility methods for string/path/boolean operations
 import usbr.wat.plugins.actionpanel.ActionsWindow;                                  // The parent Actions Window panel
-import usbr.wat.plugins.actionpanel.commands.AbstractNewSSetCmd;                    // Abstract command for creating a new simulation group
+import usbr.wat.plugins.actionpanel.commands.AbstractNewPlanningSetCmd;             // Abstract command for creating a new simulation group
 import usbr.wat.plugins.actionpanel.model.AbstractPlanningSet;                      // Base class for all simulation group types
-import usbr.wat.plugins.actionpanel.model.PlanningSet;                              // Standard (non-planning) set model
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;                     // Planning-specific simulation group model
 
 /**
@@ -94,10 +93,10 @@ public class NewPlanningSetDialog extends RmaJDialog {
 	protected boolean _canceled;
 
 	// The simulation group being edited; null when creating a new group
-	private AbstractSet _set;
+	private AbstractPlanningSet _set;
 
 	// The concrete class type of the simulation group to create (e.g., PlanningSet or PlanningSet)
-	private Class<? extends AbstractSet> _setClass;
+	private Class<? extends AbstractPlanningSet> _setClass;
 
 	// The concrete command class used to execute the group creation
 	private Class<? extends AbstractNewSetCmd> _setCmdClass;
@@ -298,7 +297,7 @@ public class NewPlanningSetDialog extends RmaJDialog {
 			if (isValidData()) {
 				if (_set == null) {
 					// No existing group: attempt to create a new simulation group
-					if (createPlanningSEt()) {
+					if (createPlanningSet()) {
 						// Creation succeeded; mark as not canceled and close the dialog
 						_canceled = false;
 						setVisible(false);

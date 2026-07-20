@@ -1,294 +1,393 @@
 package usbr.wat.plugins.actionpanel.model.planning;
 
-import org.jdom.Element;                        // JDOM XML element type used for saving and loading this object
+import java.util.HashMap;   // Hash map used for the iteration, position-analysis, and compute-type settings maps
+import java.util.Iterator;  // Iterator for walking map entry sets during XML serialization
+import java.util.List;      // Ordered collection interface for child XML element lists during loading
+import java.util.Map;       // Map interface for the three settings maps
+import java.util.Map.Entry; // Map entry type used when iterating during saveComputeTypes
+import java.util.Set;       // Set of map entries returned by entrySet()
 
-import com.rma.util.XMLUtilities;               // Utility helper for serializing NamedType fields and simple child content to/from JDOM
+import org.jdom.Element;    // JDOM XML Element used for serializing and deserializing all settings
 
-import hec.lang.NamedType;                      // Base class supplying a display name and integer index, and standard modified-state tracking
+import com.rma.util.XMLUtilities; // RMA XML utility for reading and writing child elements
 
 /**
- * A named "Set" within the Planning workflow — the Planning-tab analogue of an
- * "alternative" in the other WTMP workflows.
+ * Concrete simulation group that supports iterative compute, position analysis,
+ * and standard (non-iterative) compute types for each member simulation.
  *
- * A Set bundles the climate-side forcing data for a planning run:
- * <ul>
- *   <li>a WAT schema selection,</li>
- *   <li>a {@link CalSimData} reference,</li>
- *   <li>a {@link ClimateScenario} reference, and</li>
- *   <li>a {@link HydrologyData} reference,</li>
- * </ul>
- * i.e. everything needed to derive the meteorologic data that is ultimately applied to a
- * model. A Set is deliberately distinct from a Simulation Group: the Simulation Group is
- * the model configuration the Set's derived data gets applied to. The pairing of
- * ({@code Simulation Group}, {@code Set}) is unique — the Planning tab's UI exposes both
- * as independent selectors precisely so a single Set can, over time, be evaluated against
- * different Simulation Groups (and vice versa).
+ * Extends AbstractPlanningSet to inherit simulation membership management,
+ * analysis period association, and the core XML persistence framework. Adds three
+ * additional per-simulation settings maps:
  *
- * The CalSim/Climate/Hydrology data referenced by a Set are embedded directly (not stored
- * by reference only) so a saved Set remains fully self-contained; see
- * {@link #getCalSimData()}, {@link #getClimateScenario()}, and {@link #getHydrologyData()}.
- * The currently paired Simulation Group is stored by name only (mirroring the pattern used
- * elsewhere in this plugin, e.g. {@code EnsembleSet}'s stored BC/temperature-target names),
- * since the live {@code SimulationGroup}/{@code ForecastSimGroup} object is owned and
- * persisted by the project's manager list, not by this class.
+ *   - _iterationsSettings:        maps simulation name → IterationSettings
+ *   - _positionAnalysisSettings:  maps simulation name → PositionAnalysisSettings
+ *   - _computeTypeSettings:       maps simulation name → ComputeType (Standard, Iterative, PositionAnalysis)
+ *
+ * If no settings have been explicitly created for a simulation name, the getters
+ * create and cache a default instance. The compute type defaults to Standard.
+ *
+ * Serialized as a .simgrp file (extension defined by FILE_EXT). The XML structure
+ * for the additional settings is:
+ *
+ *   <ComputeTypes>
+ *     <Simulation>simName<ComputeType>Iterative</ComputeType></Simulation>
+ *     ...
+ *   </ComputeTypes>
+ *   <Simulation>
+ *     <IterationSettings>...</IterationSettings>
+ *     <PositionAnalysisSettings>...</PositionAnalysisSettings>
+ *   </Simulation>
+ *
+ * This class is suppressed for serialization warnings because JPanel ancestors
+ * are not consistently serializable.
  */
-public class PlanningSet extends NamedType {
+@SuppressWarnings("serial")
+public class PlanningSet extends AbstractPlanningSet {
+	// File extension used when persisting simulation group files to disk
+	public static final String FILE_EXT = "simgrp";
 
-	// Free-text description of this Set, shown in the New/Edit dialog's Description field
-	private String _description = "";
+	// Maps each simulation name to its iterative compute settings (BC DSS assignments + member config)
+	private Map<String, IterationSettings> _iterationsSettings = new HashMap<>();
 
-	// Name of the selected WAT schema for this Set (see NewPlanningSetDialog's Schema combo)
-	private String _watSchema = "";
+	// Maps each simulation name to its position analysis settings (BC DSS assignments + member config)
+	private Map<String, PositionAnalysisSettings> _positionAnalysisSettings = new HashMap<>();
 
-	// Embedded CalSim data for this Set; never null once the Set has been created via the dialog
-	private CalSimData _calSimData;
-
-	// Embedded climate scenario data for this Set
-	private ClimateScenario _climateScenario;
-
-	// Embedded hydrology data for this Set
-	private HydrologyData _hydrologyData;
-
-	// Embedded temperature target definition for this Set (fixed value / timeseries / jython)
-	private PlanningTempTarget _tempTarget;
-
-	// Name of the currently paired Simulation Group, resolved against the project's manager
-	// list by the UI layer; empty until a Simulation Group has been selected for this Set
-	private String _simulationGroupName = "";
+	// Maps each simulation name to its chosen compute type (Standard, Iterative, or PositionAnalysis)
+	private Map<String, ComputeType> _computeTypeSettings = new HashMap();
 
 	/**
-	 * Constructs an empty Set with no name, schema, or referenced datasets.
+	 * Constructs an empty PlanningSet.
 	 */
 	public PlanningSet() {
-		super(); // Invoke NamedType's default constructor to initialize name/index bookkeeping
+		super();
 	}
 
-	/**
-	 * Returns the description text entered for this Set.
-	 *
-	 * @return the description, or an empty string if none was entered
-	 */
-	public String getDescription() {
-		return _description; // Simple accessor
-	}
 
 	/**
-	 * Sets the description text for this Set and marks it modified.
+	 * Finalizes the XML save by appending the compute type assignments element.
 	 *
-	 * @param description the new description text; null is stored as an empty string
-	 */
-	public void setDescription(String description) {
-		_description = description == null ? "" : description; // Normalize null to empty string
-		setModified(true); // Flag this object as changed so it gets re-saved
-	}
-
-	/**
-	 * Returns the name of the WAT schema selected for this Set.
+	 * Called by the base class saveData() after all simulation membership data has been written.
 	 *
-	 * @return the WAT schema name, or an empty string if none has been selected
-	 */
-	public String getWatSchema() {
-		return _watSchema; // Simple accessor
-	}
-
-	/**
-	 * Sets the WAT schema for this Set and marks it modified.
-	 *
-	 * @param watSchema the schema name; null is stored as an empty string
-	 */
-	public void setWatSchema(String watSchema) {
-		_watSchema = watSchema == null ? "" : watSchema; // Normalize null to empty string
-		setModified(true); // Flag this object as changed so it gets re-saved
-	}
-
-	/**
-	 * Returns the CalSim dataset embedded in this Set.
-	 *
-	 * @return the CalSim data, or null if not yet assigned
-	 */
-	public CalSimData getCalSimData() {
-		return _calSimData; // Simple accessor
-	}
-
-	/**
-	 * Assigns the CalSim dataset for this Set and marks it modified.
-	 *
-	 * @param calSimData the CalSim data to embed; may be null while the Set is still being built
-	 */
-	public void setCalSimData(CalSimData calSimData) {
-		_calSimData = calSimData; // Store the reference directly; the dataset itself is owned by this Set
-		setModified(true); // Flag this object as changed so it gets re-saved
-	}
-
-	/**
-	 * Returns the climate scenario embedded in this Set.
-	 *
-	 * @return the climate scenario, or null if not yet assigned
-	 */
-	public ClimateScenario getClimateScenario() {
-		return _climateScenario; // Simple accessor
-	}
-
-	/**
-	 * Assigns the climate scenario for this Set and marks it modified.
-	 *
-	 * @param climateScenario the climate scenario to embed; may be null while the Set is
-	 *                        still being built
-	 */
-	public void setClimateScenario(ClimateScenario climateScenario) {
-		_climateScenario = climateScenario; // Store the reference directly; the scenario itself is owned by this Set
-		setModified(true); // Flag this object as changed so it gets re-saved
-	}
-
-	/**
-	 * Returns the hydrology dataset embedded in this Set.
-	 *
-	 * @return the hydrology data, or null if not yet assigned
-	 */
-	public HydrologyData getHydrologyData() {
-		return _hydrologyData; // Simple accessor
-	}
-
-	/**
-	 * Assigns the hydrology dataset for this Set and marks it modified.
-	 *
-	 * @param hydrologyData the hydrology data to embed; may be null while the Set is still
-	 *                      being built
-	 */
-	public void setHydrologyData(HydrologyData hydrologyData) {
-		_hydrologyData = hydrologyData; // Store the reference directly; the dataset itself is owned by this Set
-		setModified(true); // Flag this object as changed so it gets re-saved
-	}
-
-	/**
-	 * Returns the temperature target definition embedded in this Set.
-	 *
-	 * @return the temperature target, or null if not yet defined for this Set
-	 */
-	public PlanningTempTarget getTempTarget() {
-		return _tempTarget; // Simple accessor
-	}
-
-	/**
-	 * Assigns the temperature target definition for this Set and marks it modified.
-	 *
-	 * @param tempTarget the temperature target to embed; may be null
-	 */
-	public void setTempTarget(PlanningTempTarget tempTarget) {
-		_tempTarget = tempTarget; // Store the reference directly; the target itself is owned by this Set
-		setModified(true); // Flag this object as changed so it gets re-saved
-	}
-
-	/**
-	 * Returns the name of the Simulation Group currently paired with this Set.
-	 *
-	 * @return the paired Simulation Group's name, or an empty string if none is paired yet
-	 */
-	public String getSimulationGroupName() {
-		return _simulationGroupName; // Simple accessor
-	}
-
-	/**
-	 * Records the name of the Simulation Group paired with this Set and marks it modified.
-	 * The live {@code SimulationGroup} object itself is resolved from the project's manager
-	 * list by the UI layer using this name.
-	 *
-	 * @param simulationGroupName the paired Simulation Group's name; null is stored as an
-	 *                            empty string
-	 */
-	public void setSimulationGroupName(String simulationGroupName) {
-		_simulationGroupName = simulationGroupName == null ? "" : simulationGroupName; // Normalize null to empty string
-		setModified(true); // Flag this object as changed so it gets re-saved
-	}
-
-	/**
-	 * Persists this Set's fields, including its embedded CalSim/Climate/Hydrology/temperature
-	 * target data, to a child "PlanningSet" element under the given parent.
-	 *
-	 * @param parent the JDOM element to which the new "PlanningSet" element is appended
-	 */
-	public void saveData(Element parent) {
-		Element myElem = new Element("PlanningSet"); // Create the root element for this Set's data
-		parent.addContent(myElem); // Attach it under the caller-supplied parent element
-
-		XMLUtilities.saveNamedType(myElem, this); // Persist the inherited name/index fields
-
-		// Persist the three simple string fields as child elements
-		XMLUtilities.addChildContent(myElem, "Description", _description);
-		XMLUtilities.addChildContent(myElem, "WatSchema", _watSchema);
-		XMLUtilities.addChildContent(myElem, "SimulationGroupName", _simulationGroupName);
-
-		// Each embedded dataset saves itself as its own child element, only if it has been assigned
-		if (_calSimData != null) {
-			_calSimData.saveData(myElem); // Delegate to CalSimData's own saveData
-		}
-		if (_climateScenario != null) {
-			_climateScenario.saveData(myElem); // Delegate to ClimateScenario's own saveData
-		}
-		if (_hydrologyData != null) {
-			_hydrologyData.saveData(myElem); // Delegate to HydrologyData's own saveData
-		}
-		if (_tempTarget != null) {
-			_tempTarget.saveData(myElem); // Delegate to PlanningTempTarget's own saveData
-		}
-	}
-
-	/**
-	 * Restores this Set's fields, including its embedded CalSim/Climate/Hydrology/temperature
-	 * target data, from a "PlanningSet" element previously written by {@link #saveData(Element)}.
-	 *
-	 * @param myElem the "PlanningSet" element to load from
-	 * @return true if the element was non-null and loading proceeded; false otherwise
-	 */
-	public boolean loadData(Element myElem) {
-		if (myElem == null) {
-			return false; // Nothing to load from; signal failure to the caller
-		}
-
-		XMLUtilities.loadNamedType(myElem, this); // Restore the inherited name/index fields
-		// Restore the three simple string fields, defaulting to empty strings if missing
-		_description = XMLUtilities.getChildElementAsString(myElem, "Description", "");
-		_watSchema = XMLUtilities.getChildElementAsString(myElem, "WatSchema", "");
-		_simulationGroupName = XMLUtilities.getChildElementAsString(myElem, "SimulationGroupName", "");
-
-		// Look for a nested CalSimData element and, if present, reconstruct and load it
-		Element calSimElem = myElem.getChild("CalSimData");
-		if (calSimElem != null) {
-			_calSimData = new CalSimData(); // Create a fresh instance to populate
-			_calSimData.loadData(calSimElem); // Delegate to CalSimData's own loadData
-		}
-
-		// Look for a nested ClimateScenario element and, if present, reconstruct and load it
-		Element climateElem = myElem.getChild("ClimateScenario");
-		if (climateElem != null) {
-			_climateScenario = new ClimateScenario(); // Create a fresh instance to populate
-			_climateScenario.loadData(climateElem); // Delegate to ClimateScenario's own loadData
-		}
-
-		// Look for a nested HydrologyData element and, if present, reconstruct and load it
-		Element hydroElem = myElem.getChild("HydrologyData");
-		if (hydroElem != null) {
-			_hydrologyData = new HydrologyData(); // Create a fresh instance to populate
-			_hydrologyData.loadData(hydroElem); // Delegate to HydrologyData's own loadData
-		}
-
-		// Look for a nested PlanningTempTarget element and, if present, reconstruct and load it
-		Element tempTargetElem = myElem.getChild("PlanningTempTarget");
-		if (tempTargetElem != null) {
-			_tempTarget = new PlanningTempTarget(); // Create a fresh instance to populate
-			_tempTarget.loadData(tempTargetElem); // Delegate to PlanningTempTarget's own loadData
-		}
-
-		return true; // Loading completed successfully
-	}
-
-	/**
-	 * Returns this Set's name, so it displays sensibly in combo boxes and lists.
-	 *
-	 * @return the Set's name
+	 * @param elem the root XML Element of the simulation group document being saved
 	 */
 	@Override
-	public String toString() {
-		return getName(); // Delegate to the inherited NamedType name accessor
+	protected void finishSaving(Element elem) {
+		saveComputeTypes(elem);
+	}
+
+	/**
+	 * Serializes the iteration and position-analysis settings for the given simulation.
+	 *
+	 * Called by the base class for each simulation name during saveData(). Only serializes
+	 * settings that have been explicitly configured for the simulation.
+	 *
+	 * @param simelem the XML Element for this simulation
+	 * @param simName the name of the simulation whose settings should be saved
+	 */
+	@Override
+	protected void saveSimulationSettings(Element simelem, String simName) {
+		saveIterationSettings(simelem, simName);
+		savePositionAnalysisSettings(simelem, simName);
+	}
+
+	/**
+	 * Serialises the compute type settings map to XML by writing one "Simulation" element
+	 * per entry under a shared "ComputeTypes" parent element. Each "Simulation" element
+	 * contains the simulation name as its text value and a "ComputeType" child element
+	 * holding the enum name of the assigned compute type.
+	 *
+	 * @param elem the parent XML Element to which the "ComputeTypes" element is added
+	 */
+	private void saveComputeTypes(Element elem) {
+		// Retrieve all simulation-name-to-compute-type mappings for serialisation
+		Set<Entry<String, ComputeType>> computeTypes = _computeTypeSettings.entrySet();
+
+		// Create the "ComputeTypes" container element and attach it to the parent
+		Element computeTypesElem = new Element("ComputeTypes");
+		elem.addContent(computeTypesElem);
+
+		// Obtain an iterator to traverse each simulation-to-compute-type entry
+		Iterator<Entry<String, ComputeType>> iter = computeTypes.iterator();
+		Element simElem;
+
+		while (iter.hasNext()) {
+			// Advance to the next simulation name and compute type pairing
+			Entry<String, ComputeType> next = iter.next();
+
+			// Write the simulation name as the element text and the compute type as a child
+			simElem = XMLUtilities.saveChildElement(computeTypesElem, "Simulation", next.getKey());
+			XMLUtilities.saveChildElement(simElem, "ComputeType", next.getValue().name());
+		}
+	}
+
+	/**
+	 * Deserialises the compute type settings from the given XML root element, rebuilding
+	 * the _computeTypeSettings map from the stored simulation name and compute type pairs.
+	 * Each "Simulation" child element is expected to contain a "ComputeType" child whose
+	 * text matches a valid ComputeType enum constant name. Entries with a missing
+	 * "ComputeType" child are silently skipped. Does nothing when no "ComputeTypes"
+	 * element is present under the root.
+	 *
+	 * @param root the XML Element containing the "ComputeTypes" child element to read from
+	 */
+	private void loadComputeTypes(Element root) {
+		// Locate the parent element that holds all Simulation compute type entries
+		Element computeTypesElem = root.getChild("ComputeTypes");
+
+		// Abort early when the ComputeTypes element is absent from the XML
+		if (computeTypesElem == null) {
+			return;
+		}
+
+		// Retrieve the list of individual Simulation child elements to iterate over
+		List kids = computeTypesElem.getChildren("Simulation");
+
+		Element simElem, ctElem;
+
+		for (int i = 0; i < kids.size(); i++) {
+			// Cast the current list entry to an XML Element for child access
+			simElem = (Element) kids.get(i);
+
+			// Locate the ComputeType child element within this Simulation entry
+			ctElem = simElem.getChild("ComputeType");
+
+			if (ctElem != null) {
+				// Map the simulation name to the parsed compute type enum constant
+				_computeTypeSettings.put(simElem.getTextTrim(), ComputeType.valueOf(ctElem.getTextTrim()));
+			}
+		}
+	}
+
+	/**
+	 * Serializes the position-analysis settings for the given simulation, if any.
+	 *
+	 * Has no effect if no position-analysis settings have been configured for the simulation.
+	 *
+	 * @param simElem the XML Element for this simulation
+	 * @param simName the simulation name whose position-analysis settings should be saved
+	 */
+	private void savePositionAnalysisSettings(Element simElem, String simName) {
+		// Return immediately if settings is not available
+		PositionAnalysisSettings settings = _positionAnalysisSettings.get(simName);
+		if (settings == null) {
+			return;
+		}
+
+		// Append the position-analysis settings as a child element of the simulation element
+		Element paElem = new Element("PositionAnalysisSettings");
+		simElem.addContent(paElem);
+		settings.saveData(paElem);
+	}
+
+	/**
+	 * Serializes the iteration settings for the given simulation, if any.
+	 *
+	 * Has no effect if no iteration settings have been configured for the simulation.
+	 *
+	 * @param simElem the XML Element for this simulation
+	 * @param simName the simulation name whose iteration settings should be saved
+	 */
+	private void saveIterationSettings(Element simElem, String simName) {
+		// Return immediately if settings is not available
+		IterationSettings settings = _iterationsSettings.get(simName);
+		if (settings == null) {
+			return;
+		}
+
+		// Append the iteration settings as a child element of the simulation element
+		Element iterElem = new Element("IterationSettings");
+		simElem.addContent(iterElem);
+		settings.saveData(iterElem);
+	}
+
+	/**
+	 * Finalizes the XML load by reading the compute type assignments.
+	 *
+	 * Called by the base class loadData() after all simulation membership data has been read.
+	 *
+	 * @param root the root XML Element of the simulation group document being loaded
+	 */
+	@Override
+	protected void finishLoading(Element root) {
+		loadComputeTypes(root);
+	}
+
+	/**
+	 * Clears all settings maps before loading new data from XML.
+	 *
+	 * Called by the base class loadData() before reading begins to ensure a clean state.
+	 */
+	@Override
+	protected void initForLoading() {
+		_iterationsSettings.clear();
+		_positionAnalysisSettings.clear();
+		_computeTypeSettings.clear();
+	}
+
+	/**
+	 * Returns the XML type identifier string for this simulation group subclass.
+	 *
+	 * @return "PlanningSet"
+	 */
+	@Override
+	protected String getPlanningSetType() {
+		return "PlanningSet";
+	}
+
+	/**
+	 * Restores per-simulation settings from the given simulation XML element.
+	 *
+	 * Called by the base class for each simulation element during loadData().
+	 *
+	 * @param simElem the XML Element for this simulation
+	 * @param simName the name of the simulation being loaded
+	 */
+	@Override
+	protected void loadSimulationSettings(Element simElem, String simName) {
+		loadIterationSettings(simElem, simName);
+		loadPositionAnalysisSettings(simElem, simName);
+	}
+
+	/**
+	 * Restores position-analysis settings for the given simulation from the given XML element.
+	 *
+	 * Has no effect if the "PositionAnalysisSettings" child element is absent.
+	 *
+	 * @param simElem the XML Element for this simulation
+	 * @param simName the simulation name to map the loaded settings to
+	 */
+	private void loadPositionAnalysisSettings(Element simElem, String simName) {
+		Element iterElem = simElem.getChild("PositionAnalysisSettings");
+		if (iterElem == null) {
+			return;
+		}
+
+		// Create, populate, and cache the position-analysis settings for this simulation
+		PositionAnalysisSettings settings = new PositionAnalysisSettings();
+		settings.loadData(iterElem);
+		_positionAnalysisSettings.put(simName, settings);
+	}
+
+	/**
+	 * Restores iteration settings for the given simulation from the given XML element.
+	 *
+	 * Has no effect if the "IterationSettings" child element is absent.
+	 *
+	 * @param simElem the XML Element for this simulation
+	 * @param simName the simulation name to map the loaded settings to
+	 */
+	private void loadIterationSettings(Element simElem, String simName) {
+		// Return immediately if settings is not available
+		Element iterElem = simElem.getChild("IterationSettings");
+		if (iterElem == null) {
+			return;
+		}
+
+		// Create, populate, and cache the iteration settings for this simulation
+		IterationSettings settings = new IterationSettings();
+		settings.loadData(iterElem);
+		_iterationsSettings.put(simName, settings);
+	}
+
+
+	/**
+	 * Returns the IterationSettings for the given simulation, creating and caching
+	 * a default instance if none has been configured.
+	 *
+	 * @param simName the simulation name to retrieve iteration settings for
+	 * @return the IterationSettings for the simulation; never null
+	 */
+	public IterationSettings getIterationSettings(String simName) {
+		// Get the settings
+		IterationSettings settings = _iterationsSettings.get(simName);
+
+		// Act only if settings is available
+		if (settings == null) {
+			// Create and cache a default IterationSettings for this simulation
+			settings = new IterationSettings();
+			_iterationsSettings.put(simName, settings);
+		}
+
+		// Retrun the settings to calling function
+		return settings;
+	}
+
+	/**
+	 * Returns the PositionAnalysisSettings for the given simulation, creating and caching
+	 * a default instance if none has been configured.
+	 *
+	 * @param simName the simulation name to retrieve position-analysis settings for
+	 * @return the PositionAnalysisSettings for the simulation; never null
+	 */
+	public PositionAnalysisSettings getPositionAnalysisSettings(String simName) {
+		// Get the settings object
+		PositionAnalysisSettings settings = _positionAnalysisSettings.get(simName);
+
+		// Act only if settings is available
+		if (settings == null) {
+			// Create and cache a default PositionAnalysisSettings for this simulation
+			settings = new PositionAnalysisSettings();
+			_positionAnalysisSettings.put(simName, settings);
+		}
+
+		// Return settings to the calling function
+		return settings;
+	}
+
+	/**
+	 * Returns the ComputeType assigned to the given simulation.
+	 *
+	 * Defaults to ComputeType.Standard if no compute type has been explicitly set.
+	 *
+	 * @param simName the simulation name to retrieve the compute type for
+	 * @return the assigned ComputeType, or ComputeType.Standard if not set
+	 */
+	public ComputeType getComputeType(String simName) {
+		// Get the compute type
+		ComputeType computeType = _computeTypeSettings.get(simName);
+
+		// Set the compute type if the object is valid
+		if (computeType == null) {
+			computeType = ComputeType.Standard;
+		}
+
+		// Return the compute type to the calling function
+		return computeType;
+	}
+
+	/**
+	 * Sets the ComputeType for the given simulation.
+	 *
+	 * Has no effect if either argument is null.
+	 *
+	 * @param simName the simulation name to assign the compute type to
+	 * @param ct      the ComputeType to assign
+	 */
+	public void setComputeType(String simName, ComputeType ct) {
+		if (simName != null && ct != null) {
+			_computeTypeSettings.put(simName, ct);
+		}
+	}
+
+	/**
+	 * Returns the BaseComputeSettings appropriate for the given simulation and compute type.
+	 *
+	 * Returns the IterationSettings for Iterative, the PositionAnalysisSettings for
+	 * PositionAnalysis, and null for Standard (which has no additional compute settings).
+	 *
+	 * @param simName     the simulation name to retrieve compute settings for
+	 * @param computeType the compute type determining which settings to return
+	 * @return the relevant BaseComputeSettings, or null for Standard compute type
+	 */
+	public BaseComputeSettings getComputeSettings(String simName, ComputeType computeType) {
+		switch (computeType) {
+			case Iterative:
+				return getIterationSettings(simName);
+			case PositionAnalysis:
+				return getPositionAnalysisSettings(simName);
+			default:
+				// Standard compute type has no additional settings
+				return null;
+		}
 	}
 }

@@ -148,7 +148,7 @@ public abstract class AbstractNewPlanningSetCmd extends AbstractNewManagerComman
 	 * @param planningSetName the simulation group name
 	 * @return a combined name of the form "simulationName-groupName"
 	 */
-	public static String getGroupSimName(String simName, String planningSetName) {
+	public static String getPlanningSetName(String simName, String planningSetName) {
 		// Concatenate simulation and group names using a hyphen
 		return simName + "-" + planningSetName;
 	}

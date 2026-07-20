@@ -32,7 +32,7 @@ import usbr.wat.plugins.actionpanel.model.forecast.EnsembleSet;         // Provi
 import usbr.wat.plugins.actionpanel.model.forecast.ForecastConfigFiles; // Provides ForecastConfigFiles for resolving project-relative config file paths
 import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;    // Provides ForecastSimGroup, the top-level model grouping all forecast simulation data
 import usbr.wat.plugins.actionpanel.model.forecast.MeteorlogicData;     // Provides MeteorlogicData, the model object representing a single meteorologic dataset
-import usbr.wat.plugins.actionpanel.ui.forecst.MetPlotPanel;                    // Provides MetPlotPanel for rendering time-series plots of meteorologic station data
+import usbr.wat.plugins.actionpanel.ui.forecast.MetPlotPanel;                    // Provides MetPlotPanel for rendering time-series plots of meteorologic station data
 
 /**
  * Panel that displays and manages the Meteorology tab within the Forecast Action Panel.
