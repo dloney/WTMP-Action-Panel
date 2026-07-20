@@ -15,8 +15,9 @@ import usbr.wat.plugins.actionpanel.actions.planning.DeletePlanningSetAction;  	
 import usbr.wat.plugins.actionpanel.actions.planning.EditPlanningSetAction;    		// Action that opens the editor for the selected planning simulation group
 import usbr.wat.plugins.actionpanel.actions.planning.NewPlanningSetAction;     		// Action that opens the creation dialog for a new planning simulation group
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;               		// Planning-specific simulation group model managed by this panel
-import usbr.wat.plugins.actionpanel.ui.AbstractSimulationPanel;				// Provides the abstract simulation panel class
+import usbr.wat.plugins.actionpanel.ui.AbstractSimulationPanel;						// Provides the abstract simulation panel class
 import usbr.wat.plugins.actionpanel.ActionsWindow;									// Imports the action window class
+import usbr.wat.plugins.actionpanel.ui.planning.SimulationPanel; 					// Provides access to simulation panel classes
 
 
 /**
@@ -43,7 +44,7 @@ public class PlanningSetPanel extends BasePlanningSetPanel {
 	 * Stored separately from the base-class _parent field to provide a typed
 	 * reference to AbstractSimulationPanel without requiring a cast at each use.
 	 */
-	private AbstractSimulationPanel _parent;
+	private SimulationPanel _parent;
 
 	/**
 	 * Tabbed pane positioned below the inherited toolbar controls.

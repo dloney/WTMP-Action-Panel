@@ -669,12 +669,12 @@ public class NewPlanningSetDialog extends RmaJDialog {
 
 			if (simToAdd != null) {
 				// Create a group-linked copy of the simulation
-				newSim = AbstractNewPlanningSetCmd.createSimulation(simToAdd, _set, proj, ap, _runExtract);
+				/*newSim = AbstractNewPlanningSetCmd.createSimulation(simToAdd, _set, proj, ap, _runExtract);
 
 				if (newSim != null) {
 					// Add the new simulation to the group
 					_set.addSimulation(newSim);
-				}
+				}*/
 			}
 		}
 

@@ -136,14 +136,7 @@ public class PlanningPanel extends RmaJPanel {
 		_tempTargetsPanel.setEnabled(false);
 		_bcPanel.setEnabled(false);
 
-		// Create the planning set panel
-		_planningSetPanel = new PlanningSetPanel(_simulationPanel);
-		add(_planningSetPanel, gbc);
-
-		// Wrap the simulation panel in the group selection combo box panel
-		_simGroupPanel = new SimulationGroupPanel(_simulationPanel);
-
-		// Add the simulation group panel at the top; it does not claim vertical space
+		// Create the grid
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx = GridBagConstraints.RELATIVE;
 		gbc.gridy = GridBagConstraints.RELATIVE;
@@ -153,6 +146,15 @@ public class PlanningPanel extends RmaJPanel {
 		gbc.anchor = GridBagConstraints.NORTHWEST;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = RmaInsets.INSETS5505;
+
+		// Create the planning set panel
+		_planningSetPanel = new PlanningSetPanel(_simulationPanel);
+		add(_planningSetPanel, gbc);
+
+		// Wrap the simulation panel in the group selection combo box panel
+		_simGroupPanel = new SimulationGroupPanel(_simulationPanel);
+
+		// Add the simulation group panel at the top; it does not claim vertical space
 		add(_simGroupPanel, gbc);
 
 		// Create the tabbed pane and configure its tab placement from the system property

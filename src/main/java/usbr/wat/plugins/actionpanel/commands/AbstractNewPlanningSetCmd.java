@@ -88,7 +88,7 @@ public abstract class AbstractNewPlanningSetCmd extends AbstractNewManagerComman
 	@Override
 	public boolean doCommand() {
 		// Create the manager (simulation group) via the base command
-		/*boolean rv = super.doCommand();
+		boolean rv = super.doCommand();
 
 		// Retrieve the created simulation group
 		AbstractPlanningSet planningSet = getPlanningSet();
@@ -117,8 +117,7 @@ public abstract class AbstractNewPlanningSetCmd extends AbstractNewManagerComman
 		// Persist changes to the project
 		_project.saveProject();
 
-		return rv;*/
-		return null;
+		return rv;
 	}
 
 	/**

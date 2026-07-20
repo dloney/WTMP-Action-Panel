@@ -67,6 +67,7 @@ import usbr.wat.plugins.actionpanel.ui.AbstractSimulationPanel;                 
 import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                               // Provides UsbrPanel, the marker interface for USBR-specific panel implementations
 import usbr.wat.plugins.actionpanel.ui.tree.SimulationTreeTable;                // Provides SimulationTreeTable, the custom tree-table used to display WAT simulations
 import usbr.wat.plugins.actionpanel.ui.tree.SimulationTreeTableModel;           // Provides SimulationTreeTableModel for accessing column index constants on the tree-table model
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;					// Provides the planning set class
 
 /**
  * Panel that forms the Simulation tab within the Planning Action Panel. It displays:
@@ -1261,6 +1262,6 @@ public class SimulationPanel extends AbstractSimulationPanel
 
 	// TODO: doc string
 	private void setPlanningSet(PlanningSet set) {
-		_parent.setPlanningSet(set);
+		_parentPanel.setPlanningSet(set);
 	}
 }
