@@ -49,7 +49,7 @@ import usbr.wat.plugins.actionpanel.model.planning.TemperatureTargetSet;	// Impo
  *
  */
 
-public class PlanningSet extends AbstractSet {
+public class PlanningSet extends AbstractPlanningSet {
 	// List holding temperature target set objects for each model alternative in the planning configuration
 	private List<TemperatureTargetSet> _tempTargetSets = new ArrayList<>(); // Collection of temp target configs
 
@@ -450,7 +450,7 @@ public class PlanningSet extends AbstractSet {
 	 * Required by parent class to properly serialize and deserialize this specific group type.
 	 */
 	@Override
-	protected String getPlanningSEtType() {
+	protected String getPlanningSetType() {
 		return "PlanningSet"; // Return string literal identifying this group's XML root tag
 	}
 

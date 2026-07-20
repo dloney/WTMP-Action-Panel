@@ -99,7 +99,7 @@ public class NewPlanningSetDialog extends RmaJDialog {
 	private Class<? extends AbstractPlanningSet> _setClass;
 
 	// The concrete command class used to execute the group creation
-	private Class<? extends AbstractNewSetCmd> _setCmdClass;
+	private Class<? extends AbstractNewPlanningSetCmd> _setCmdClass;
 
 	// Flag indicating whether a data extract step should be run when creating child simulations
 	private boolean _runExtract;
@@ -374,7 +374,7 @@ public class NewPlanningSetDialog extends RmaJDialog {
 		List<PlanningSet> sets = proj.getManagerListForType(PlanningSet.class);
 
 		// Retrieve all planning simulation groups in the project
-		List<PlanningSet> fset = proj.getManagerListForType(PlanningSet.class);
+		List<PlanningSet> fsets = proj.getManagerListForType(PlanningSet.class);
 
 		// Combine both group types into one list for membership checks
 		List<AbstractPlanningSet> allSets = new ArrayList<>();
@@ -425,7 +425,7 @@ public class NewPlanningSetDialog extends RmaJDialog {
 
 		// Disable name editing since renaming a group is not supported
 		_nameDescPanel.setNameEditable(false);
-		_nameDescPanel.setDescription(setp.getDescription());
+		_nameDescPanel.setDescription(set.getDescription());
 
 		// Retrieve the simulations already assigned to this group
 		List<WatSimulation> sims = _set.getSimulations();
@@ -503,7 +503,7 @@ public class NewPlanningSetDialog extends RmaJDialog {
 	 */
 	private boolean simPartOfGroup(WatSimulation sim, List<AbstractPlanningSet> sets) {
 		int size = sets.size();
-		AbstractPlanningSet sets;
+		AbstractPlanningSet set;
 
 		// Iterate over all simulation groups to look for membership
 		for (int i = 0; i < size; i++) {

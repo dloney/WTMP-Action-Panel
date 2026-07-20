@@ -265,7 +265,7 @@ public abstract class BasePlanningSetPanel extends EnabledJPanel {
 	 * @param parent this panel instance, passed to the action for post-deletion callbacks
 	 * @return the delete Action appropriate for the concrete subclass's group type
 	 */
-	protected abstract Action getDeleteSetAction(BasePlanningSetPanel parent);
+	protected abstract Action getDeletePlanningSetAction(BasePlanningSetPanel parent);
 
 
 	/**
@@ -273,7 +273,7 @@ public abstract class BasePlanningSetPanel extends EnabledJPanel {
 	 *
 	 * @return the new-group Action appropriate for the concrete subclass's group type
 	 */
-	protected abstract Action getNewSetAction();
+	protected abstract Action getNewPlanningSetAction();
 
 
 	/**
@@ -281,7 +281,7 @@ public abstract class BasePlanningSetPanel extends EnabledJPanel {
 	 *
 	 * @return the edit Action appropriate for the concrete subclass's group type
 	 */
-	protected abstract Action getEditSetAction();
+	protected abstract Action getEditPlanningSetAction();
 
 
 	/**
@@ -372,7 +372,7 @@ public abstract class BasePlanningSetPanel extends EnabledJPanel {
 	 *
 	 * @param fsg the simulation group to select; pass null to clear the selection
 	 */
-	public void setSet(AbstractPlanningSet fsg) {
+	public void setPlanningSet(AbstractPlanningSet fsg) {
 		if (fsg == null) {
 			// Clear the selection and reset the description field to an empty disabled state
 			_setCombo.setSelectedIndex(-1);
@@ -420,7 +420,7 @@ public abstract class BasePlanningSetPanel extends EnabledJPanel {
 	 * If nothing ends up selected, setSelected is called with null to clear
 	 * any dependent UI state.
 	 */
-	public void loadSetCombo() {
+	public void loadPlanningSetCombo() {
 		Project prj = Project.getCurrentProject();
 
 		// Remember the currently selected proxy so it can be restored after the reload
@@ -458,7 +458,7 @@ public abstract class BasePlanningSetPanel extends EnabledJPanel {
 	 *
 	 * @return the concrete simulation group class managed by this panel subclass
 	 */
-	protected abstract Class getSetClass();
+	protected abstract Class getPlanningSetClass();
 
 	/**
 	 * Adds the given simulation group to the combo box and optionally selects it.
@@ -470,7 +470,7 @@ public abstract class BasePlanningSetPanel extends EnabledJPanel {
 	 * @param set       the newly created simulation group to add; may be null
 	 * @param selectSet true to select the group immediately after adding it
 	 */
-	public void addSet(AbstractPlanningSet set, boolean selectSet) {
+	public void addPlanningSet(AbstractPlanningSet set, boolean selectSet) {
 		// Check that the simulation group exists
 		if (set == null) {
 			return;

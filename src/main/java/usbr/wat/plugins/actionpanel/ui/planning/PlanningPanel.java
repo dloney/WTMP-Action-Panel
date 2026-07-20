@@ -79,6 +79,10 @@ public class PlanningPanel extends RmaJPanel {
 	// The AbstractPlanningPanel tab that is currently selected; used to save state on tab switch
 	private AbstractPlanningPanel _currentPanel;
 
+	// Define the set for the  analysis
+	private PlanningSet _set;
+
+
 	/**
 	 * Constructs a {@code PlanningPanel}, lays it out with a {@link GridBagLayout},
 	 * stores the parent {@link ActionsWindow} reference, builds all sub-panel controls,
@@ -295,8 +299,8 @@ public class PlanningPanel extends RmaJPanel {
 	 * Reloads the simulation group combo box in the {@link SimulationGroupPanel} to
 	 * reflect any changes in the available simulation groups.
 	 */
-	public void loadSimulationGroupCombo() {
-		_simGroupPanel.loadSimulationGroupCombo();
+	public void loadPlanningSetCombo() {
+		_planningSetPanel.loadPlanningSetCombo();
 	}
 
 	/**
@@ -420,4 +424,10 @@ public class PlanningPanel extends RmaJPanel {
 
 		super.setVisible(visible);
 	}
+
+
+	// TODO: Doc strings on these cfunctions
+	public PlanningSet getPlanningSet() { return _set; }
+
+	public void setPlanningSet(PlanningSet set) { _set = set; /* propagate to sub-tabs as needed */ }
 }
