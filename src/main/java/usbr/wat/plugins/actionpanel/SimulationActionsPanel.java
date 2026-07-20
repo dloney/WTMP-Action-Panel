@@ -16,6 +16,7 @@ import usbr.wat.plugins.actionpanel.actions.DisplayReportSelectorAction;        
 import usbr.wat.plugins.actionpanel.actions.RunSimulationAction;                        // Action to run simulations in prescribed conditions workflows
 import usbr.wat.plugins.actionpanel.actions.SaveSimulationResultsAction;                // Action to persist generated simulation results
 import usbr.wat.plugins.actionpanel.actions.forecast.RunForecastSimulationAction;       // Action to run simulations in forecast workflows
+import usbr.wat.plugins.actionpanel.actions.planning.RunPlanningSimulationAction;
 import usbr.wat.plugins.actionpanel.model.ForecastReportingPlugin;                      // Reporting plugin interface for forecast-specific report actions
 import usbr.wat.plugins.actionpanel.model.ReportPlugin;                                 // Base reporting plugin interface used by the reports manager
 import usbr.wat.plugins.actionpanel.model.ReportsManager;                               // Manager that provides registered reporting plugins available to the UI
