@@ -16,9 +16,9 @@ import hec2.wat.model.WatSimulation;                                            
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                          // Plugin entry point used to obtain the Actions window and global context
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;     			// The Set model this action deletes
 import usbr.wat.plugins.actionpanel.ui.PlanningSetPanel;   						// Panel that hosts Sets and receives deletion notifications
-import usbr.wat.plugins.actionpanel.ui.BaseSetPanel;    			// Base class that gets implemented
+import usbr.wat.plugins.actionpanel.ui.BasePlanningSetPanel;    				// Base class that gets implemented
 import usbr.wat.plugins.actionpanel.ActionsWindow; 								// Import the action windows class
-import usbr.wat.plugins.actionpanel.model.AbstractSet;							// Imports the abstract set class
+import usbr.wat.plugins.actionpanel.model.AbstractPlanningSet;					// Imports the abstract set class
 
 /**
  * Action that deletes the {@link PlanningSet} currently selected in the owning
@@ -40,14 +40,14 @@ public class DeletePlanningSetAction extends AbstractAction {
 	/**
 	 * Panel that hosts planning simulation groups and receives deletion notifications.
 	 */
-	private final BaseSetPanel _parentPanel;
+	private final BasePlanningSetPanel _parentPanel;
 
 	/**
 	 * Creates the delete-planning-set action with a user-visible name.
 	 *
 	 * @param parentPanel the panel that will be notified when the selected Set is deleted
 	 */
-	public DeletePlanningSetAction(BaseSetPanel parentPanel, ActionsWindow parent) {
+	public DeletePlanningSetAction(BasePlanningSetPanel parentPanel, ActionsWindow parent) {
 		// Initialize the action with its display label
 		super("Delete...");
 
@@ -110,9 +110,9 @@ public class DeletePlanningSetAction extends AbstractAction {
 			manager = proxy.loadManager();
 
 			// Only operate on simulation groups
-			if (manager instanceof AbstractSet) {
+			if (manager instanceof AbstractPlanningSet) {
 				// Collect simulations before deleting the group
-				List<WatSimulation> sims = ((AbstractSet) manager).getSimulations();
+				List<WatSimulation> sims = ((AbstracPlanningtSet) manager).getSimulations();
 
 				// Delete the group manager first
 				DeleteManagerFactory.deleteManager(manager);

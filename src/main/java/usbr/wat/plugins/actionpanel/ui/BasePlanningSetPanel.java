@@ -26,7 +26,7 @@ import rma.util.RMASort;                 // RMA utility providing a quicksort im
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                  // Singleton plugin entry point providing access to the actions window
 import usbr.wat.plugins.actionpanel.actions.UpdateModelsAction;         // Action that triggers a model update for the current actions window
-import usbr.wat.plugins.actionpanel.model.AbstractSet; 		// Import the abstract simulation group to allow cross workflow operation
+import usbr.wat.plugins.actionpanel.model.AbstracPlanningtSet; 		// Import the abstract simulation group to allow cross workflow operation
 
 
 /**
@@ -44,14 +44,14 @@ import usbr.wat.plugins.actionpanel.model.AbstractSet; 		// Import the abstract 
  * Concrete subclasses must implement:
  *   getEditSetAction()  -- returns the Action bound to the Edit button.
  *   getNewSetAction()   -- returns the Action bound to the New button.
- *   getDeleteSetAction(BaseSetPanel) -- returns the Action bound to Delete.
+ *   getDeleteSetAction(BasePlanningSetPanel) -- returns the Action bound to Delete.
  *   setSelected(ItemEvent) -- reacts to combo-box selection changes.
  *   getSetClass()       -- returns the Class used to query the project's manager list.
  *
  * Project open and close events are handled via a static ProjectAdapter so the combo
  * box is populated or cleared automatically as the active study changes.
  */
-public abstract class BaseSetPanel extends EnabledJPanel {
+public abstract class BasePlanningSetPanel extends EnabledJPanel {
 	/**
 	 * System property key whose boolean value controls whether the "Update Models"
 	 * button and Git-specific layout adjustments are included at startup.
@@ -118,7 +118,7 @@ public abstract class BaseSetPanel extends EnabledJPanel {
 	 *
 	 * @param parent the AbstractSimulationPanel that owns this toolbar panel; must not be null
 	 */
-	public BaseSetPanel(AbstractSimulationPanel parent) {
+	public BasePlanningSetPanel(AbstractSimulationPanel parent) {
 		super(new GridBagLayout());
 
 		// Store the owning simulation panel for delegation and context access
@@ -265,7 +265,7 @@ public abstract class BaseSetPanel extends EnabledJPanel {
 	 * @param parent this panel instance, passed to the action for post-deletion callbacks
 	 * @return the delete Action appropriate for the concrete subclass's group type
 	 */
-	protected abstract Action getDeleteSetAction(BaseSetPanel parent);
+	protected abstract Action getDeleteSetAction(BasePlanningSetPanel parent);
 
 
 	/**
@@ -372,7 +372,7 @@ public abstract class BaseSetPanel extends EnabledJPanel {
 	 *
 	 * @param fsg the simulation group to select; pass null to clear the selection
 	 */
-	public void setSet(AbstractSet fsg) {
+	public void setSet(AbstractPlanningSet fsg) {
 		if (fsg == null) {
 			// Clear the selection and reset the description field to an empty disabled state
 			_setCombo.setSelectedIndex(-1);

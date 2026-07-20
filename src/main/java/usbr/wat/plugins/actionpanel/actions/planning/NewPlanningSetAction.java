@@ -56,8 +56,7 @@ public class NewPlanningSetAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// Create the dialog, modal over the ActionsWindow, for a brand-new Set
-		NewPlanningSetDialog dlg = new NewPlanningSetDialog(
-				ActionPanelPlugin.getInstance().getActionsWindow());
+		NewPlanningSetDialog dlg = new NewPlanningSetDialog(ActionPanelPlugin.getInstance().getActionsWindow());
 
 		// Display the dialog to the user; blocks until it is closed
 		dlg.setVisible(true);

@@ -1,4 +1,4 @@
-package usbr.wat.plugins.actionpanel.ui;
+package usbr.wat.plugins.actionpanel.ui.planning;
 
 import java.awt.Color;               // AWT color constants; used to set the error message label foreground to red
 import java.awt.GridBagConstraints;  // Specifies per-cell layout constraints for GridBagLayout
@@ -31,13 +31,13 @@ import rma.swing.RmaJTextField;          // RMA single-line text field (imported
 import rma.swing.RmaNavigationPanel;     // RMA panel providing previous/next navigation buttons wired to a combo box
 import rma.swing.list.RmaListModel;      // RMA list model used as the backing model for both combo boxes
 
-import usbr.wat.plugins.actionpanel.ui.forecast.DssLocation;   // Value object holding a DSS file path and pathname for a single record
-import usbr.wat.plugins.actionpanel.ui.forecast.MetLocation;   // Value object grouping a meteorological location with its associated DSS records
+import usbr.wat.plugins.actionpanel.ui.planning.DssLocation;   // Value object holding a DSS file path and pathname for a single record
+import usbr.wat.plugins.actionpanel.ui.planning.MetLocation;   // Value object grouping a meteorological location with its associated DSS records
 
 
 /**
  * Panel that displays a time-series plot of meteorological (met) data for a
- * selected location and DSS record within a forecast simulation.
+ * selected location and DSS record within a planning simulation.
  *
  * The panel is structured in four rows from top to bottom:
  *   "Location:" combo box paired with a navigation panel for stepping through locations.
@@ -47,7 +47,7 @@ import usbr.wat.plugins.actionpanel.ui.forecast.MetLocation;   // Value object g
  *
  * Data flow:
  *   setLocationList populates the location combo box with MetLocation objects.
- *   setYear stores the active forecast year and selects the first location, which
+ *   setYear stores the active planning year and selects the first location, which
  *   triggers locationComboSelected to populate the DSS record combo with the
  *   location's DssLocation list.
  *   Selecting a DSS record triggers dssRecordComboSelected, which reads the time-series
@@ -65,7 +65,7 @@ public class MetPlotPanel extends EnabledJPanel {
 	private JLabel _label;
 
 	/**
-	 * Combo box listing MetLocation objects for the active forecast group.
+	 * Combo box listing MetLocation objects for the active forec group.
 	 */
 	private RmaJComboBox<MetLocation> _locationCombo;
 
@@ -104,7 +104,7 @@ public class MetPlotPanel extends EnabledJPanel {
 	private double _minYScale = Double.MAX_VALUE;
 
 	/**
-	 * The forecast year used to build the DSS query time window (1 Jan to 31 Dec).
+	 * The planning year used to build the DSS query time window (1 Jan to 31 Dec).
 	 * Set via setYear and applied whenever a DSS record is plotted.
 	 */
 	private int _year;
@@ -482,13 +482,13 @@ public class MetPlotPanel extends EnabledJPanel {
 
 
 	/**
-	 * Sets the forecast year used to build the DSS query time window and triggers
+	 * Sets the planning year used to build the DSS query time window and triggers
 	 * an immediate plot refresh by selecting the first location.
 	 *
 	 * If the location combo box is empty no selection is triggered and the plot is
 	 * not updated until setLocationList is called with a non-empty list.
 	 *
-	 * @param year the four-digit forecast year (e.g. 2023) used as the plot time window
+	 * @param year the four-digit planning year (e.g. 2023) used as the plot time window
 	 */
 	public void setYear(int year) {
 		_year = year;

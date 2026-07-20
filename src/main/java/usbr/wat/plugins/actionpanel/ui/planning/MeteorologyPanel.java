@@ -32,7 +32,7 @@ import usbr.wat.plugins.actionpanel.model.planning.EnsembleSet;         // Provi
 import usbr.wat.plugins.actionpanel.model.planning.PlanningConfigFiles; // Provides PlanningConfigFiles for resolving project-relative config file paths
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;    // Provides PlanningSimGroup, the top-level model grouping all planning simulation data
 import usbr.wat.plugins.actionpanel.model.planning.MeteorlogicData;     // Provides MeteorlogicData, the model object representing a single meteorologic dataset
-import usbr.wat.plugins.actionpanel.ui.MetPlotPanel;                    // Provides MetPlotPanel for rendering time-series plots of meteorologic station data
+import usbr.wat.plugins.actionpanel.ui.planning.MetPlotPanel;                    // Provides MetPlotPanel for rendering time-series plots of meteorologic station data
 
 /**
  * Panel that displays and manages the Meteorology tab within the Planning Action Panel.

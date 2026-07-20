@@ -37,7 +37,7 @@ import usbr.wat.plugins.actionpanel.ActionsWindow;									// Imports the action
  * with null before the new selection is processed.
  *
  */
-public class PlanningSetPanel extends BaseSetPanel {
+public class PlanningSetPanel extends BasePlanningSetPanel {
 	/**
 	 * The parent simulation panel that owns this toolbar.
 	 * Stored separately from the base-class _parent field to provide a typed
@@ -106,7 +106,7 @@ public class PlanningSetPanel extends BaseSetPanel {
 	 * @return a DeletePlanningSetAction configured with this panel and the actions window
 	 */
 	@Override
-	protected Action getDeleteSetAction(BaseSetPanel parent) {
+	protected Action getDeletePlanningSetAction(BaseSetPanel parent) {
 		return new DeletePlanningSetAction(
 				parent, ActionPanelPlugin.getInstance().getActionsWindow());
 	}
@@ -121,7 +121,7 @@ public class PlanningSetPanel extends BaseSetPanel {
 	 * @return a NewPlanningSetAction configured with the parent panel and this panel
 	 */
 	@Override
-	protected Action getNewSetAction() {
+	protected Action getNewPlanningSetAction() {
 		return new NewPlanningSetAction(_parent, this);
 	}
 
@@ -134,7 +134,7 @@ public class PlanningSetPanel extends BaseSetPanel {
 	 *
 	 * @return a new EditPlanningSetAction instance
 	 */
-	protected Action getEditSetAction() {
+	protected Action getEditPlanningSetAction() {
 		return new EditPlanningSetAction();
 	}
 
@@ -205,7 +205,7 @@ public class PlanningSetPanel extends BaseSetPanel {
 		_editButton.setEnabled(enabled);
 
 		// Notify the parent panel to refresh its planning group detail content
-		_parent.setSet(set);
+		_parent.setPlanningSet(set);
 	}
 
 }

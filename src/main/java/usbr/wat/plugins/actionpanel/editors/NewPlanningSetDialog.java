@@ -42,7 +42,7 @@ import rma.swing.list.RmaListModel;                                             
 import rma.util.RMAIO;                                                              // RMA I/O utility methods for string/path/boolean operations
 import usbr.wat.plugins.actionpanel.ActionsWindow;                                  // The parent Actions Window panel
 import usbr.wat.plugins.actionpanel.commands.AbstractNewSSetCmd;                    // Abstract command for creating a new simulation group
-import usbr.wat.plugins.actionpanel.model.AbstractSet;                              // Base class for all simulation group types
+import usbr.wat.plugins.actionpanel.model.AbstractPlanningSet;                      // Base class for all simulation group types
 import usbr.wat.plugins.actionpanel.model.PlanningSet;                              // Standard (non-planning) set model
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;                     // Planning-specific simulation group model
 

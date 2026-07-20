@@ -8,20 +8,20 @@ import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                          
 import usbr.wat.plugins.actionpanel.editors.NewSimulationGroupDialog;               // Dialog used to create or edit a simulation group's metadata and settings
 import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup;                  // Base type representing a simulation group used by the actions
 import usbr.wat.plugins.actionpanel.model.SimulationGroup;                          // Concrete type representing a simulation group (import present even if unused directly here)
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;                // Planning-specific simulation group type used by the planning panel
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;                // Planning-specific simulation group type used by the planning panel
 
 /**
- * Action that opens the editor to modify a planning {@link PlanningSimGroup}.
+ * Action that opens the editor to modify a planning {@link PlanningSet}.
  *
  * When invoked, this action constructs and shows the edit dialog pre-populated
  * with the current planning simulation group. If the user confirms changes,
  * the edited group is applied back to the planning panel.
  */
-public class EditPlanningSimGroupAction extends AbstractAction {
+public class EditPlanningSetAction extends AbstractAction {
 	/**
 	 * Creates the edit-planning-simulation-group action with a user-visible name.
 	 */
-	public EditPlanningSimGroupAction() {
+	public EditPlanningSEtAction() {
 		// Set the action's display label used by Swing components
 		super("Edit...");
 	}
@@ -44,13 +44,13 @@ public class EditPlanningSimGroupAction extends AbstractAction {
 		);
 
 		// Retrieve the current planning simulation group from the planning panel
-		PlanningSimGroup simGroup = ActionPanelPlugin.getInstance()
+		PlanningSet planningSet = ActionPanelPlugin.getInstance()
 				.getActionsWindow()
 				.getPlanningPanel()
 				.getSimulationGroup();
 
 		// Pre-populate the dialog fields with the existing group data
-		dlg.fillForm(simGroup);
+		dlg.fillForm(planningSet);
 
 		// Display the dialog to the user
 		dlg.setVisible(true);
@@ -67,6 +67,6 @@ public class EditPlanningSimGroupAction extends AbstractAction {
 		ActionPanelPlugin.getInstance()
 				.getActionsWindow()
 				.getPlanningPanel()
-				.setSimulationGroup((PlanningSimGroup) sg);
+				.setSimulationGroup((PlanningSet) sg);
 	}
 }
