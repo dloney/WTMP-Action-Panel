@@ -1,35 +1,35 @@
-package usbr.wat.plugins.actionpanel.ui;
+package usbr.wat.plugins.actionpanel.ui.planning;
 
 import java.awt.GridBagConstraints;  // Specifies per-cell layout constraints for the tabbed pane added below base controls
 import java.awt.event.ItemEvent;     // Carries combo-box selection change data; used to filter DESELECTED events
 
 import javax.swing.Action;           // Swing Action interface returned by the three abstract factory methods
-import javax.swing.JTabbedPane;      // Tabbed pane added below the inherited toolbar controls for forecast-specific tabs
+import javax.swing.JTabbedPane;      // Tabbed pane added below the inherited toolbar controls for planning-specific tabs
 
 import com.rma.model.ManagerProxy;   // Lightweight proxy wrapping a managed model object; selected item in the combo box
 
 import rma.swing.RmaInsets;          // Constants for common GridBagLayout inset configurations
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                              // Singleton plugin entry point providing access to the actions window
-import usbr.wat.plugins.actionpanel.actions.forecast.DeleteForecastSimGroupAction;  // Action that deletes the selected forecast simulation group
-import usbr.wat.plugins.actionpanel.actions.forecast.EditForecastSimGroupAction;    // Action that opens the editor for the selected forecast simulation group
-import usbr.wat.plugins.actionpanel.actions.forecast.NewForecastSimGroupAction;     // Action that opens the creation dialog for a new forecast simulation group
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;                // Forecast-specific simulation group model managed by this panel
+import usbr.wat.plugins.actionpanel.actions.planning.DeletePlanningSimGroupAction;  // Action that deletes the selected planning simulation group
+import usbr.wat.plugins.actionpanel.actions.planning.EditPlanningSimGroupAction;    // Action that opens the editor for the selected planning simulation group
+import usbr.wat.plugins.actionpanel.actions.planning.NewPlanningSimGroupAction;     // Action that opens the creation dialog for a new planning simulation group
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;                // Planning-specific simulation group model managed by this panel
 
 
 /**
- * Concrete simulation group toolbar panel for the forecast workflow.
+ * Concrete simulation group toolbar panel for the planning workflow.
  *
- * This class extends BaseSimulationGroupPanel to provide forecast-specific
+ * This class extends BaseSimulationGroupPanel to provide planning-specific
  * implementations of the three action factory methods and the combo-box selection
- * handler. It manages ForecastSimGroup objects rather than the standard SimulationGroup
+ * handler. It manages PlanningSimGroup objects rather than the standard SimulationGroup
  * type used by CalibrationSimulationGroupPanel.
  *
  * In addition to the controls inherited from BaseSimulationGroupPanel, this panel
  * appends a JTabbedPane below the toolbar row. The tabbed pane is available for
- * forecast-specific tab content to be added by parent or sibling components.
+ * planning-specific tab content to be added by parent or sibling components.
  *
- * When a forecast simulation group is selected from the combo box, the group's manager
+ * When a planning simulation group is selected from the combo box, the group's manager
  * is loaded from the proxy and passed to the owning AbstractSimulationPanel via
  * fillForm, which also enables or disables the Edit button accordingly. A DESELECTED
  * event with a non-null proxy explicitly clears the parent panel by calling fillForm
@@ -46,7 +46,7 @@ public class SimulationGroupPanel extends BaseSimulationGroupPanel {
 
 	/**
 	 * Tabbed pane positioned below the inherited toolbar controls.
-	 * Available for forecast-specific tab content added by the parent or sibling panels.
+	 * Available for planning-specific tab content added by the parent or sibling panels.
 	 */
 	private JTabbedPane _tabbedPane;
 
@@ -95,52 +95,52 @@ public class SimulationGroupPanel extends BaseSimulationGroupPanel {
 
 
 	/**
-	 * Returns the Action bound to the Delete button for forecast simulation groups.
+	 * Returns the Action bound to the Delete button for planning simulation groups.
 	 *
 	 * Both the parent panel and the current actions window are passed to the action
 	 * so it can call back into simulationGroupDeleted and access the window context
 	 * after a deletion is confirmed.
 	 *
 	 * @param parent this panel instance, provided to the action for post-deletion callbacks
-	 * @return a DeleteForecastSimGroupAction configured with this panel and the actions window
+	 * @return a DeletePlanningSimGroupAction configured with this panel and the actions window
 	 */
 	@Override
 	protected Action getDeleteSimGroupAction(BaseSimulationGroupPanel parent) {
-		return new DeleteForecastSimGroupAction(
+		return new DeletePlanningSimGroupAction(
 				parent, ActionPanelPlugin.getInstance().getActionsWindow());
 	}
 
 
 	/**
-	 * Returns the Action bound to the New button for creating forecast simulation groups.
+	 * Returns the Action bound to the New button for creating planning simulation groups.
 	 *
 	 * Both the owning AbstractSimulationPanel and this panel are passed so the action
 	 * can add the new group to the combo box and select it after creation.
 	 *
-	 * @return a NewForecastSimGroupAction configured with the parent panel and this panel
+	 * @return a NewPlanningSimGroupAction configured with the parent panel and this panel
 	 */
 	@Override
 	protected Action getNewSimGroupAction() {
-		return new NewForecastSimGroupAction(_parent, this);
+		return new NewPlanningSimGroupAction(_parent, this);
 	}
 
 
 	/**
-	 * Returns the Action bound to the Edit button for editing forecast simulation groups.
+	 * Returns the Action bound to the Edit button for editing planning simulation groups.
 	 *
-	 * The EditForecastSimGroupAction obtains its context (the selected group) internally
+	 * The EditPlanningSimGroupAction obtains its context (the selected group) internally
 	 * from the active actions window, so no arguments are needed here.
 	 *
-	 * @return a new EditForecastSimGroupAction instance
+	 * @return a new EditPlanningSimGroupAction instance
 	 */
 	@Override
 	protected Action getEditSimGroupAction() {
-		return new EditForecastSimGroupAction();
+		return new EditPlanningSimGroupAction();
 	}
 
 
 	/**
-	 * Responds to a combo-box item selection event by loading the selected forecast
+	 * Responds to a combo-box item selection event by loading the selected planning
 	 * simulation group and updating the parent AbstractSimulationPanel.
 	 *
 	 * The DESELECTED event is handled specially: if a proxy is currently selected when
@@ -164,10 +164,10 @@ public class SimulationGroupPanel extends BaseSimulationGroupPanel {
 			return;
 		}
 
-		// Resolve the full ForecastSimGroup from the proxy, or null if nothing is selected
-		ForecastSimGroup simGroup = null;
+		// Resolve the full PlanningSimGroup from the proxy, or null if nothing is selected
+		PlanningSimGroup simGroup = null;
 		if (proxy != null) {
-			simGroup = (ForecastSimGroup) proxy.loadManager();
+			simGroup = (PlanningSimGroup) proxy.loadManager();
 		}
 
 		// Update the parent panel and Edit button state with the resolved group
@@ -179,32 +179,32 @@ public class SimulationGroupPanel extends BaseSimulationGroupPanel {
 	 * Returns the Class type used to query the project's manager list when loading
 	 * the simulation group combo box.
 	 *
-	 * Returning ForecastSimGroup.class ensures that only forecast simulation groups
+	 * Returning PlanningSimGroup.class ensures that only planning simulation groups
 	 * (not standard calibration groups) are shown in this panel's combo box.
 	 *
-	 * @return ForecastSimGroup.class
+	 * @return PlanningSimGroup.class
 	 */
 	@Override
 	protected Class getSimGroupClass() {
-		return ForecastSimGroup.class;
+		return PlanningSimGroup.class;
 	}
 
 
 	/**
 	 * Updates the Edit button state and notifies the parent AbstractSimulationPanel of
-	 * the newly selected forecast simulation group.
+	 * the newly selected planning simulation group.
 	 *
 	 * The Edit button is enabled only when a non-null group is provided. The parent
 	 * panel is always notified so it can clear or populate its detail content accordingly.
 	 *
-	 * @param simGroup the forecast simulation group to display; null clears the parent panel
+	 * @param simGroup the planning simulation group to display; null clears the parent panel
 	 */
-	private void fillForm(ForecastSimGroup simGroup) {
+	private void fillForm(PlanningSimGroup simGroup) {
 		// Enable the Edit button only when a valid group is currently selected
 		boolean enabled = simGroup != null;
 		_editButton.setEnabled(enabled);
 
-		// Notify the parent panel to refresh its forecast group detail content
+		// Notify the parent panel to refresh its planning group detail content
 		_parent.setSimulationGroup(simGroup);
 	}
 

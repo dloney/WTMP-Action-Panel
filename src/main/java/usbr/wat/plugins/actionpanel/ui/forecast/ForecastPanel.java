@@ -17,7 +17,7 @@ import rma.swing.RmaJPanel;                                                     
 import usbr.wat.plugins.actionpanel.ActionsWindow;                              // Provides ActionsWindow as the parent window that hosts this forecast panel
 import usbr.wat.plugins.actionpanel.model.ResultsData;                          // Provides ResultsData for returning the list of selected simulation results
 import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;            // Provides ForecastSimGroup as the top-level data container for all forecast data
-import usbr.wat.plugins.actionpanel.ui.SimulationGroupPanel;                    // Provides SimulationGroupPanel for the simulation group selection combo box above the tabs
+import usbr.wat.plugins.actionpanel.ui.forecast.SimulationGroupPanel;                    // Provides SimulationGroupPanel for the simulation group selection combo box above the tabs
 import usbr.wat.plugins.actionpanel.ui.forecast.temptarget.TempTargetPanel;     // Provides TempTargetPanel as the temperature targets tab panel
 
 /**

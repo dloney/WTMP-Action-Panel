@@ -17,7 +17,7 @@ import rma.swing.RmaJPanel;                                                     
 import usbr.wat.plugins.actionpanel.ActionsWindow;                              // Provides ActionsWindow as the parent window that hosts this planning panel
 import usbr.wat.plugins.actionpanel.model.ResultsData;                          // Provides ResultsData for returning the list of selected simulation results
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;            // Provides PlanningSimGroup as the top-level data container for all planning data
-import usbr.wat.plugins.actionpanel.ui.SimulationGroupPanel;                    // Provides SimulationGroupPanel for the simulation group selection combo box above the tabs
+import usbr.wat.plugins.actionpanel.ui.planning.SimulationGroupPanel;           // Provides SimulationGroupPanel for the simulation group selection combo box above the tabs
 import usbr.wat.plugins.actionpanel.ui.planning.temptarget.TempTargetPanel;     // Provides TempTargetPanel as the temperature targets tab panel
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;					// Provides the planning set class to the panel
 import usbr.wat.plugins.actionpanel.ui.PlanningSetPanel;  					    // Provides the planning set panel class to the panel

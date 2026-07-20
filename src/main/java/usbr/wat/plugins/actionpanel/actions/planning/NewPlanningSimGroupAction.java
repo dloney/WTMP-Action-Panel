@@ -10,7 +10,7 @@ import usbr.wat.plugins.actionpanel.editors.NewSimulationGroupDialog;           
 import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup;                  // Base type representing a simulation group used by the actions
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;                // Planning-specific simulation group type used by the planning panel
 import usbr.wat.plugins.actionpanel.ui.AbstractSimulationPanel;                     // Base panel type that exposes simulation group operations to the UI
-import usbr.wat.plugins.actionpanel.ui.SimulationGroupPanel;                        // UI panel that lists and manages SimulationGroup entries in the planning workflow
+import usbr.wat.plugins.actionpanel.ui.planning.SimulationGroupPanel;                        // UI panel that lists and manages SimulationGroup entries in the planning workflow
 
 /**
  * Action that creates a new planning simulation group.
