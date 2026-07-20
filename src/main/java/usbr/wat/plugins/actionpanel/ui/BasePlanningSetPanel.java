@@ -42,11 +42,11 @@ import usbr.wat.plugins.actionpanel.model.AbstractPlanningSet; 		// Import the a
  *   selected group's description text.
  *
  * Concrete subclasses must implement:
- *   getEditSetAction()  -- returns the Action bound to the Edit button.
- *   getNewSetAction()   -- returns the Action bound to the New button.
- *   getDeleteSetAction(BasePlanningSetPanel) -- returns the Action bound to Delete.
+ *   getEditPlanningSetAction()  -- returns the Action bound to the Edit button.
+ *   getNewPlanningSetAction()   -- returns the Action bound to the New button.
+ *   getDeletePlanningSetAction(BasePlanningSetPanel) -- returns the Action bound to Delete.
  *   setSelected(ItemEvent) -- reacts to combo-box selection changes.
- *   getSetClass()       -- returns the Class used to query the project's manager list.
+ *   getPlanningSetClass()       -- returns the Class used to query the project's manager list.
  *
  * Project open and close events are handled via a static ProjectAdapter so the combo
  * box is populated or cleared automatically as the active study changes.
@@ -172,7 +172,7 @@ public abstract class BasePlanningSetPanel extends EnabledJPanel {
 		add(_setCombo, gbc);
 
 		// --- Edit button: disabled until a group is selected ---
-		_editButton = new JButton(getEditSetAction());
+		_editButton = new JButton(getEditPlanningSetAction());
 		_editButton.setEnabled(false);
 		gbc.gridx = GridBagConstraints.RELATIVE;
 		gbc.gridy = GridBagConstraints.RELATIVE;
@@ -185,7 +185,7 @@ public abstract class BasePlanningSetPanel extends EnabledJPanel {
 		add(_editButton, gbc);
 
 		// --- New button: disabled until a project is open ---
-		_newButton = new JButton(getNewSetAction());
+		_newButton = new JButton(getNewPlanningSetAction());
 		_newButton.setEnabled(false);
 		gbc.gridx = GridBagConstraints.RELATIVE;
 		gbc.gridy = GridBagConstraints.RELATIVE;
@@ -201,7 +201,7 @@ public abstract class BasePlanningSetPanel extends EnabledJPanel {
 		boolean hasGitButton = Boolean.getBoolean(GIT_DASH_D_FLAG);
 
 		// --- Delete button: spans to end of row unless the Git button will follow it ---
-		_deleteButton = new JButton(getDeleteSetAction(this));
+		_deleteButton = new JButton(getDeletePlanningSetAction(this));
 		_deleteButton.setEnabled(false);
 		gbc.gridx = GridBagConstraints.RELATIVE;
 		gbc.gridy = GridBagConstraints.RELATIVE;
@@ -325,7 +325,7 @@ public abstract class BasePlanningSetPanel extends EnabledJPanel {
 	 * may be passed when the selection is programmatically cleared.
 	 *
 	 * @param e the item event carrying the new selection; may be null when the
-	 *          selection is cleared by loadSetCombo
+	 *          selection is cleared by loadPlanningSetCombo
 	 */
 	protected abstract void setSelected(ItemEvent e);
 
@@ -358,7 +358,7 @@ public abstract class BasePlanningSetPanel extends EnabledJPanel {
 		_deleteButton.setEnabled(true);
 
 		// Populate the combo box with all simulation groups in the newly opened project
-		loadSetCombo();
+		loadPlanningSetCombo();
 	}
 
 
@@ -427,7 +427,7 @@ public abstract class BasePlanningSetPanel extends EnabledJPanel {
 		Object curProxy = _setCombo.getSelectedItem();
 
 		// Retrieve all proxies for the group type managed by this subclass
-		List<ManagerProxy> setProxies = prj.getManagerProxyListForType(getSetClass());
+		List<ManagerProxy> setProxies = prj.getManagerProxyListForType(getPlanningSetClass());
 
 		// Sort alphabetically so the combo box presents groups in a consistent order
 		RMASort.quickSort(setProxies);
@@ -453,7 +453,7 @@ public abstract class BasePlanningSetPanel extends EnabledJPanel {
 	/**
 	 * Returns the Class of the simulation group type that this panel manages.
 	 *
-	 * Used by loadSetCombo to query the correct manager list from the project.
+	 * Used by loadPlanningSetCombo to query the correct manager list from the project.
 	 * For example, a specific subclass would return a PlanningSet.class or PlanningSet.class.
 	 *
 	 * @return the concrete simulation group class managed by this panel subclass
@@ -484,7 +484,7 @@ public abstract class BasePlanningSetPanel extends EnabledJPanel {
 
 		// Optionally select the new group so it becomes the active context immediately
 		if (selectSet) {
-			setSet(set);
+			setPlanningSet(set);
 		}
 	}
 
@@ -509,7 +509,7 @@ public abstract class BasePlanningSetPanel extends EnabledJPanel {
 
 		// If the deleted group was selected, clear the panel state to reflect no active group
 		if (selectedProxy == proxy) {
-			setSet(null);
+			setPlanningSet(null);
 		}
 	}
 }

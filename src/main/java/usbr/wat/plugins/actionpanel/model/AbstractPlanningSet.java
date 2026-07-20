@@ -28,7 +28,7 @@ import hec2.wat.model.WatSimulation; // Import simulation model representing the
  *
  *   finishSaving() - Called after saving simulation data before closing XML
  *   finishLoading() - Called after loading simulation data from XML file
- *   getSetType() - Returns the element name for the group's XML root
+ *   getPlanningSetType() - Returns the element name for the group's XML root
  *
  */
 
@@ -246,7 +246,7 @@ public abstract class AbstractPlanningSet extends AbstractXMLManager {
 
 	/**
 	 * Persists the simulation group data to an RmaFile object using XML serialization.
-	 * Creates a new XML document element with root type matching getSetType(),
+	 * Creates a new XML document element with root type matching getPlanningSetType(),
 	 * then calls saveData() on the parent class, writes file if successful, and clears modified flag.
 	 * Returns false if file parameter is null or XML operations fail.
 	 *
@@ -261,7 +261,7 @@ public abstract class AbstractPlanningSet extends AbstractXMLManager {
 			return false; // Return failure indication
 		}
 
-		Element elem = new Element(getSetType()); // Create root element using group-specific type name
+		Element elem = new Element(getPlanningSetType()); // Create root element using group-specific type name
 		Document doc = new Document(elem); // Wrap element in JDOM document
 
 		// Call abstract method to populate XML with this group's data
@@ -369,7 +369,7 @@ public abstract class AbstractPlanningSet extends AbstractXMLManager {
 			setIgnoreModifiedEvents(true); // Disable modification event listeners during load operation
 
 			// Verify root element matches expected group type
-			if (getSetType().equals(root.getName())) {
+			if (getPlanningSetType().equals(root.getName())) {
 				XMLUtilities.loadNamedType(root, this); // Load class metadata from XML root into instance
 				_apName = XMLUtilities.getChildElementAsString(root, "AnalysisPeriod", null); // Extract analysis period name from root
 				Element simsNode = root.getChild("Simulations"); // Get simulations container child element
@@ -426,7 +426,7 @@ public abstract class AbstractPlanningSet extends AbstractXMLManager {
 	 *
 	 * @return String representing the expected root element name in XML documents
 	 */
-	protected abstract String getSetType();
+	protected abstract String getPlanningSetType();
 
 	/**
 	 * Abstract method for subclasses to load simulation-specific settings from XML child element.

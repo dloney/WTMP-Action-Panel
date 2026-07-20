@@ -185,7 +185,7 @@ public class PlanningSetPanel extends BasePlanningSetPanel {
 	 * @return PlanningSet.class
 	 */
 	@Override
-	protected Class getSetClass() {
+	protected Class getPlanningSetClass() {
 		return PlanningSet.class;
 	}
 

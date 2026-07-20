@@ -1,4 +1,4 @@
-package usbr.wat.plugins.actionpanel.model;
+package usbr.wat.plugins.actionpanel.model.forecast;
 
 import java.io.BufferedReader;   // Buffered character reader for line-by-line reading of the IC config CSV file
 import java.io.IOException;      // Checked exception thrown when the config file cannot be read

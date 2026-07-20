@@ -126,11 +126,11 @@ public class DeletePlanningSetAction extends AbstractAction {
 
 		// Notify the parent panel of the deletion, if available
 		if (_parentPanel != null) {
-			_parentPanel.setpDeleted(proxy);
+			_parentPanel.setDeleted(proxy);
 		}
 
 		// Refresh the planning panel's simulation group combo/list
-		ActionPanelPlugin.getInstance().getActionsWindow().getPlanningPanel().loadsetCombo();
+		ActionPanelPlugin.getInstance().getActionsWindow().getPlanningPanel().loadPlanningSetCombo();
 
 	}
 }

@@ -719,7 +719,7 @@ public class NewPlanningSetDialog extends RmaJDialog {
 		List<WatSimulation> sims = _set.getSimulations();
 
 		// Construct the expected group-qualified name for this base name
-		String groupSimName = AbstractNewPlanningSetCmd.getGroupSimName(baseSimName, _set.getName());
+		String groupSimName = AbstractNewPlanningSetCmd.getPlanningSetName(baseSimName, _set.getName());
 
 		WatSimulation sim;
 		for (int i = 0; i < sims.size(); i++) {

@@ -130,7 +130,7 @@ public abstract class AbstractNewPlanningSetCmd extends AbstractNewManagerComman
 	 * @param runExtract true to run extract during copy, false otherwise
 	 * @return the new simulation created in the group
 	 */
-	/*public static WatSimulation createSimulation(WatSimulation sim, AbstractPlanningSet planningSet, Project project, WatAnalysisPeriod ap, boolean runExtract) {
+	public static WatSimulation createSimulation(WatSimulation sim, AbstractPlanningSet planningSet, Project project, WatAnalysisPeriod ap, boolean runExtract) {
 		// Build and execute the command to copy the simulation into the group
 		SaveSimulationToGroupCmd cmd = new SaveSimulationToGroupCmd(sim, null, null, planningSet, project, ap, runExtract);
 		cmd.doCommand();
@@ -139,7 +139,7 @@ public abstract class AbstractNewPlanningSetCmd extends AbstractNewManagerComman
 		WatSimulation newSim = cmd.getSimulation();
 
 		return newSim;
-	}*/
+	}
 
 	/**
 	 * Produces a combined name using simulation and group names.

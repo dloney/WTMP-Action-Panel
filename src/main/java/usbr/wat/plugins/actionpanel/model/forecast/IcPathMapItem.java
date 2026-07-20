@@ -1,4 +1,4 @@
-package usbr.wat.plugins.actionpanel.model;
+package usbr.wat.plugins.actionpanel.model.forecast;
 
 import java.util.ArrayList;  // Resizable-array List used to store destination DSS file/path pairs
 import java.util.HashMap;   // Hash map (imported for potential future use via _dssIdMap)
