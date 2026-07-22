@@ -11,7 +11,7 @@ import usbr.wat.plugins.actionpanel.ui.tree.SimulationTreeTable;    // Custom tr
  *
  * This interface defines the complete set of actions and queries that the action
  * panel framework can invoke on any panel displaying a simulation group. Concrete
- * implementations include CalibrationPanel and the forecast simulation panel.
+ * implementations include workflow panels.
  *
  * The methods fall into three categories:
  *

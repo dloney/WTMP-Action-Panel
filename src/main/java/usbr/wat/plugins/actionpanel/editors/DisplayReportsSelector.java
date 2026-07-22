@@ -73,7 +73,7 @@ import usbr.wat.plugins.actionpanel.model.ForecastReportingPlugin;          // R
 import usbr.wat.plugins.actionpanel.model.ReportPlugin;                     // Base reporting plugin interface used by the reports manager
 import usbr.wat.plugins.actionpanel.model.ReportsManager;                   // Manager that provides registered reporting plugins available to the UI
 import usbr.wat.plugins.actionpanel.model.SimulationReportInfo;             // Model holding per-simulation report information and paths
-import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                           // Base USBR panel type implemented by calibration and forecast panels
+import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                           // Base USBR panel type implemented by workflow panels
 
 /**
  * Dialog that lets users select which reports to create for one or more simulations.
@@ -160,7 +160,7 @@ public class DisplayReportsSelector extends RmaJDialog {
 	private RmaJTable _simTable;
 
 	/**
-	 * Parent workflow panel (calibration or forecast) providing report infos and display capability.
+	 * Parent workflow panel providing report infos and display capability.
 	 */
 	private UsbrPanel _parentPanel;
 

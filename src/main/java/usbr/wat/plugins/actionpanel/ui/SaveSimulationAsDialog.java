@@ -373,8 +373,8 @@ public class SaveSimulationAsDialog extends RmaJDialog {
 	 * Returns the full new simulation name by concatenating the user-entered prefix
 	 * with the group name suffix shown in the suffix label.
 	 *
-	 * For example, if the user types "Run01" and the group name is "Calibration",
-	 * this method returns "Run01-Calibration".
+	 * For example, if the user types "Run01" and the group name is "example",
+	 * this method returns "Run01-example".
 	 *
 	 * @return the composed simulation name; never null but may be empty if the
 	 * name field was left blank

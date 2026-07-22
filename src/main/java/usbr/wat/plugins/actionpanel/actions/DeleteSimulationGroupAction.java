@@ -30,7 +30,7 @@ import usbr.wat.plugins.actionpanel.ui.BaseSimulationGroupPanel;            // P
  */
 public class DeleteSimulationGroupAction extends AbstractAction {
 
-	/** Parent panel providing context; may be calibration or forecast panel. */
+	/** Parent panel providing context; may be a workflow panel. */
 	private final BaseSimulationGroupPanel _parentPanel;
 
 	/**
@@ -136,7 +136,7 @@ public class DeleteSimulationGroupAction extends AbstractAction {
 	/**
 	 * Updates UI components after a simulation group is deleted.
 	 *
-	 * Routes the deletion notification to the forecast or calibration panel
+	 * Routes the deletion notification to the workflow panel
 	 * based on the proxy's class name.
 	 *
 	 * @param proxy the manager proxy associated with the deleted group
@@ -148,8 +148,9 @@ public class DeleteSimulationGroupAction extends AbstractAction {
 			ActionPanelPlugin.getInstance().getActionsWindow().getForecastPanel().simulationGroupDeleted(proxy);
 
 		} else if ( proxy.getClassName().equals(SimulationGroup.class.getName()) ) {
-			// Notify calibration panel if the deleted group is a regular SimulationGroup
-			ActionPanelPlugin.getInstance().getActionsWindow().getCalibrationPanel().getSimulationPanel().simulationGroupDeleted(proxy);
+			// Notify workflow panel if the deleted group is a regular SimulationGroup
+			// TODO: Either this is general and needs to have the prescribed panel removed or this setup needs to move to the prescribed
+			ActionPanelPlugin.getInstance().getActionsWindow().getPrescribedPanel().getSimulationPanel().simulationGroupDeleted(proxy);
 		}
 	}
 

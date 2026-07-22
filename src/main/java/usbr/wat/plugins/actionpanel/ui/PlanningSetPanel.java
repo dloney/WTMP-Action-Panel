@@ -181,7 +181,7 @@ public class PlanningSetPanel extends BasePlanningSetPanel {
 	 * the simulation group combo box.
 	 *
 	 * Returning PlanningSet.class ensures that only planning simulation groups
-	 * (not standard calibration groups) are shown in this panel's combo box.
+	 * are shown in this panel's combo box.
 	 *
 	 * @return PlanningSet.class
 	 */

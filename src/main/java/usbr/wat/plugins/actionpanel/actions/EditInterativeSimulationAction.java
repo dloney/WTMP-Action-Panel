@@ -17,7 +17,7 @@ import usbr.wat.plugins.actionpanel.model.SimulationGroup;						// Concrete type
  * Action that opens the dialog to edit compute settings for interactive simulations.
  *
  * Validates that a simulation group is selected, optionally pre-selects a simulation
- * if one is highlighted in the calibration panel, and displays the iteration settings dialog.
+ * if one is highlighted in the panel, and displays the iteration settings dialog.
  */
 @SuppressWarnings("serial")
 public class EditInterativeSimulationAction extends AbstractAction {
@@ -54,8 +54,9 @@ public class EditInterativeSimulationAction extends AbstractAction {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// Retrieve the active simulation group from the calibration panel
-		SimulationGroup simGroup = _parent.getCalibrationPanel().getSimulationGroup();
+		// Retrieve the active simulation group from the prescribed panel
+		// TODO: Either this is used only for prescribed and moved or it should be reworked
+		SimulationGroup simGroup = _parent.getPrescribedPanel().getSimulationGroup();
 
 		// Require a selected simulation group
 		if (simGroup == null) {
@@ -66,8 +67,9 @@ public class EditInterativeSimulationAction extends AbstractAction {
 			return;
 		}
 
-		// Gather simulations currently selected in the calibration panel
-		List<WatSimulation> sims = _parent.getCalibrationPanel().getSelectedSimulations();
+		// Gather simulations currently selected in the prescribed panel
+		// TODO: Either this is used only for prescribed and moved or it should be reworked
+		List<WatSimulation> sims = _parent.getPrescribedPanel().getSelectedSimulations();
 
 		// Construct the iteration settings dialog with the actions window as parent
 		EditIterationSettingsDialog dlg = new EditIterationSettingsDialog(_parent);

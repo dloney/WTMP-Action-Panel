@@ -27,7 +27,7 @@ import usbr.wat.plugins.actionpanel.actions.UpdateDataAction;                   
 import usbr.wat.plugins.actionpanel.actions.UpdateModelsAction;                 // Action to update model artifacts and dependencies
 import usbr.wat.plugins.actionpanel.actions.ViewIterationResultsAction;         // Action to view iteration results from interactive simulation runs
 import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup;              // Base type representing a simulation group used by the actions panel
-import usbr.wat.plugins.actionpanel.ui.CalibrationPanel;                        // Parent calibration panel that owns or interacts with this actions panel
+import usbr.wat.plugins.actionpanel.ui.PrescribedPanel;                        // Parent prescribed panel that owns or interacts with this actions panel
 
 /**
  * Panel that hosts user-facing actions for data review, interactive simulations,
@@ -67,22 +67,21 @@ public class ActionsPanel extends JPanel {
 	/** Action for opening the About dialog. */
 	private AboutAction _aboutAction;
 
-	/** Parent calibration panel that owns this actions panel. */
-	private CalibrationPanel _parentPanel;
+	/** Parent prescribed panel that owns this actions panel. */
+	private PrescribedPanel _parentPanel;
 
 	/**
 	 * Constructs the actions panel and initializes its controls and listeners.
 	 *
 	 * @param parent the owning actions window used for UI coordination
-	 * @param parentPanel the parent calibration panel associated with this actions panel
+	 * @param parentPanel the parent prescribed panel associated with this actions panel
 	 */
-	public ActionsPanel(ActionsWindow parent, CalibrationPanel parentPanel) {
+	public ActionsPanel(ActionsWindow parent, PrescribedPanel parentPanel) {
 		// Initialize the JPanel with a GridBagLayout for flexible placement of controls
 		super(new GridBagLayout());
 
 		// Store references to the owning window and parent panel for later use
 		_parent = parent;
-
 		_parentPanel = parentPanel;
 
 		// Build the action buttons and layout them within the panel

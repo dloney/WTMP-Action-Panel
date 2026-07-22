@@ -62,8 +62,9 @@ public class EditSimulationGroupAction extends AbstractAction {
 		// Create the dialog in edit mode with a specific title
 		NewSimulationGroupDialog dlg = new NewSimulationGroupDialog(_parent, true, "Edit Simulation Group");
 
-		// Retrieve the current simulation group from the calibration panel
-		SimulationGroup simGroup = ActionPanelPlugin.getInstance().getActionsWindow().getCalibrationPanel().getSimulationGroup();
+		// Retrieve the current simulation group from the prescribed panel
+		// TODO: Either this is used only for prescribed and moved or it should be reworked
+		SimulationGroup simGroup = ActionPanelPlugin.getInstance().getActionsWindow().getPrescribedPanel().getSimulationGroup();
 
 		// Pre-populate the dialog fields with the existing group data
 		dlg.fillForm(simGroup);

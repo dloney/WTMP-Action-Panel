@@ -59,7 +59,7 @@ import usbr.wat.plugins.actionpanel.io.OutputType;                              
 import usbr.wat.plugins.actionpanel.io.ReportOptions;                               // Options bean for report generation settings
 import usbr.wat.plugins.actionpanel.model.ReportPlugin;                             // Interface implemented by report actions to provide plugin metadata
 import usbr.wat.plugins.actionpanel.model.SimulationReportInfo;                     // Model holding per-simulation report information and paths
-import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                                   // Base USBR panel type implemented by calibration and forecast panels
+import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                                   // Base USBR panel type implemented by workflow panels
 
 /**
  * Base class for actions that generate reports for WTMP simulations.

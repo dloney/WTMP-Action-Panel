@@ -12,7 +12,7 @@ import rma.swing.EnabledJPanel;                                                 
 import rma.swing.RmaInsets;                                                             // Standardized insets utility for consistent component padding and spacing
 
 import usbr.wat.plugins.actionpanel.actions.DeleteSimulationResultsAction;              // Action to delete saved simulation results from storage
-import usbr.wat.plugins.actionpanel.actions.DisplayReportSelectorAction;                // Action to display a selector for available reports in calibration workflows
+import usbr.wat.plugins.actionpanel.actions.DisplayReportSelectorAction;                // Action to display a selector for available reports in workflows
 import usbr.wat.plugins.actionpanel.actions.RunSimulationAction;                        // Action to run simulations in prescribed conditions workflows
 import usbr.wat.plugins.actionpanel.actions.SaveSimulationResultsAction;                // Action to persist generated simulation results
 import usbr.wat.plugins.actionpanel.actions.forecast.RunForecastSimulationAction;       // Action to run simulations in forecast workflows
@@ -20,8 +20,8 @@ import usbr.wat.plugins.actionpanel.actions.planning.RunPlanningSimulationAction
 import usbr.wat.plugins.actionpanel.model.ForecastReportingPlugin;                      // Reporting plugin interface for forecast-specific report actions
 import usbr.wat.plugins.actionpanel.model.ReportPlugin;                                 // Base reporting plugin interface used by the reports manager
 import usbr.wat.plugins.actionpanel.model.ReportsManager;                               // Manager that provides registered reporting plugins available to the UI
-import usbr.wat.plugins.actionpanel.ui.CalibrationPanel;                                // Panel type for prescribed conditions workflows
-import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                                       // Base USBR panel type implemented by calibration and forecast panels
+import usbr.wat.plugins.actionpanel.ui.PrescribedPanel;                                // Panel type for prescribed conditions workflows
+import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                                       // Base USBR panel type implemented by workflow panels
 import usbr.wat.plugins.actionpanel.ui.forecast.SimulationPanel;                        // Panel type for forecast workflows and ensemble simulations  // TODO: Rename this so that it allows planning import
 
 /**
@@ -36,10 +36,10 @@ public class SimulationActionsPanel extends EnabledJPanel {
 	/** Owning actions window used to coordinate UI operations and context. */
 	private ActionsWindow _parent;
 
-	/** Action for running a simulation (calibration or forecast depending on context). */
+	/** Action for running a simulation . */
 	private Action _runSimulationAction;
 
-	/** Action that displays the report selector for calibration workflows. */
+	/** Action that displays the report selector for workflows. */
 	private DisplayReportSelectorAction _displayReportsSelectorAction;
 
 	/** Action that saves simulation results to persistent storage. */
@@ -48,7 +48,7 @@ public class SimulationActionsPanel extends EnabledJPanel {
 	/** Action that deletes previously saved simulation results. */
 	private DeleteSimulationResultsAction _deleteResultsAction;
 
-	/** The parent workflow panel (calibration or forecast) hosting this actions panel. */
+	/** The parent workflow panel hosting this actions panel. */
 	private UsbrPanel _parentPanel;
 
 	/** Action that displays an ensemble report selector for forecast workflows. */
@@ -58,7 +58,7 @@ public class SimulationActionsPanel extends EnabledJPanel {
 	 * Constructs the simulation actions panel and initializes its controls.
 	 *
 	 * @param parent the owning actions window for context and callbacks
-	 * @param parentPanel the workflow panel (calibration or forecast) that owns this actions panel
+	 * @param parentPanel the workflow panel that owns this actions panel
 	 */
 	public SimulationActionsPanel(ActionsWindow parent, UsbrPanel parentPanel) {
 		// Initialize the panel with a GridBagLayout for flexible control placement
@@ -77,12 +77,12 @@ public class SimulationActionsPanel extends EnabledJPanel {
 	/**
 	 * Builds and lays out the action controls for running simulations and managing results.
 	 *
-	 * Chooses between calibration and forecast actions based on the parent panel type,
+	 * Chooses between workflow actions based on the parent panel type,
 	 * creates buttons for each action, and positions them using GridBagLayout.
 	 */
 	private void buildControls() {
 		// Create the appropriate "Run Simulation" action depending on workflow context
-		if (_parentPanel instanceof CalibrationPanel) {
+		if (_parentPanel instanceof PrescribedPanel) {
 			_runSimulationAction = new RunSimulationAction(_parent, _parentPanel);
 
 		} else if (_parentPanel instanceof usbr.wat.plugins.actionpanel.ui.planning.SimulationPanel) {
@@ -117,22 +117,24 @@ public class SimulationActionsPanel extends EnabledJPanel {
 		List<ReportPlugin> plugins = ReportsManager.getPlugins();
 
 		// Create the appropriate report display action based on workflow context
-		if ( _parentPanel instanceof CalibrationPanel) {
-			// Calibration: use the generic report selector
+
+		if ( _parentPanel instanceof PrescribedPanel) {
+			// Prescribed: use the generic report selector
 			_displayReportsSelectorAction = new DisplayReportSelectorAction(_parent, _parentPanel);
 
 			button = new JButton(_displayReportsSelectorAction);
+
+		} else if (_parentPanel instanceof usbr.wat.plugins.actionpanel.ui.planning.SimulationPanel) {
+			// TODO: this needs to be expanded to handle planning mode
+
 
 		} else {
 			// Forecast: find a forecast reporting plugin and use its ensemble selector action
 			for (int i = 0;i < plugins.size(); i++ ){
 				if (plugins.get(i) instanceof ForecastReportingPlugin) {
 					ForecastReportingPlugin fplugin = (ForecastReportingPlugin) plugins.get(i);
-
 					_displayEnsembleSelectorAction = fplugin.getReportAction(_parent, _parentPanel);
-
 					button = new JButton(_displayEnsembleSelectorAction);
-
 					break;
 				}
 			}

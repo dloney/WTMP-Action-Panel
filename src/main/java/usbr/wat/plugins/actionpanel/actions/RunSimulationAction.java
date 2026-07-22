@@ -21,10 +21,10 @@ import usbr.wat.plugins.actionpanel.model.IterationSettings;                    
 import usbr.wat.plugins.actionpanel.model.PositionAnalysisSettings;                         // Settings for position analysis used during computations
 import usbr.wat.plugins.actionpanel.model.SimulationGroup;                                  // Concrete type representing a simulation group managed within the plugin
 import usbr.wat.plugins.actionpanel.model.UsbrComputable;                                   // Interface for computable tasks consumed by the compute selector dialog
-import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                                           // Base USBR panel type implemented by calibration and forecast panels
+import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                                           // Base USBR panel type implemented by workflow panels
 
 /**
- * Action that runs computations for the selected simulations in the calibration workflow.
+ * Action that runs computations for the selected simulations in the  workflow.
  *
  * Detects whether the user requested a full recompute with the Control key,
  * gathers the selected simulations, builds computable tasks using group-specific
@@ -47,7 +47,7 @@ public class RunSimulationAction extends AbstractAction {
 	 * Creates the run-simulation action with a user-visible name and initial disabled state.
 	 *
 	 * @param parent      the actions window used as the dialog parent and context source
-	 * @param parentPanel the workflow panel (calibration or forecast) that triggers updates after compute
+	 * @param parentPanel the workflow panel that triggers updates after compute
 	 */
 	public RunSimulationAction(ActionsWindow parent, UsbrPanel parentPanel) {
 		// Initialize the action with its display label
@@ -76,8 +76,9 @@ public class RunSimulationAction extends AbstractAction {
 		// Detect whether the Control key is pressed to request full recompute behavior
 		boolean recomputeAll = (e.getModifiers() & ActionEvent.CTRL_MASK) != 0;
 
-		// Retrieve the active simulation group from the calibration panel
-		SimulationGroup simGroup = _parent.getCalibrationPanel().getSimulationGroup();
+		// Retrieve the active simulation group from the panel
+		// TODO: Either this is used only for prescribed and moved or it should be reworked
+		SimulationGroup simGroup = _parent.getPrescribedPanel().getSimulationGroup();
 
 		// Require a selected simulation group before computing
 		if (simGroup == null) {

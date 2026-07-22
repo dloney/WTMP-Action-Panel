@@ -450,7 +450,7 @@ public class SimulationGroupNode extends ManagerNode
 	 * Returns the editor for this node.
 	 *
 	 * SimulationGroupNode does not have a dedicated editor, so null is returned.
-	 * Editing of the group is performed through the CalibrationPanel.
+	 * Editing of the group is performed through the panel.
 	 *
 	 * @return always null
 	 */

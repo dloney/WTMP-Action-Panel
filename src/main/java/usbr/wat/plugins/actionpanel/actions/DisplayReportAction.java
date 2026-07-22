@@ -15,7 +15,7 @@ import rma.util.RMAIO;                                                  // RMA I
 
 import usbr.wat.plugins.actionpanel.io.OutputType;                      // Enumeration of supported output types and their file extensions
 import usbr.wat.plugins.actionpanel.model.SimulationReportInfo;         // Model holding per-simulation report information and paths
-import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                       // Base USBR panel type implemented by calibration and forecast panels
+import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                       // Base USBR panel type implemented by workflow panels
 
 /**
  * Action that locates and displays the latest report file for one or more simulations.

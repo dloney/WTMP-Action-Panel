@@ -12,7 +12,7 @@ import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                          
 import usbr.wat.plugins.actionpanel.commands.SaveSimulationToGroupCmd;          // Command that copies a simulation into a group under a new name/description
 import usbr.wat.plugins.actionpanel.model.SimulationGroup;                      // Concrete type representing a simulation group managed within the plugin
 import usbr.wat.plugins.actionpanel.ui.SaveSimulationAsDialog;                  // Dialog used to capture "Save As" inputs (new name and description)
-import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                               // Base USBR panel type implemented by calibration and forecast panels
+import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                               // Base USBR panel type implemented by workflow panels
 
 /**
  * Action that saves an existing simulation into a simulation group under a new name.

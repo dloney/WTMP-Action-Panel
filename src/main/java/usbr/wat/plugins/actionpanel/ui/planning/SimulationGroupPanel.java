@@ -25,7 +25,7 @@ import usbr.wat.plugins.actionpanel.ui.AbstractSimulationPanel;					    // Impor
  * This class extends BaseSimulationGroupPanel to provide planning-specific
  * implementations of the three action factory methods and the combo-box selection
  * handler. It manages PlanningSimGroup objects rather than the standard SimulationGroup
- * type used by CalibrationSimulationGroupPanel.
+ * type used by PrescribedSimulationGroupPanel.
  *
  * In addition to the controls inherited from BaseSimulationGroupPanel, this panel
  * appends a JTabbedPane below the toolbar row. The tabbed pane is available for
@@ -182,7 +182,7 @@ public class SimulationGroupPanel extends BaseSimulationGroupPanel {
 	 * the simulation group combo box.
 	 *
 	 * Returning PlanningSimGroup.class ensures that only planning simulation groups
-	 * (not standard calibration groups) are shown in this panel's combo box.
+	 * are shown in this panel's combo box.
 	 *
 	 * @return PlanningSimGroup.class
 	 */

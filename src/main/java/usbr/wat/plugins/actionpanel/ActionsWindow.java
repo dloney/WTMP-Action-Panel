@@ -16,7 +16,7 @@ import java.util.List;                                                          
 import javax.swing.JFrame;                                                              // Swing top-level window used for test launching and parent passing
 
 import javax.swing.JOptionPane;                                                         // Swing utility for showing information and confirmation dialogs
-import javax.swing.JTabbedPane;                                                         // Swing tabbed container used to host calibration and forecast panels
+import javax.swing.JTabbedPane;                                                         // Swing tabbed container used to host workflow panels
 
 import com.rma.client.Browser;                                                          // Host application's main browser frame for look and feel and docking behavior
 import com.rma.client.LookAndFeel;                                                      // Host application's look-and-feel utility used to set UI theme
@@ -46,7 +46,7 @@ import usbr.wat.plugins.actionpanel.model.SimulationGroup;                      
 import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;                    // Forecast-specific simulation group type used by the forecast panel
 import usbr.wat.plugins.actionpanel.ui.ActionsProjectTab;                               // Project tab that surfaces WTMP workflow actions within the host application
 import usbr.wat.plugins.actionpanel.ui.BaseSimulationGroupPanel;                        // Panel exposing common simulation-group functionality and flags
-import usbr.wat.plugins.actionpanel.ui.CalibrationPanel;                                // Panel for prescribed conditions workflows including data review and simulation editing
+import usbr.wat.plugins.actionpanel.ui.PrescribedPanel;                                 // Panel for prescribed conditions workflows including data review and simulation editing
 import usbr.wat.plugins.actionpanel.ui.SimulationGroupNode;                             // Node type used in the project tree to represent a simulation group
 import usbr.wat.plugins.actionpanel.ui.forecast.ForecastPanel;                          // Panel for forecast conditions workflows including forecast-specific simulations
 import usbr.wat.plugins.actionpanel.ui.planning.PlanningPanel;                          // Panel for the Planning workflow, hosting the Set/Simulation Group pairing and its six sub-tabs
@@ -72,8 +72,7 @@ public class ActionsWindow extends RmaJDialog {
 		System.setProperty("SimNode.AllowSimsToExceedAPs", "true");
 	}
 
-
-	// Tabs container holding calibration and forecast panels
+	// Tabs container holding workflow panels
 	private JTabbedPane _tabbedPane;
 
 	// Currently selected simulation group, if any
@@ -89,7 +88,7 @@ public class ActionsWindow extends RmaJDialog {
 	private ProjectSimulationGroupListener _projectSimulationGroupListener;
 
 	// Panel for prescribed conditions workflows
-	private CalibrationPanel _calibrationPanel;
+	private PrescribedPanel _prescribedPanel;
 
 	// Panel for forecast conditions workflows
 	private ForecastPanel _forecastPanel;
@@ -136,7 +135,7 @@ public class ActionsWindow extends RmaJDialog {
 	/**
 	 * Builds the controls and layout for the actions window.
 	 *
-	 * Initializes the tabbed pane, adds calibration and forecast panels,
+	 * Initializes the tabbed pane, adds workflow panels,
 	 * and applies layout constraints using GridBagLayout.
 	 */
 	private void buildControls() {
@@ -167,8 +166,8 @@ public class ActionsWindow extends RmaJDialog {
 		getContentPane().add(_tabbedPane, gbc);
 
 		// Create and add the prescribed conditions panel
-		_calibrationPanel = new CalibrationPanel(this);
-		_tabbedPane.addTab("Prescribed Conditions", _calibrationPanel);
+		_prescribedPanel = new PrescribedPanel(this);
+		_tabbedPane.addTab("Prescribed Conditions", _prescribedPanel);
 
 		// Create and add the forecast conditions panel
 		_forecastPanel = new ForecastPanel(this);
@@ -180,13 +179,13 @@ public class ActionsWindow extends RmaJDialog {
 	}
 
 	/**
-	 * Returns the calibration panel used for prescribed conditions.
+	 * Returns the prescribed panel used for prescribed conditions.
 	 *
-	 * @return the calibration panel
+	 * @return the prescribed panel
 	 */
-	public CalibrationPanel getCalibrationPanel()
+	public PrescribedPanel getPrescribedPanel()
 	{
-		return _calibrationPanel;
+		return _prescribedPanel;
 	}
 
 	/**
@@ -397,15 +396,15 @@ public class ActionsWindow extends RmaJDialog {
 
 
 	/**
-	 * Clears the window form and delegates clearing to the calibration panel.
+	 * Clears the window form and delegates clearing to the prescribed panel.
 	 */
 	@Override
 	public void clearForm() {
 		// Clear base dialog state
 		super.clearForm();
 
-		// Clear the calibration panel selections and fields
-		_calibrationPanel.clearForm();
+		// Clear the prescribed panel selections and fields
+		_prescribedPanel.clearForm();
 	}
 
 	/**
@@ -433,7 +432,7 @@ public class ActionsWindow extends RmaJDialog {
 	}
 
 	/**
-	 * Sets the active simulation group in the calibration panel.
+	 * Sets the active simulation group in the prescribed panel.
 	 *
 	 * Shows a wait cursor during updates and restores the default cursor afterward.
 	 *
@@ -444,10 +443,10 @@ public class ActionsWindow extends RmaJDialog {
 		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 		try {
-			// Clear the calibration panel form and set the new simulation group
-			_calibrationPanel.clearForm();
+			// Clear the prescribed panel form and set the new simulation group
+			_prescribedPanel.clearForm();
 
-			_calibrationPanel.setSimulationGroup(sg);
+			_prescribedPanel.setSimulationGroup(sg);
 		} finally {
 			// Restore the default cursor regardless of success or failure
 			setCursor(Cursor.getDefaultCursor());
@@ -483,9 +482,9 @@ public class ActionsWindow extends RmaJDialog {
 		// Identify which tab is currently active
 		Component comp = _tabbedPane.getSelectedComponent();
 
-		if ( comp == _calibrationPanel ) {
-			// Delegate to the calibration panel when it is active
-			return _calibrationPanel.getSelectedSimulations();
+		if ( comp == _prescribedPanel ) {
+			// Delegate to the prescribed panel when it is active
+			return _prescribedPanel.getSelectedSimulations();
 
 		} else if ( comp == _forecastPanel ) {
 			// Delegate to the forecast panel when it is active
@@ -505,9 +504,9 @@ public class ActionsWindow extends RmaJDialog {
 		// Identify which tab is currently active
 		Component comp = _tabbedPane.getSelectedComponent();
 
-		if ( comp == _calibrationPanel ) {
-			// Delegate to the calibration panel when it is active
-			return _calibrationPanel.getSelectedResults();
+		if ( comp == _prescribedPanel ) {
+			// Delegate to the prescribed panel when it is active
+			return _prescribedPanel.getSelectedResults();
 
 		} else if ( comp == _forecastPanel ) {
 			// Delegate to the forecast panel when it is active
@@ -527,9 +526,9 @@ public class ActionsWindow extends RmaJDialog {
 		// Identify which tab is currently active
 		Component comp = _tabbedPane.getSelectedComponent();
 
-		if ( comp == _calibrationPanel ) {
-			// Delegate to the calibration panel when it is active
-			return _calibrationPanel.getSimulationGroup();
+		if ( comp == _prescribedPanel ) {
+			// Delegate to the prescribed panel when it is active
+			return _prescribedPanel.getSimulationGroup();
 
 		} else if ( comp == _forecastPanel ) {
 			// Delegate to the forecast panel when it is active
@@ -625,7 +624,7 @@ public class ActionsWindow extends RmaJDialog {
 	 * Listener for WatSimulation manager events.
 	 *
 	 * Responds to deletion events by removing simulations from the active group,
-	 * updating the calibration panel, and optionally prompting to delete an empty group.
+	 * updating the prescribed panel, and optionally prompting to delete an empty group.
 	 */
 	public class ProjectSimulationListener implements ProjectManagerListener {
 		/**
@@ -693,10 +692,10 @@ public class ActionsWindow extends RmaJDialog {
 					}
 				}
 
-				// If a simulation was removed, update the calibration panel and consider group deletion
+				// If a simulation was removed, update the prescribed panel and consider group deletion
 				if ( deleted ) {
 					// Refresh the simulation table to reflect changes
-					_calibrationPanel.setSimulationTable(simGroup);
+					_prescribedPanel.setSimulationTable(simGroup);
 
 					// If the group's proxy exists and there are no simulations left, prompt to delete the group
 					if ( Project.getCurrentProject().getManagerProxy(simGroup) != null && simGroup.getSimulations().isEmpty() ) {

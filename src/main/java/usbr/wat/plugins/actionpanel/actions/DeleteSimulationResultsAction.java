@@ -11,7 +11,7 @@ import com.rma.io.FileManagerImpl;                                              
 
 import usbr.wat.plugins.actionpanel.ActionsWindow;                                  // Main actions window used as the UI parent for dialogs and context
 import usbr.wat.plugins.actionpanel.model.ResultsData;                              // Data model representing a single results entry, including its folder and metadata
-import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                                   // Base USBR panel type implemented by calibration and forecast panels
+import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                                   // Base USBR panel type implemented by workflow panels
 import usbr.wat.plugins.actionpanel.ui.tree.SimulationTreeTableNode;                // Tree-table node representing a simulation in the UI, used to remove results from the view
 
 /**

@@ -14,7 +14,7 @@ import com.rma.io.FileManagerImpl;												// File manager implementation for
 import usbr.wat.plugins.actionpanel.ActionsWindow;								// Main actions window used as the UI parent for dialogs and context
 import usbr.wat.plugins.actionpanel.editors.DisplayReportsSelector;				// Editor dialog that lets users select reports to create or view
 import usbr.wat.plugins.actionpanel.model.SimulationReportInfo;					// Model holding per-simulation report information and paths (import present even if unused here)
-import usbr.wat.plugins.actionpanel.ui.UsbrPanel;								// Base USBR panel type implemented by calibration and forecast panels
+import usbr.wat.plugins.actionpanel.ui.UsbrPanel;								// Base USBR panel type implemented by workflow panels
 
 /**
  * Action that opens the "Create Report" selector dialog.
@@ -35,7 +35,7 @@ public class DisplayReportSelectorAction extends AbstractAction {
 	private DisplayReportsSelector _selector;
 
 	/**
-	 * Panel that provides context for report creation (calibration or forecast).
+	 * Panel that provides context for report creation.
 	 */
 	private UsbrPanel _parentPanel;
 

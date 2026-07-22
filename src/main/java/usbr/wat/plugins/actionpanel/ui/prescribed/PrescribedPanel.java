@@ -1,4 +1,4 @@
-package usbr.wat.plugins.actionpanel.ui;
+package usbr.wat.plugins.actionpanel.ui.prescribed;
 
 import java.awt.Color;               // AWT color constants used for compute-state row coloring
 import java.awt.Cursor;              // Predefined cursors; used to show a wait cursor during slow operations
@@ -48,10 +48,10 @@ import usbr.wat.plugins.actionpanel.ui.tree.SimulationTreeTableModel; // Tree-ta
 
 
 /**
- * Panel that displays calibration simulation group details and provides controls
- * for running and reporting on calibration simulations.
+ * Panel that displays prescribed simulation group details and provides controls
+ * for running and reporting on prescribed simulations.
  *
- * This panel extends AbstractSimulationPanel and composes the full calibration
+ * This panel extends AbstractSimulationPanel and composes the full prescribed
  * workflow UI into two horizontal regions:
  *
  *   Left region  -- ActionsPanel providing group-level action buttons.
@@ -70,7 +70,7 @@ import usbr.wat.plugins.actionpanel.ui.tree.SimulationTreeTableModel; // Tree-ta
  *
  */
 @SuppressWarnings("serial")
-public class CalibrationPanel extends AbstractSimulationPanel {
+public class PrescribedPanel extends AbstractSimulationPanel {
 	// --- Compute-state row foreground colors (shadow the constants in the superclass) ---
 
 	/**
@@ -137,9 +137,9 @@ public class CalibrationPanel extends AbstractSimulationPanel {
 	private SimulationGroup _simGroup;
 
 	/**
-	 * Toolbar panel for selecting and managing calibration simulation groups.
+	 * Toolbar panel for selecting and managing prescribed simulation groups.
 	 */
-	private CalibrationSimulationGroupPanel _simPanel;
+	private PrescribedSimulationGroupPanel _simPanel;
 
 	/**
 	 * Listener that refreshes the analysis period display fields whenever the
@@ -155,12 +155,12 @@ public class CalibrationPanel extends AbstractSimulationPanel {
 
 
 	/**
-	 * Constructs the CalibrationPanel and builds all child controls.
+	 * Constructs the PrescribedPanel and builds all child controls.
 	 *
 	 * @param parent the ActionsWindow that owns this panel; passed to child components
 	 *               that need access to the top-level window
 	 */
-	public CalibrationPanel(ActionsWindow parent) {
+	public PrescribedPanel(ActionsWindow parent) {
 		super(parent);
 		buildControls(parent);
 	}
@@ -171,7 +171,7 @@ public class CalibrationPanel extends AbstractSimulationPanel {
 	 * toolbar, the left actions panel, and the right detail panel.
 	 *
 	 * Layout from top to bottom and left to right:
-	 * CalibrationSimulationGroupPanel spanning the full width.
+	 * PrescribedSimulationGroupPanel spanning the full width.
 	 * ActionsPanel in the left column, filling vertically.
 	 * Right detail panel in the right column, filling both directions.
 	 *
@@ -179,7 +179,7 @@ public class CalibrationPanel extends AbstractSimulationPanel {
 	 */
 	private void buildControls(ActionsWindow parent) {
 		// --- Simulation group selection toolbar (full-width top row) ---
-		_simPanel = new CalibrationSimulationGroupPanel(this);
+		_simPanel = new PrescribedSimulationGroupPanel(this);
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx = GridBagConstraints.RELATIVE;
 		gbc.gridy = GridBagConstraints.RELATIVE;
@@ -756,11 +756,11 @@ public class CalibrationPanel extends AbstractSimulationPanel {
 
 
 	/**
-	 * Returns the CalibrationSimulationGroupPanel toolbar hosted at the top of this panel.
+	 * Returns the PrescribedSimulationGroupPanel toolbar hosted at the top of this panel.
 	 *
 	 * @return the simulation group selection panel; never null after construction
 	 */
-	public CalibrationSimulationGroupPanel getSimulationPanel() {
+	public PrescribedSimulationGroupPanel getSimulationPanel() {
 		return _simPanel;
 	}
 
@@ -769,7 +769,7 @@ public class CalibrationPanel extends AbstractSimulationPanel {
 	 * Handles the deletion of a simulation group by updating the group selection panel
 	 * and disabling the name/description display.
 	 *
-	 * Delegates the combo-box removal to CalibrationSimulationGroupPanel, then disables
+	 * Delegates the combo-box removal to PrescribedSimulationGroupPanel, then disables
 	 * the name/description panel to prevent editing a now-invalid group.
 	 *
 	 * @param proxy the ManagerProxy of the simulation group that was deleted

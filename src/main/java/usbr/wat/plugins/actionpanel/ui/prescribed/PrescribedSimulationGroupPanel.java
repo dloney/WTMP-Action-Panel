@@ -1,4 +1,4 @@
-package usbr.wat.plugins.actionpanel.ui;
+package usbr.wat.plugins.actionpanel.ui.prescribed;
 
 import java.awt.GridBagConstraints;  // Specifies per-cell layout constraints for the separator added below the base controls
 import java.awt.event.ItemEvent;     // Carries combo-box selection change data; used to filter out DESELECTED events
@@ -11,17 +11,17 @@ import com.rma.model.ManagerProxy;   // Lightweight proxy wrapping a managed mod
 import rma.swing.RmaInsets;          // Constants for common GridBagLayout inset configurations
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                      // Singleton plugin entry point providing access to the actions window
-import usbr.wat.plugins.actionpanel.actions.DeleteSimulationGroupAction;    // Action that deletes the selected calibration simulation group
-import usbr.wat.plugins.actionpanel.actions.EditSimulationGroupAction;      // Action that opens the editor for the selected calibration simulation group
-import usbr.wat.plugins.actionpanel.actions.NewSimulationGroupAction;       // Action that opens the dialog to create a new calibration simulation group
+import usbr.wat.plugins.actionpanel.actions.DeleteSimulationGroupAction;    // Action that deletes the selected simulation group
+import usbr.wat.plugins.actionpanel.actions.EditSimulationGroupAction;      // Action that opens the editor for the selected simulation group
+import usbr.wat.plugins.actionpanel.actions.NewSimulationGroupAction;       // Action that opens the dialog to create a new simulation group
 import usbr.wat.plugins.actionpanel.model.SimulationGroup;                  // Standard (non-forecast) simulation group model managed by this panel
 import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;        // Forecast simulation group model (imported for type context; not used directly)
 
 
 /**
- * Concrete simulation group toolbar panel for the calibration workflow.
+ * Concrete simulation group toolbar panel for the prescribed workflow.
  *
- * This class extends BaseSimulationGroupPanel to provide the calibration-specific
+ * This class extends BaseSimulationGroupPanel to provide the prescribed-specific
  * implementations of the three action factory methods and the combo-box selection
  * handler. It manages SimulationGroup objects (as opposed to ForecastSimGroup objects
  * managed by the forecast equivalent).
@@ -31,20 +31,20 @@ import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;        // F
  * from the simulation detail content below.
  *
  * When a simulation group is selected from the combo box, the group's manager is
- * loaded from the proxy and passed to the owning CalibrationPanel via fillForm,
+ * loaded from the proxy and passed to the owning PrescribedPanel via fillForm,
  * which also enables or disables the Edit button based on whether a valid group exists.
  */
-public class CalibrationSimulationGroupPanel extends BaseSimulationGroupPanel {
+public class PrescribedSimulationGroupPanel extends BaseSimulationGroupPanel {
 	/**
-	 * Constructs the panel and wires it to the given CalibrationPanel as its parent.
+	 * Constructs the panel and wires it to the given PrescribedPanel as its parent.
 	 *
 	 * Delegates to BaseSimulationGroupPanel, which calls buildControls and addListeners
 	 * during construction.
 	 *
-	 * @param calibrationPanel the CalibrationPanel that owns this toolbar; must not be null
+	 * @param prescribedPanel the PrescribedPanel that owns this toolbar; must not be null
 	 */
-	public CalibrationSimulationGroupPanel(CalibrationPanel calibrationPanel) {
-		super(calibrationPanel);
+	public PrescribedSimulationGroupPanel(PrescribedPanel prescribedPanel) {
+		super(prescribedPanel);
 	}
 
 
@@ -76,7 +76,7 @@ public class CalibrationSimulationGroupPanel extends BaseSimulationGroupPanel {
 
 
 	/**
-	 * Returns the Action bound to the Delete button for calibration simulation groups.
+	 * Returns the Action bound to the Delete button for prescribed simulation groups.
 	 *
 	 * The parent panel reference is passed to the action so it can call back into
 	 * simulationGroupDeleted(ManagerProxy) after a deletion is confirmed.
@@ -91,22 +91,22 @@ public class CalibrationSimulationGroupPanel extends BaseSimulationGroupPanel {
 
 
 	/**
-	 * Returns the Action bound to the New button for creating calibration simulation groups.
+	 * Returns the Action bound to the New button for creating prescribed simulation groups.
 	 *
-	 * Both the owning CalibrationPanel and this panel are passed to the action so that
+	 * Both the owning PrescribedPanel and this panel are passed to the action so that
 	 * after a group is created it can be added to the combo box and selected.
 	 *
-	 * @return a NewSimulationGroupAction configured with the parent CalibrationPanel
+	 * @return a NewSimulationGroupAction configured with the parent PrescribedPanel
 	 * and this panel
 	 */
 	@Override
 	protected Action getNewSimGroupAction() {
-		return new NewSimulationGroupAction((CalibrationPanel) _parent, this);
+		return new NewSimulationGroupAction((PrescribedPanel) _parent, this);
 	}
 
 
 	/**
-	 * Returns the Action bound to the Edit button for editing calibration simulation groups.
+	 * Returns the Action bound to the Edit button for editing prescribed simulation groups.
 	 *
 	 * The actions window and the parent simulation panel are passed to the action to
 	 * provide the dialog with the necessary context for editing.
@@ -123,7 +123,7 @@ public class CalibrationSimulationGroupPanel extends BaseSimulationGroupPanel {
 
 	/**
 	 * Responds to a combo-box item selection event by loading the selected simulation
-	 * group and updating the parent CalibrationPanel.
+	 * group and updating the parent PrescribedPanel.
 	 *
 	 * DESELECTED events are ignored so that only the final SELECTED state triggers a
 	 * panel update. If the selected item is null (i.e. the combo box is empty or cleared)
@@ -155,7 +155,7 @@ public class CalibrationSimulationGroupPanel extends BaseSimulationGroupPanel {
 
 
 	/**
-	 * Updates the Edit button state and notifies the parent CalibrationPanel of the
+	 * Updates the Edit button state and notifies the parent PrescribedPanel of the
 	 * newly selected simulation group.
 	 *
 	 * The Edit button is enabled only when a non-null group is provided. The parent
@@ -168,7 +168,7 @@ public class CalibrationSimulationGroupPanel extends BaseSimulationGroupPanel {
 		boolean enabled = simGroup != null;
 		_editButton.setEnabled(enabled);
 
-		// Notify the parent CalibrationPanel to refresh its displayed group details
+		// Notify the parent PrescribedPanel to refresh its displayed group details
 		_parent.setSimulationGroup(simGroup);
 	}
 
@@ -177,7 +177,7 @@ public class CalibrationSimulationGroupPanel extends BaseSimulationGroupPanel {
 	 * Returns the Class type used to query the project's manager list when loading
 	 * the simulation group combo box.
 	 *
-	 * Returning SimulationGroup.class ensures that only standard calibration simulation
+	 * Returning SimulationGroup.class ensures that only standard prescribed simulation
 	 * groups (not forecast groups) are shown in this panel's combo box.
 	 *
 	 * @return SimulationGroup.class

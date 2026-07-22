@@ -58,8 +58,9 @@ public class ViewIterationResultsAction extends AbstractAction {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// Retrieve the active simulation group from the calibration panel
-		SimulationGroup simGroup = _parent.getCalibrationPanel().getSimulationGroup();
+		// Retrieve the active simulation group from the prescribed panel
+		// TODO: Either this is used only for prescribed and moved or it should be reworked
+		SimulationGroup simGroup = _parent.getPrescribedPanel().getSimulationGroup();
 
 		// Require a selected simulation group before proceeding
 		if (simGroup == null) {

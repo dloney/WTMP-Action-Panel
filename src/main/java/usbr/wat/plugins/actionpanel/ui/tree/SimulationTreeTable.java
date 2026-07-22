@@ -254,13 +254,14 @@ public class SimulationTreeTable extends RmaJXTreeTable {
 
 	/**
 	 * Invokes the SaveSimulationAsAction to save the given WatSimulation under a new name,
-	 * using the calibration panel's current simulation group as the source context.
+	 * using the prescribed panel's current simulation group as the source context.
 	 *
 	 * @param sim the WatSimulation to save as a new copy; may be null (action handles null gracefully)
 	 */
 	private void saveSimulationAs(WatSimulation sim) {
 		SaveSimulationAsAction ssa = new SaveSimulationAsAction(_parentPanel);
-		ssa.saveSimulationAs(ActionPanelPlugin.getInstance().getActionsWindow().getCalibrationPanel().getSimulationGroup(), sim);
+		// TODO: this needs to be expanded to handle more classes or reworked into a prescribed specific file
+		ssa.saveSimulationAs(ActionPanelPlugin.getInstance().getActionsWindow().getPrescribedPanel().getSimulationGroup(), sim);
 	}
 
 	/**

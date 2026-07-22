@@ -24,7 +24,7 @@ import usbr.wat.plugins.actionpanel.ActionsWindow;                              
 import usbr.wat.plugins.actionpanel.model.ResultsData;                          // Data model representing a single results entry, including its folder and metadata
 import usbr.wat.plugins.actionpanel.model.SimulationGroup;                      // Concrete type representing a simulation group managed within the plugin
 import usbr.wat.plugins.actionpanel.ui.ResultsDataDialog;                       // Dialog used to capture metadata about the results being saved (name, description, etc.)
-import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                               // Base USBR panel type implemented by calibration and forecast panels
+import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                               // Base USBR panel type implemented by workflow panels
 import usbr.wat.plugins.actionpanel.ui.tree.SimulationTreeTableNode;            // Tree-table node representing a simulation in the UI; used to add or remove results folders
 
 /**
@@ -75,7 +75,7 @@ public class SaveSimulationResultsAction extends AbstractAction
 	 * Creates the save-results action with a user-visible name and initial disabled state.
 	 *
 	 * @param parent      the actions window used as the dialog parent and context source
-	 * @param parentPanel the workflow panel (calibration or forecast) that hosts the simulation tree
+	 * @param parentPanel the workflow panel that hosts the simulation tree
 	 */
 	public SaveSimulationResultsAction(ActionsWindow parent, UsbrPanel parentPanel) {
 		// Set the action label used by Swing components
@@ -109,8 +109,9 @@ public class SaveSimulationResultsAction extends AbstractAction
 	 * shows an informative message to the user.
 	 */
 	public void saveSimulationResults() {
-		// Retrieve the active simulation group from the calibration panel
-		SimulationGroup simGroup = _parent.getCalibrationPanel().getSimulationGroup();
+		// Retrieve the active simulation group from the prescribed panel
+		// TODO: Either this is used only for prescribed and moved or it should be reworked
+		SimulationGroup simGroup = _parent.getPrescribedPanel().getSimulationGroup();
 
 		// Require a selected simulation group
 		if (simGroup == null) {
