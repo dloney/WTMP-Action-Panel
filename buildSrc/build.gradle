@@ -7,6 +7,4 @@ repositories {
 }
 
 dependencies {
-    implementation("com.palantir.git-version:com.palantir.git-version.gradle.plugin:4.2.0")
-    implementation("org.ajoberstar.grgit:org.ajoberstar.grgit.gradle.plugin:4.1.1")
 }
