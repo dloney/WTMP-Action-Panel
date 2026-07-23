@@ -13,16 +13,17 @@ import rma.swing.RmaInsets;                                                     
 
 import usbr.wat.plugins.actionpanel.actions.DeleteSimulationResultsAction;              // Action to delete saved simulation results from storage
 import usbr.wat.plugins.actionpanel.actions.DisplayReportSelectorAction;                // Action to display a selector for available reports in workflows
-import usbr.wat.plugins.actionpanel.actions.prescribed.RunSimulationAction;                        // Action to run simulations in prescribed conditions workflows
-import usbr.wat.plugins.actionpanel.actions.prescribed.SaveSimulationResultsAction;                // Action to persist generated simulation results
+import usbr.wat.plugins.actionpanel.actions.prescribed.RunSimulationAction;             // Action to run simulations in prescribed conditions workflows
+import usbr.wat.plugins.actionpanel.actions.prescribed.SaveSimulationResultsAction;     // Action to persist generated simulation results
 import usbr.wat.plugins.actionpanel.actions.forecast.RunForecastSimulationAction;       // Action to run simulations in forecast workflows
 import usbr.wat.plugins.actionpanel.actions.planning.RunPlanningSimulationAction;
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastReportingPlugin;                      // Reporting plugin interface for forecast-specific report actions
+import usbr.wat.plugins.actionpanel.model.forecast.ForecastReportingPlugin;             // Reporting plugin interface for forecast-specific report actions
 import usbr.wat.plugins.actionpanel.model.ReportPlugin;                                 // Base reporting plugin interface used by the reports manager
 import usbr.wat.plugins.actionpanel.model.ReportsManager;                               // Manager that provides registered reporting plugins available to the UI
-import usbr.wat.plugins.actionpanel.ui.PrescribedPanel;                                // Panel type for prescribed conditions workflows
+import usbr.wat.plugins.actionpanel.ui.planning.PlanningSimulationPanel;
+import usbr.wat.plugins.actionpanel.ui.prescribed.PrescribedPanel;                      // Panel type for prescribed conditions workflows
 import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                                       // Base USBR panel type implemented by workflow panels
-import usbr.wat.plugins.actionpanel.ui.forecast.SimulationPanel;                        // Panel type for forecast workflows and ensemble simulations  // TODO: Rename this so that it allows planning import
+import usbr.wat.plugins.actionpanel.ui.forecast.ForecastSimulationPanel;                        // Panel type for  simulations
 
 /**
  * Panel hosting simulation-related actions for the WTMP plugin.
@@ -85,12 +86,12 @@ public class SimulationActionsPanel extends EnabledJPanel {
 		if (_parentPanel instanceof PrescribedPanel) {
 			_runSimulationAction = new RunSimulationAction(_parent, _parentPanel);
 
-		} else if (_parentPanel instanceof usbr.wat.plugins.actionpanel.ui.planning.SimulationPanel) {
+		} else if (_parentPanel instanceof PlanningSimulationPanel) {
 			_runSimulationAction = new RunPlanningSimulationAction(
-					_parent, (usbr.wat.plugins.actionpanel.ui.planning.SimulationPanel) _parentPanel);
+					_parent, (PlanningSimulationPanel) _parentPanel);
 
 		} else {
-			_runSimulationAction = new RunForecastSimulationAction(_parent, (SimulationPanel) _parentPanel);
+			_runSimulationAction = new RunForecastSimulationAction(_parent, (ForecastSimulationPanel) _parentPanel);
 		}
 
 		// Button that triggers the run simulation action
@@ -124,7 +125,7 @@ public class SimulationActionsPanel extends EnabledJPanel {
 
 			button = new JButton(_displayReportsSelectorAction);
 
-		} else if (_parentPanel instanceof usbr.wat.plugins.actionpanel.ui.planning.SimulationPanel) {
+		} else if (_parentPanel instanceof PlanningSimulationPanel) {
 			// TODO: this needs to be expanded to handle planning mode
 
 

@@ -8,6 +8,7 @@ import usbr.wat.plugins.actionpanel.editors.NewSimulationGroupDialog;					// Dia
 import usbr.wat.plugins.actionpanel.model.prescribed.PrescribedSimulationGroup;			// Get the prescribed workflow simulation group
 import usbr.wat.plugins.actionpanel.ui.prescribed.PrescribedPanel;						// Panel for prescribed conditions providing access to the active simulation group
 import usbr.wat.plugins.actionpanel.ui.prescribed.PrescribedSimulationGroupPanel;		// UI panel that lists and manages PrescribedSimulationGroup entries in the prescribed workflow
+import usbr.wat.plugins.actionpanel.actions.BaseActionsPanelAction;						// Make the base actions panel avilable
 
 /**
  * Action that creates a new Simulation Group in the prescribed workflow.

@@ -1,4 +1,4 @@
-package usbr.wat.plugins.actionpanel.ui.planning;
+package usbr.wat.plugins.actionpanel.ui.forecast;
 
 import java.awt.EventQueue;                         // Provides EventQueue for dispatching UI updates to the Swing Event Dispatch Thread
 import java.awt.GridBagConstraints;                 // Provides GridBagConstraints for controlling component placement within a GridBagLayout
@@ -56,19 +56,18 @@ import rma.util.RMAIO;                              // Provides RMAIO for string
 
 import usbr.wat.plugins.actionpanel.ActionsWindow;                              // Provides ActionsWindow, the top-level plugin window that owns this panel
 import usbr.wat.plugins.actionpanel.SimulationActionsPanel;                     // Provides SimulationActionsPanel for the compute/run action buttons at the bottom
-import usbr.wat.plugins.actionpanel.actions.planning.EditEnsembleSetAction;     // Provides EditEnsembleSetAction, the Swing Action for the Edit Ensemble Set button
+import usbr.wat.plugins.actionpanel.actions.forecast.EditEnsembleSetAction;     // Provides EditEnsembleSetAction, the Swing Action for the Edit Ensemble Set button
 import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup;              // Provides AbstractSimulationGroup, the base type for simulation groupings
 import usbr.wat.plugins.actionpanel.model.ResultsData;                          // Provides ResultsData for retrieving the currently selected simulation results
-import usbr.wat.plugins.actionpanel.model.planning.EnsembleSet;                 // Provides EnsembleSet, the model object linking boundary conditions to a set of ensemble members
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSimulationGroup;            // Provides PlanningSimulationGroup, the top-level model for a planning simulation group
+import usbr.wat.plugins.actionpanel.model.forecast.EnsembleSet;                 // Provides EnsembleSet, the model object linking boundary conditions to a set of ensemble members
+import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimulationGroup;            // Provides ForecastSimulationGroup, the top-level model for a forecast simulation group
 import usbr.wat.plugins.actionpanel.ui.AbstractSimulationPanel;                 // Provides AbstractSimulationPanel, the base class supplying the simulation tree table and legend
 import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                               // Provides UsbrPanel, the marker interface for USBR-specific panel implementations
 import usbr.wat.plugins.actionpanel.ui.tree.SimulationTreeTable;                // Provides SimulationTreeTable, the custom tree-table used to display WAT simulations
 import usbr.wat.plugins.actionpanel.ui.tree.SimulationTreeTableModel;           // Provides SimulationTreeTableModel for accessing column index constants on the tree-table model
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;					// Provides the planning set class
 
 /**
- * Panel that forms the Simulation tab within the Planning Action Panel. It displays:
+ * Panel that forms the Simulation tab within the Forecast Action Panel. It displays:
  *
  * 1. An Analysis Period section showing the active AP name, start time, and end time,
  *    with a right-click popup to open the AP editor.
@@ -86,9 +85,9 @@ import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;					// Provides 
  *
  * @see AbstractSimulationPanel
  * @see EnsembleSet
- * @see PlanningSimulationGroup
+ * @see ForecastSimulationGroup
  */
-public class SimulationPanel extends AbstractSimulationPanel
+public class ForecastSimulationPanel extends AbstractSimulationPanel
 		implements UsbrPanel {
 	/**
 	 * Column index in the ensemble table that shows previously computed ensemble members.
@@ -116,9 +115,9 @@ public class SimulationPanel extends AbstractSimulationPanel
 	private JLabel _apEndLabel;
 
 	/**
-	 * The parent PlanningPanel that owns this tab and provides access to the simulation group.
+	 * The parent ForecastPanel that owns this tab and provides access to the simulation group.
 	 */
-	private PlanningPanel _parentPanel;
+	private ForecastPanel _parentPanel;
 
 	/**
 	 * Table displaying ensemble sets for the currently selected simulation. Columns are:
@@ -169,13 +168,13 @@ public class SimulationPanel extends AbstractSimulationPanel
 	private ModifiableListener _apModListener;
 
 	/**
-	 * Constructs a new SimulationPanel, wires it to the parent window and planning panel,
+	 * Constructs a new ForecastSimulationPanel, wires it to the parent window and forecast panel,
 	 * builds all UI controls, and registers all event listeners.
 	 *
 	 * @param parentWindow the ActionsWindow that owns this panel
-	 * @param parentPanel  the PlanningPanel that provides the active simulation group
+	 * @param parentPanel  the ForecastPanel that provides the active simulation group
 	 */
-	public SimulationPanel(ActionsWindow parentWindow, PlanningPanel parentPanel) {
+	public ForecastSimulationPanel(ActionsWindow parentWindow, ForecastPanel parentPanel) {
 		super(parentWindow);
 		_parentPanel = parentPanel;
 
@@ -203,7 +202,7 @@ public class SimulationPanel extends AbstractSimulationPanel
 	 * @param topPanel the JPanel into which all controls are added
 	 */
 	private void buildTopPanel(JPanel topPanel) {
-		// Add the top panel itself to this SimulationPanel, filling all available space
+		// Add the top panel itself to this ForecastSimulationPanel, filling all available space
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx = GridBagConstraints.RELATIVE;
 		gbc.gridy = GridBagConstraints.RELATIVE;
@@ -717,7 +716,7 @@ public class SimulationPanel extends AbstractSimulationPanel
 			}
 
 			// Mark the simulation group as modified since member sets may have changed
-			PlanningSimulationGroup simGroup = _parentPanel.getSimulationGroup();
+			ForecastSimulationGroup simGroup = _parentPanel.getSimulationGroup();
 			if (simGroup != null) {
 				simGroup.setModified(true);
 			}
@@ -738,7 +737,7 @@ public class SimulationPanel extends AbstractSimulationPanel
 			WatSimulation simulation = (WatSimulation) _simulationTable.getValueAt(row, 0);
 			_columnGroup.setHeaderValue(simulation.getName());
 
-			PlanningSimulationGroup simGroup = _parentPanel.getSimulationGroup();
+			ForecastSimulationGroup simGroup = _parentPanel.getSimulationGroup();
 			List<EnsembleSet> esets = simGroup.getEnsembleSetsFor(simulation);
 
 			_editEnsembleButton.setEnabled(true);
@@ -779,17 +778,17 @@ public class SimulationPanel extends AbstractSimulationPanel
 
 	/**
 	 * Updates the panel to display the given simulation group. When the group is a
-	 * PlanningSimulationGroup, the parent panel is optionally updated, the simulation table
+	 * ForecastSimulationGroup, the parent panel is optionally updated, the simulation table
 	 * and ensemble table are refreshed, the Analysis Period labels are updated, and
-	 * the panel is enabled. When the group is not a PlanningSimulationGroup (or is null),
+	 * the panel is enabled. When the group is not a ForecastSimulationGroup (or is null),
 	 * the parent and tables are cleared similarly.
 	 *
 	 * @param asg       the AbstractSimulationGroup to display
-	 * @param setParent true to also propagate the group to the parent PlanningPanel
+	 * @param setParent true to also propagate the group to the parent ForecastPanel
 	 */
 	public void setSimulationGroup(AbstractSimulationGroup asg, boolean setParent) {
-		if (asg instanceof PlanningSimulationGroup) {
-			PlanningSimulationGroup fsg = (PlanningSimulationGroup) asg;
+		if (asg instanceof ForecastSimulationGroup) {
+			ForecastSimulationGroup fsg = (ForecastSimulationGroup) asg;
 
 			// Propagate the new group to the parent panel so other tabs stay in sync
 			if (setParent) {
@@ -807,7 +806,7 @@ public class SimulationPanel extends AbstractSimulationPanel
 			refreshSimTableSelection();
 
 		} else {
-			// Clear the parent panel's simulation group when the group is not a PlanningSimulationGroup
+			// Clear the parent panel's simulation group when the group is not a ForecastSimulationGroup
 			if (setParent) {
 				_parentPanel.setSimulationGroup(null);
 			}
@@ -899,7 +898,7 @@ public class SimulationPanel extends AbstractSimulationPanel
 	}
 
 	/**
-	 * Returns the active simulation group by delegating to the parent PlanningPanel.
+	 * Returns the active simulation group by delegating to the parent ForecastPanel.
 	 *
 	 * @return the AbstractSimulationGroup currently displayed, or null if none is set
 	 */
@@ -1256,10 +1255,5 @@ public class SimulationPanel extends AbstractSimulationPanel
 		if (_ap != null) {
 			_ap.removeModifiableListener(_apModListener);
 		}
-	}
-
-	// TODO: doc string
-	public void setPlanningSet(PlanningSet set) {
-		_parentPanel.setPlanningSet(set);
 	}
 }

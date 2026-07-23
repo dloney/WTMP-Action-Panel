@@ -10,7 +10,7 @@ import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                          
 import usbr.wat.plugins.actionpanel.model.planning.EnsembleSet;                 // Planning model representing a group of simulations and its ensemble sets
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSimulationGroup;            // Planning-specific simulation group type used by the planning panel
 import usbr.wat.plugins.actionpanel.ui.planning.EditEnsembleSetWindow;          // Dialog window for editing ensemble sets tied to a planning simulation
-import usbr.wat.plugins.actionpanel.ui.planning.SimulationPanel;                // Panel for planning workflows that displays and manages simulations and ensemble sets
+import usbr.wat.plugins.actionpanel.ui.planning.PlanningSimulationPanel;                // Panel for planning workflows that displays and manages simulations and ensemble sets
 
 /**
  * Action that opens the "Edit Ensemble Set" workflow for planning simulations.
@@ -24,14 +24,14 @@ public class EditEnsembleSetAction extends AbstractAction {
 	/**
 	 * Planning simulation panel that owns this action and displays ensemble sets.
 	 */
-	private final SimulationPanel _parentPanel;
+	private final PlanningSimulationPanel _parentPanel;
 
 	/**
 	 * Creates the edit-ensemble-set action with a user-visible name.
 	 *
 	 * @param parentPanel the planning simulation panel that will be updated with edited ensemble sets
 	 */
-	public EditEnsembleSetAction(SimulationPanel parentPanel) {
+	public EditEnsembleSetAction(PlanningSimulationPanel parentPanel) {
 		// Set the action's display label used by Swing components
 		super("Edit Ensemble Set...");
 

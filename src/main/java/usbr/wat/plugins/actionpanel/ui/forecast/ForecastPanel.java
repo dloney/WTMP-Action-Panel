@@ -70,7 +70,7 @@ public class ForecastPanel extends RmaJPanel {
 	private TempTargetPanel _tempTargetsPanel;
 
 	// The Simulation tab panel
-	private SimulationPanel _simulationPanel;
+	private ForecastSimulationPanel _forecastSimulationPanel;
 
 	// The currently active forecast simulation group; null when no group is selected
 	private ForecastSimulationGroup _simGroup;
@@ -111,7 +111,7 @@ public class ForecastPanel extends RmaJPanel {
 	 */
 	private void buildControls() {
 		// Instantiate all six forecast sub-panels
-		_simulationPanel = new SimulationPanel(_parent, this);
+		_forecastSimulationPanel = new ForecastSimulationPanel(_parent, this);
 		_initialConditionsPanel = new InitialConditionsPanel(this);
 		_operationsPanel = new OperationsPanel(this);
 		_metPanel = new MeteorologyPanel(this);
@@ -119,7 +119,7 @@ public class ForecastPanel extends RmaJPanel {
 		_bcPanel = new BcPanel(this);
 
 		// Disable all sub-panels until a simulation group is loaded
-		_simulationPanel.setEnabled(false);
+		_forecastSimulationPanel.setEnabled(false);
 		_initialConditionsPanel.setEnabled(false);
 		_operationsPanel.setEnabled(false);
 		_metPanel.setEnabled(false);
@@ -127,7 +127,7 @@ public class ForecastPanel extends RmaJPanel {
 		_bcPanel.setEnabled(false);
 
 		// Wrap the simulation panel in the group selection combo box panel
-		_simGroupPanel = new SimulationGroupPanel(_simulationPanel);
+		_simGroupPanel = new SimulationGroupPanel(_forecastSimulationPanel);
 
 		// Add the simulation group panel at the top; it does not claim vertical space
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -179,7 +179,7 @@ public class ForecastPanel extends RmaJPanel {
 		_tabbedPane.addTab("Meteorology", _metPanel);
 		_tabbedPane.addTab("Boundary Conditions", _bcPanel);
 		_tabbedPane.addTab("Temperature Targets", _tempTargetsPanel);
-		_tabbedPane.addTab("Simulation", _simulationPanel);
+		_tabbedPane.addTab("Simulation", _forecastSimulationPanel);
 
 		// Capture the initially selected tab as the current panel
 		_currentPanel = (AbstractForecastPanel) _tabbedPane.getSelectedComponent();
@@ -250,7 +250,7 @@ public class ForecastPanel extends RmaJPanel {
 		if (fsg != null) {
 			// Populate every sub-panel with the new simulation group's data
 			_simGroupPanel.setSimulationGroup(fsg);
-			_simulationPanel.setSimulationGroup(fsg, false);
+			_forecastSimulationPanel.setSimulationGroup(fsg, false);
 			_initialConditionsPanel.setSimulationGroup(fsg);
 			_operationsPanel.setSimulationGroup(fsg);
 			_metPanel.setSimulationGroup(fsg);
@@ -259,7 +259,7 @@ public class ForecastPanel extends RmaJPanel {
 
 		} else {
 			// Clear all sub-panels by passing null as the simulation group
-			_simulationPanel.setSimulationGroup(null, false);
+			_forecastSimulationPanel.setSimulationGroup(null, false);
 			_initialConditionsPanel.setSimulationGroup(null);
 			_operationsPanel.setSimulationGroup(null);
 			_metPanel.setSimulationGroup(null);
@@ -322,7 +322,7 @@ public class ForecastPanel extends RmaJPanel {
 	 * but never {@code null}
 	 */
 	public List<WatSimulation> getSelectedSimulations() {
-		return _simulationPanel.getSelectedSimulations();
+		return _forecastSimulationPanel.getSelectedSimulations();
 	}
 
 	/**
@@ -333,16 +333,16 @@ public class ForecastPanel extends RmaJPanel {
 	 * but never {@code null}
 	 */
 	public List<ResultsData> getSelectedResults() {
-		return _simulationPanel.getSelectedResults();
+		return _forecastSimulationPanel.getSelectedResults();
 	}
 
 	/**
-	 * Returns the {@link SimulationPanel} that is hosted in the Simulation tab.
+	 * Returns the {@link ForecastSimulationPanel} that is hosted in the Simulation tab.
 	 *
-	 * @return the {@link SimulationPanel}; never {@code null} after construction
+	 * @return the {@link ForecastSimulationPanel}; never {@code null} after construction
 	 */
-	public SimulationPanel getSimulationPanel() {
-		return _simulationPanel;
+	public ForecastSimulationPanel getSimulationPanel() {
+		return _forecastSimulationPanel;
 	}
 
 	/**
@@ -363,7 +363,7 @@ public class ForecastPanel extends RmaJPanel {
 	 * @return the highlighted {@link WatSimulation}, or {@code null} if none is selected
 	 */
 	public WatSimulation getSelectedSimulation() {
-		return _simulationPanel.getSelectedSimulation();
+		return _forecastSimulationPanel.getSelectedSimulation();
 	}
 
 	/**
@@ -382,19 +382,19 @@ public class ForecastPanel extends RmaJPanel {
 		WatSimulation simulation = getSelectedSimulation();
 
 		// Reload the simulation table rows from the updated simulation group data
-		_simulationPanel.fillSimulationTable();
+		_forecastSimulationPanel.fillSimulationTable();
 
 		// Update the ensemble set list for the currently selected simulation
-		_simulationPanel.setEnsembleSets(fsg.getEnsembleSets(simulation));
+		_forecastSimulationPanel.setEnsembleSets(fsg.getEnsembleSets(simulation));
 
 		// Refresh the analysis window to reflect the updated ensemble set state
-		_simulationPanel.fillAnalysisWindow();
+		_forecastSimulationPanel.fillAnalysisWindow();
 
 		// Re-enable the panel now that the refresh is complete
 		setEnabled(true);
 
 		// Restore the previously highlighted row in the simulation table
-		_simulationPanel.refreshSimTableSelection();
+		_forecastSimulationPanel.refreshSimTableSelection();
 	}
 
 	/**
@@ -414,7 +414,7 @@ public class ForecastPanel extends RmaJPanel {
 			clearPanel();
 
 			// Notify the simulation panel that it is closing so it can clean up
-			_simulationPanel.closing();
+			_forecastSimulationPanel.closing();
 		}
 
 		super.setVisible(visible);

@@ -18,7 +18,7 @@ import usbr.wat.plugins.actionpanel.ActionsWindow;                              
 import usbr.wat.plugins.actionpanel.model.forecast.EnsembleSet;                                 // Forecast model representing a collection of ensemble members grouped for computation
 import usbr.wat.plugins.actionpanel.model.forecast.ForecastActionComputable;                    // Computable wrapper used to initiate forecast calculations from actions
 import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimulationGroup;                            // Forecast-specific simulation group type used by the forecast panel
-import usbr.wat.plugins.actionpanel.ui.forecast.SimulationPanel;                                // Panel for forecast workflows that displays and manages simulations and ensemble sets
+import usbr.wat.plugins.actionpanel.ui.forecast.ForecastSimulationPanel;
 
 /**
  * Action that runs forecast computations for the selected simulation and ensemble sets.
@@ -37,7 +37,7 @@ public class RunForecastSimulationAction extends AbstractAction {
 	/**
 	 * Forecast simulation panel that provides selection context and receives UI updates.
 	 */
-	private final SimulationPanel _parentPanel;
+	private final ForecastSimulationPanel _parentPanel;
 
 	/**
 	 * Progress dialog that displays compute status for forecast actions.
@@ -50,7 +50,7 @@ public class RunForecastSimulationAction extends AbstractAction {
 	 * @param parent      the actions window used as the dialog parent and context source
 	 * @param parentPanel the forecast simulation panel that triggers updates after compute
 	 */
-	public RunForecastSimulationAction(ActionsWindow parent, SimulationPanel parentPanel) {
+	public RunForecastSimulationAction(ActionsWindow parent, ForecastSimulationPanel parentPanel) {
 		// Initialize the action with its display label
 		super("Run Simulation");
 

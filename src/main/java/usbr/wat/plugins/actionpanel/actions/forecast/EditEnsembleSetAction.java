@@ -12,7 +12,7 @@ import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                          
 import usbr.wat.plugins.actionpanel.model.forecast.EnsembleSet;                 // Forecast model representing a group of simulations and its ensemble sets
 import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimulationGroup;            // Forecast-specific simulation group type used by the forecast panel
 import usbr.wat.plugins.actionpanel.ui.forecast.EditEnsembleSetWindow;          // Dialog window for editing ensemble sets tied to a forecast simulation
-import usbr.wat.plugins.actionpanel.ui.forecast.SimulationPanel;                // Panel for forecast workflows that displays and manages simulations and ensemble sets
+import usbr.wat.plugins.actionpanel.ui.forecast.ForecastSimulationPanel;
 
 /**
  * Action that opens the "Edit Ensemble Set" workflow for forecast simulations.
@@ -26,14 +26,14 @@ public class EditEnsembleSetAction extends AbstractAction {
 	/**
 	 * Forecast simulation panel that owns this action and displays ensemble sets.
 	 */
-	private final SimulationPanel _parentPanel;
+	private final ForecastSimulationPanel _parentPanel;
 
 	/**
 	 * Creates the edit-ensemble-set action with a user-visible name.
 	 *
 	 * @param parentPanel the forecast simulation panel that will be updated with edited ensemble sets
 	 */
-	public EditEnsembleSetAction(SimulationPanel parentPanel) {
+	public EditEnsembleSetAction(ForecastSimulationPanel parentPanel) {
 		// Set the action's display label used by Swing components
 		super("Edit Ensemble Set...");
 

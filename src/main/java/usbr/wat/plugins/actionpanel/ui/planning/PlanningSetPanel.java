@@ -41,7 +41,7 @@ public class PlanningSetPanel extends BasePlanningSetPanel {
 	 * Stored separately from the base-class _parent field to provide a typed
 	 * reference to AbstractSimulationPanel without requiring a cast at each use.
 	 */
-	private SimulationPanel _parent;
+	private PlanningSimulationPanel _parent;
 
 	/**
 	 * Tabbed pane positioned below the inherited toolbar controls.
@@ -58,7 +58,7 @@ public class PlanningSetPanel extends BasePlanningSetPanel {
 	 *
 	 * @param parent the AbstractSimulationPanel that owns this toolbar; must not be null
 	 */
-	public PlanningSetPanel(SimulationPanel parent) {
+	public PlanningSetPanel(PlanningSimulationPanel parent) {
 		super(parent);
 
 		// Store a typed reference in addition to the base-class field
