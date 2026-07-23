@@ -101,7 +101,7 @@ public class PrescribedSimulationGroupPanel extends BaseSimulationGroupPanel {
 	 */
 	@Override
 	protected Action getNewSimGroupAction() {
-		return new NewSimulationGroupAction((PrescribedPanel) _parent, this);
+		return new NewPrescribedSimulationGroupAction((PrescribedPanel) _parent, this);
 	}
 
 
