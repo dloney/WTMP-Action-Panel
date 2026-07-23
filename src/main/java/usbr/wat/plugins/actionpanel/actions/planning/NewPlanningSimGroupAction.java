@@ -5,12 +5,12 @@ import java.awt.event.ActionEvent;                                              
 import javax.swing.AbstractAction;                                                  // Swing base class for encapsulating an action that can be attached to UI components
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                              // Plugin entry point used to obtain the Actions window and global context
-import usbr.wat.plugins.actionpanel.commands.NewPlanningSimulationGroupCmd;         // Command class that constructs a new PlanningSimGroup for creation workflows
+import usbr.wat.plugins.actionpanel.commands.NewPlanningSimulationGroupCmd;         // Command class that constructs a new PlanningSimulationGroup for creation workflows
 import usbr.wat.plugins.actionpanel.editors.NewSimulationGroupDialog;               // Dialog used to create or edit a simulation group’s metadata and settings
 import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup;                  // Base type representing a simulation group used by the actions
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;                // Planning-specific simulation group type used by the planning panel
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSimulationGroup;                // Planning-specific simulation group type used by the planning panel
 import usbr.wat.plugins.actionpanel.ui.AbstractSimulationPanel;                     // Base panel type that exposes simulation group operations to the UI
-import usbr.wat.plugins.actionpanel.ui.planning.SimulationGroupPanel;                        // UI panel that lists and manages SimulationGroup entries in the planning workflow
+import usbr.wat.plugins.actionpanel.ui.planning.SimulationGroupPanel;                        // UI panel that lists and manages PrescribedSimulationGroup entries in the planning workflow
 
 /**
  * Action that creates a new planning simulation group.
@@ -67,8 +67,8 @@ public class NewPlanningSimGroupAction extends AbstractAction {
 				"New Planning Simulation Group"
 		);
 
-		// Specify the concrete PlanningSimGroup class to be created
-		dlg.setSimulationGroupClass(PlanningSimGroup.class);
+		// Specify the concrete PlanningSimulationGroup class to be created
+		dlg.setSimulationGroupClass(PlanningSimulationGroup.class);
 
 		// Provide the factory/command used to instantiate and configure the planning group
 		dlg.setSimulationGroupFactory(NewPlanningSimulationGroupCmd.class);
@@ -94,7 +94,7 @@ public class NewPlanningSimGroupAction extends AbstractAction {
 		ActionPanelPlugin.getInstance()
 				.getActionsWindow()
 				.getPlanningPanel()
-				.setSimulationGroup((PlanningSimGroup) sg);
+				.setSimulationGroup((PlanningSimulationGroup) sg);
 
 		// Add the new group to the UI list and optionally select it
 		_simGroupPanel.addSimulationGroup(sg, true);

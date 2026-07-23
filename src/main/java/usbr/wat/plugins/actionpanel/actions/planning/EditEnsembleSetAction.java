@@ -8,7 +8,7 @@ import java.util.List;                                                          
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                          // Plugin entry point used to obtain the Actions window and global context
 import usbr.wat.plugins.actionpanel.model.planning.EnsembleSet;                 // Planning model representing a group of simulations and its ensemble sets
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;            // Planning-specific simulation group type used by the planning panel
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSimulationGroup;            // Planning-specific simulation group type used by the planning panel
 import usbr.wat.plugins.actionpanel.ui.planning.EditEnsembleSetWindow;          // Dialog window for editing ensemble sets tied to a planning simulation
 import usbr.wat.plugins.actionpanel.ui.planning.SimulationPanel;                // Panel for planning workflows that displays and manages simulations and ensemble sets
 
@@ -61,7 +61,7 @@ public class EditEnsembleSetAction extends AbstractAction {
 		EditEnsembleSetWindow dlg = new EditEnsembleSetWindow(ActionPanelPlugin.getInstance().getActionsWindow());
 
 		// Retrieve the active planning simulation group from the planning panel
-		PlanningSimGroup simGroup = ActionPanelPlugin.getInstance().getActionsWindow().getPlanningPanel().getSimulationGroup();
+		PlanningSimulationGroup simGroup = ActionPanelPlugin.getInstance().getActionsWindow().getPlanningPanel().getSimulationGroup();
 
 		// Retrieve the currently selected planning simulation
 		WatSimulation simulation = ActionPanelPlugin.getInstance().getActionsWindow().getPlanningPanel().getSelectedSimulation();

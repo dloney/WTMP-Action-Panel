@@ -1,4 +1,4 @@
-package usbr.wat.plugins.actionpanel.actions;
+package usbr.wat.plugins.actionpanel.actions.prescribed;
 
 import java.awt.event.ActionEvent;                                          // Event type delivered when a user triggers a bound action (for example, a button press)
 
@@ -16,7 +16,7 @@ import hec2.wat.model.WatSimulation;                                        // W
 import usbr.wat.plugins.actionpanel.ActionsWindow;                          // Main actions window used as the UI parent for dialogs and context
 import usbr.wat.plugins.actionpanel.model.BaseComputeSettings;              // Base settings for compute operations used to locate outputs (e.g., DSS collection file)
 import usbr.wat.plugins.actionpanel.model.ComputeType;                      // Enumeration defining compute types (e.g., Standard vs. collection-based runs)
-import usbr.wat.plugins.actionpanel.model.SimulationGroup;                  // Concrete type representing a simulation group managed within the plugin
+import usbr.wat.plugins.actionpanel.model.prescribed.PrescribedSimulationGroup;                  // Concrete type representing a simulation group managed within the plugin
 
 /**
  * Action that opens DSS result files for the selected simulations and displays them
@@ -59,8 +59,7 @@ public class ViewIterationResultsAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// Retrieve the active simulation group from the prescribed panel
-		// TODO: Either this is used only for prescribed and moved or it should be reworked
-		SimulationGroup simGroup = _parent.getPrescribedPanel().getSimulationGroup();
+		PrescribedSimulationGroup simGroup = _parent.getPrescribedPanel().getSimulationGroup();
 
 		// Require a selected simulation group before proceeding
 		if (simGroup == null) {

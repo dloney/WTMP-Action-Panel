@@ -1,4 +1,4 @@
-package usbr.wat.plugins.actionpanel.ui;
+package usbr.wat.plugins.actionpanel.ui.planning;
 
 import java.awt.GridBagConstraints;  // Specifies per-cell layout constraints for the tabbed pane added below base controls
 import java.awt.event.ItemEvent;     // Carries combo-box selection change data; used to filter DESELECTED events
@@ -15,9 +15,6 @@ import usbr.wat.plugins.actionpanel.actions.planning.DeletePlanningSetAction;  	
 import usbr.wat.plugins.actionpanel.actions.planning.EditPlanningSetAction;    		// Action that opens the editor for the selected planning simulation group
 import usbr.wat.plugins.actionpanel.actions.planning.NewPlanningSetAction;     		// Action that opens the creation dialog for a new planning simulation group
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;               		// Planning-specific simulation group model managed by this panel
-import usbr.wat.plugins.actionpanel.ui.AbstractSimulationPanel;						// Provides the abstract simulation panel class
-import usbr.wat.plugins.actionpanel.ActionsWindow;									// Imports the action window class
-import usbr.wat.plugins.actionpanel.ui.planning.SimulationPanel; 					// Provides access to simulation panel classes
 
 
 /**

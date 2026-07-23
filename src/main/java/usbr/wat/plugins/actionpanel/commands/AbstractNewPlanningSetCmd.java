@@ -9,7 +9,7 @@ import com.rma.model.Project;                                               // A
 import hec2.wat.model.WatAnalysisPeriod;                                    // WAT model type representing the analysis period associated with a planning set
 import hec2.wat.model.WatSimulation;                                        // WAT model type representing a single simulation scenario or run
 
-import usbr.wat.plugins.actionpanel.model.AbstractPlanningSet;          // Base type representing a planning set used by the actions
+import usbr.wat.plugins.actionpanel.model.planning.AbstractPlanningSet;          // Base type representing a planning set used by the actions
 
 /**
  * Base command for creating a new simulation group and populating it with simulations.

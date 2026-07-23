@@ -7,7 +7,7 @@ import com.rma.model.Project;                       // Represents the currently 
 import com.rma.util.I18n;                           // Internationalization object carrying the display name and description for this factory
 
 /**
- * Factory for creating new SimulationGroup manager objects within the WTMP
+ * Factory for creating new PrescribedSimulationGroup manager objects within the WTMP
  * Action Panel.
  *
  * Extends AbstractNewManagerFactory to integrate with the RMA framework's
@@ -16,7 +16,7 @@ import com.rma.util.I18n;                           // Internationalization obje
  *
  * The createCommand() method is currently a stub returning null and is intended
  * to be implemented with a concrete AbstractNewManagerCommand subclass that
- * constructs and registers a new SimulationGroup in the project.
+ * constructs and registers a new PrescribedSimulationGroup in the project.
  *
  */
 public class NewSimulationGroupFactory extends AbstractNewManagerFactory {
@@ -36,19 +36,19 @@ public class NewSimulationGroupFactory extends AbstractNewManagerFactory {
 	}
 
 	/**
-	 * Creates and returns the command responsible for constructing a new SimulationGroup.
+	 * Creates and returns the command responsible for constructing a new PrescribedSimulationGroup.
 	 *
 	 * This method is called by the RMA framework after the user has supplied a name,
 	 * description, and storage location for the new manager. It is currently a stub
 	 * returning null and must be implemented with a concrete AbstractNewManagerCommand
 	 * subclass (such as NewSimulationGroupCmd) that creates and registers the
-	 * SimulationGroup in the project.
+	 * PrescribedSimulationGroup in the project.
 	 *
-	 * @param proj the Project into which the new SimulationGroup will be registered
-	 * @param name the user-entered name for the new SimulationGroup
-	 * @param desc the user-entered description for the new SimulationGroup
+	 * @param proj the Project into which the new PrescribedSimulationGroup will be registered
+	 * @param name the user-entered name for the new PrescribedSimulationGroup
+	 * @param desc the user-entered description for the new PrescribedSimulationGroup
 	 * @param file the RmaFile representing the storage location for the group's data
-	 * @return the command to execute for creating the SimulationGroup, or null if not yet implemented
+	 * @return the command to execute for creating the PrescribedSimulationGroup, or null if not yet implemented
 	 */
 	@Override
 	protected AbstractNewManagerCommand createCommand(Project proj, String name, String desc, RmaFile file) {

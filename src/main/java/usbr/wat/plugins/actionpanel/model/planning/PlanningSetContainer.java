@@ -25,7 +25,7 @@ import com.rma.model.Project;                 // Represents the currently loaded
  *
  * This mirrors the lightweight persistence pattern used by
  * {@code usbr.wat.plugins.actionpanel.model.SharedConfigFiles} for path resolution, but
- * (unlike the {@code SimulationGroup}/{@code ForecastSimGroup} hierarchy, which is
+ * (unlike the {@code PrescribedSimulationGroup}/{@code ForecastSimulationGroup} hierarchy, which is
  * registered as a full {@code AbstractXMLManager} in the project's manager list) Sets are
  * saved as a single flat XML file rather than one file per Set. This keeps the Planning
  * workflow's persistence self-contained and easy to test without requiring integration

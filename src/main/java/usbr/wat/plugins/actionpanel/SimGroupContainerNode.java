@@ -21,10 +21,9 @@ import com.rma.ui.ProjectTree;                                              // P
 
 import rma.swing.RmaImage;                                                  // Provides RmaImage for loading application image resources
 
-import usbr.wat.plugins.actionpanel.model.SimulationGroup;                  // Provides SimulationGroup, the domain model for a group of simulations
-import usbr.wat.plugins.actionpanel.ui.ActionsProjectTab;                   // Provides ActionsProjectTab, the UI tab that hosts the action panel project view
-import usbr.wat.plugins.actionpanel.ui.SimulationGroupNode;                 // Provides SimulationGroupNode, the tree node UI representation of a SimulationGroup
-import usbr.wat.plugins.actionpanel.ui.WtmpTreeNode;                        // Provides WtmpTreeNode, the base tree node type used throughout the WTMP plugin
+import usbr.wat.plugins.actionpanel.model.prescribed.PrescribedSimulationGroup;
+import usbr.wat.plugins.actionpanel.ui.prescribed.SimulationGroupNode;                 // Provides SimulationGroupNode, the tree node UI representation of a PrescribedSimulationGroup
+
 
 /**
  * A container node displayed in the Study Tree that holds and manages
@@ -67,7 +66,7 @@ public class SimGroupContainerNode extends AbstractContainerNode
 		// Store the tree reference, throwing if null to enforce the contract
 		_tree = Objects.requireNonNull(tree, "Project tree must be specified");
 
-		// Register a listener so new/removed SimulationGroup managers update the tree
+		// Register a listener so new/removed PrescribedSimulationGroup managers update the tree
 		addManagerListener();
 
 		// Add the special "Not in a Group" child node to represent ungrouped simulations
@@ -76,7 +75,7 @@ public class SimGroupContainerNode extends AbstractContainerNode
 
 	/**
 	 * Registers a ProjectManagerListener on the current project to respond
-	 * when SimulationGroup managers are added or removed. When a manager is added,
+	 * when PrescribedSimulationGroup managers are added or removed. When a manager is added,
 	 * a corresponding tree node is created. When one is removed, its node is
 	 * deleted from the tree and the tree is notified.
 	 */
@@ -120,13 +119,13 @@ public class SimGroupContainerNode extends AbstractContainerNode
 			}
 
 			/**
-			 * Declares that this listener only cares about SimulationGroup managers.
+			 * Declares that this listener only cares about PrescribedSimulationGroup managers.
 			 *
-			 * @return the SimulationGroup class, used to filter manager events
+			 * @return the PrescribedSimulationGroup class, used to filter manager events
 			 */
 			@Override
 			public Class getManagerClass() {
-				return SimulationGroup.class;
+				return PrescribedSimulationGroup.class;
 			}
 
 		});
@@ -138,7 +137,7 @@ public class SimGroupContainerNode extends AbstractContainerNode
 	 * with the project tree reference. The tree is notified of the insertion
 	 * on the Event Dispatch Thread.
 	 *
-	 * @param proxy the manager proxy for the SimulationGroup to add
+	 * @param proxy the manager proxy for the PrescribedSimulationGroup to add
 	 * @return true if a new node was created and added; false if it already existed
 	 */
 	public boolean addSimulationGroup(ManagerProxy proxy) {
@@ -190,7 +189,7 @@ public class SimGroupContainerNode extends AbstractContainerNode
 	}
 
 	/**
-	 * Creates and adds a special transitory SimulationGroup node labeled "Not in a Group"
+	 * Creates and adds a special transitory PrescribedSimulationGroup node labeled "Not in a Group"
 	 * to the given project. This node represents all simulations that have not been
 	 * assigned to any named group. It is marked as transitory and read-only so it
 	 * does not trigger persistence or modification events.
@@ -198,8 +197,8 @@ public class SimGroupContainerNode extends AbstractContainerNode
 	 * @param prj the Project to add the transitory group manager to
 	 */
 	private void addNoGroupNode(Project prj) {
-		// Create an anonymous SimulationGroup that is always considered clean and readable
-		SimulationGroup  simGroup = new SimulationGroup() {
+		// Create an anonymous PrescribedSimulationGroup that is always considered clean and readable
+		PrescribedSimulationGroup simGroup = new PrescribedSimulationGroup() {
 			/**
 			 * Always returns true since this group requires no data loading.
 			 *
@@ -270,11 +269,11 @@ public class SimGroupContainerNode extends AbstractContainerNode
 	 * Returns the fully qualified class name of the manager type this container handles.
 	 * Used by the framework to associate managers with this container node.
 	 *
-	 * @return the class name of SimulationGroup
+	 * @return the class name of PrescribedSimulationGroup
 	 */
 	@Override
 	public String getManagerType() {
-		return SimulationGroup.class.getName();
+		return PrescribedSimulationGroup.class.getName();
 	}
 
 	/**
@@ -299,13 +298,13 @@ public class SimGroupContainerNode extends AbstractContainerNode
 	}
 
 	/**
-	 * Checks whether the given SimulationGroup already has a corresponding tree node,
+	 * Checks whether the given PrescribedSimulationGroup already has a corresponding tree node,
 	 * and if not, retrieves its manager proxy and adds it to the tree.
 	 *
-	 * @param simGrp the SimulationGroup to check and potentially add
+	 * @param simGrp the PrescribedSimulationGroup to check and potentially add
 	 * @return true if a new node was added; false if the group was null or already present
 	 */
-	public boolean checkAndAddSimGroup(SimulationGroup simGrp) {
+	public boolean checkAndAddSimGroup(PrescribedSimulationGroup simGrp) {
 		// Guard against null input; nothing to add
 		if ( simGrp == null ) {
 			return false;

@@ -16,13 +16,13 @@ import hec2.wat.model.WatSimulation;                                            
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                          // Plugin entry point used to obtain the Actions window and global context
 import usbr.wat.plugins.actionpanel.ActionsWindow;                              // Main actions window used as the UI parent for dialogs and status updates
 import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup;              // Base type representing a simulation group used by the actions
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;            // Planning-specific simulation group type used by the planning panel
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSimulationGroup;            // Planning-specific simulation group type used by the planning panel
 import usbr.wat.plugins.actionpanel.ui.BaseSimulationGroupPanel;                // Panel exposing common simulation-group functionality and flags
 
 /**
  * Action that deletes one or more planning simulation groups selected by the user.
  *
- * Presents an object chooser dialog filtered to {@link PlanningSimGroup} proxies,
+ * Presents an object chooser dialog filtered to {@link PlanningSimulationGroup} proxies,
  * performs deletion of the selected group managers and their simulations, and
  * notifies the UI to refresh.
  */
@@ -57,7 +57,7 @@ public class DeletePlanningSimGroupAction extends AbstractAction {
 	/**
 	 * Handles the user-triggered event to delete selected planning simulation groups.
 	 * <p>
-	 * Shows an {@code ObjectChooser} in delete mode for {@link PlanningSimGroup} entries,
+	 * Shows an {@code ObjectChooser} in delete mode for {@link PlanningSimulationGroup} entries,
 	 * deletes each selected group and its simulations, notifies the parent panel, and
 	 * refreshes the planning panel's group list.
 	 *
@@ -65,8 +65,8 @@ public class DeletePlanningSimGroupAction extends AbstractAction {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// Retrieve all manager proxies for PlanningSimGroup from the current project
-		List<ManagerProxy> simGroups = Project.getCurrentProject().getManagerProxyListForType(PlanningSimGroup.class);
+		// Retrieve all manager proxies for PlanningSimulationGroup from the current project
+		List<ManagerProxy> simGroups = Project.getCurrentProject().getManagerProxyListForType(PlanningSimulationGroup.class);
 
 		// Create the chooser dialog in delete mode with the available proxies
 		ObjectChooser chooser = new ObjectChooser(ActionPanelPlugin.getInstance().getActionsWindow(), true, simGroups, ObjectChooser.DELETE);

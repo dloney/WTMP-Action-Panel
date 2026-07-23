@@ -69,11 +69,8 @@ import rma.util.RMAIO; // Import utility class for file path concatenation and s
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin; // Import action panel plugin singleton for accessing UI components
 import usbr.wat.plugins.actionpanel.actions.forecast.RunForecastSimulationAction; // Import forecast simulation action class with helper methods for parsing member sets
-import usbr.wat.plugins.actionpanel.model.BaseComputeSettings; // Import base settings interface for iteration configuration access
 import usbr.wat.plugins.actionpanel.model.ComputeSettings; // Import compute settings class managing Python script configurations
 import usbr.wat.plugins.actionpanel.model.ComputeType; // Import enum type specifying standard/iterative/position analysis modes
-import usbr.wat.plugins.actionpanel.model.forecast.IcPathMap; // Import initial condition path mapping utility for IC data copy operations
-import usbr.wat.plugins.actionpanel.model.ModelAltIterationSettings; // Import iteration settings class defining member array configuration
 import usbr.wat.plugins.actionpanel.model.UsbrComputable; // Import user-specific computable interface extending base computational methods
 import usbr.wat.plugins.actionpanel.ui.forecast.CsvReader; // Import CSV reader utility for parsing configuration files
 
@@ -145,7 +142,7 @@ public class ForecastActionComputable implements UsbrComputable, RealizationComp
 	 */
 	private final List<EnsembleSet> _selectedESets; // Collection of selected ensemble sets for processing this forecast scenario
 
-	private ForecastSimGroup _simGroup; // Reference to forecast simulation group object managing initial conditions and structure
+	private ForecastSimulationGroup _simGroup; // Reference to forecast simulation group object managing initial conditions and structure
 
 	private WatSimulation _sim; // The underlying WAT simulation model instance being computed for this forecast workflow
 
@@ -201,7 +198,7 @@ public class ForecastActionComputable implements UsbrComputable, RealizationComp
 	private JProgressBar _lifecyclePbar; // Lifecycle progress bar component reference
 
 	// Constructor accepting simulation group and data
-	public ForecastActionComputable(ForecastSimGroup simGroup, WatSimulation sim, List<EnsembleSet> selectedESets, boolean recomputeAll) {
+	public ForecastActionComputable(ForecastSimulationGroup simGroup, WatSimulation sim, List<EnsembleSet> selectedESets, boolean recomputeAll) {
 		super(); // Invoke superclass default constructor
 		_simGroup = simGroup; // Assign forecast simulation group reference instance variable
 		_sim = sim; // Assign simulation model instance reference variable

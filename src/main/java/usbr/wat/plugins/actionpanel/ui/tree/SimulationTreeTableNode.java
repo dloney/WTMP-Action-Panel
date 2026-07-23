@@ -21,12 +21,9 @@ import hec2.wat.model.WatSimulation;                                            
 import rma.util.RMAIO;                                                          // Provides RMAIO for path concatenation and boolean parsing utilities
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                          // Provides ActionPanelPlugin for accessing the singleton plugin and its current simulation group
-import usbr.wat.plugins.actionpanel.actions.SaveSimulationResultsAction;        // Provides SaveSimulationResultsAction for the RESULTS_DIR constant naming the results subdirectory
-import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup;              // Provides AbstractSimulationGroup for the simGroup parameter type in the tooltip builder
-import usbr.wat.plugins.actionpanel.model.BaseComputeSettings;                  // Provides BaseComputeSettings for retrieving ensemble member settings shown in the tooltip
-import usbr.wat.plugins.actionpanel.model.ComputeType;                          // Provides ComputeType for displaying the compute type (Standard, Ensemble, etc.) in the tooltip
-import usbr.wat.plugins.actionpanel.model.ResultsData;                          // Provides ResultsData for loading and holding results metadata from a folder on disk
-import usbr.wat.plugins.actionpanel.model.SimulationGroup;                      // Provides SimulationGroup for accessing compute type and member settings in the tooltip
+import usbr.wat.plugins.actionpanel.actions.prescribed.SaveSimulationResultsAction;        // Provides SaveSimulationResultsAction for the RESULTS_DIR constant naming the results subdirectory
+import usbr.wat.plugins.actionpanel.model.*;
+import usbr.wat.plugins.actionpanel.model.prescribed.PrescribedSimulationGroup;
 
 /**
  * A mutable tree-table node representing a WAT simulation in the Actions simulation
@@ -44,7 +41,7 @@ import usbr.wat.plugins.actionpanel.model.SimulationGroup;                      
  * VIEW_REPORT_COLUMN     — the fixed string "View" (button trigger).
  *
  * The tooltip displays the simulation's description, the list of model alternatives
- * with their program and name, and (for SimulationGroup instances) the compute type
+ * with their program and name, and (for PrescribedSimulationGroup instances) the compute type
  * and ensemble members to compute.
  *
  * This node contributes no items to the right-click popup menu; context actions for
@@ -335,11 +332,11 @@ public class SimulationTreeTableNode extends AbstractMutableTreeTableNode
 	/**
 	 * Builds and returns an HTML tooltip for this simulation node. The tooltip includes
 	 * the simulation's description (when non-empty), a list of model alternatives
-	 * with their program name and alternative name, and (for SimulationGroup instances)
+	 * with their program name and alternative name, and (for PrescribedSimulationGroup instances)
 	 * the compute type and, for non-standard types, the array of ensemble members to compute.
 	 *
 	 * @param simGroup the AbstractSimulationGroup providing compute type and member context;
-	 *                 cast to SimulationGroup for compute-settings access
+	 *                 cast to PrescribedSimulationGroup for compute-settings access
 	 * @return a trimmed HTML tooltip string, or null if this node's simulation is null
 	 */
 	public String getToolTipText(AbstractSimulationGroup simGroup) {
@@ -369,16 +366,16 @@ public class SimulationTreeTableNode extends AbstractMutableTreeTableNode
 				}
 			}
 
-			// For SimulationGroup contexts, append the compute type and ensemble member details
-			if (simGroup instanceof SimulationGroup) {
-				SimulationGroup simulationGroup = (SimulationGroup) simGroup;
-				ComputeType computeType = simulationGroup.getComputeType(_sim.getName());
+			// For PrescribedSimulationGroup contexts, append the compute type and ensemble member details
+			if (simGroup instanceof PrescribedSimulationGroup) {
+				PrescribedSimulationGroup prescribedSimulationGroup = (PrescribedSimulationGroup) simGroup;
+				ComputeType computeType = prescribedSimulationGroup.getComputeType(_sim.getName());
 				tip.append("<b>Compute Type: </b>");
 				tip.append(computeType.toString());
 
 				// Only show member details when the compute type is non-standard (e.g. ensemble)
 				if (computeType != ComputeType.Standard) {
-					BaseComputeSettings computeSettings = simulationGroup.getComputeSettings(_sim.getName(), computeType);
+					BaseComputeSettings computeSettings = prescribedSimulationGroup.getComputeSettings(_sim.getName(), computeType);
 					tip.append("<br><b>Members to Compute: </b>");
 					tip.append(Arrays.toString(computeSettings.getMembersToCompute()));
 				}

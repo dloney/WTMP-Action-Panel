@@ -40,10 +40,10 @@ import usbr.wat.plugins.actionpanel.model.SimulationReportInfo; // Import Simula
  * 		<Directory>J:/studies/study1</Directory>
  * 		<ObservedData>j:/studies/study1/shared</ObservedData>
  * 	</Study>
- * 	<SimulationGroup>
+ * 	<PrescribedSimulationGroup>
  * 		<Name>sgroup1</Name>
  * 		<Description>some description</Description>
- * 	</SimulationGroup>
+ * 	</PrescribedSimulationGroup>
  * 	<Simulations>
  * 		<Simulation>
  * 			<Name>sim1-group1</Name>
@@ -124,7 +124,7 @@ public class ReportXmlFile {
 	private static final String INSTALL_DIR_ELEM = "InstallDirectory"; // JDOM tag for system installation directory
 	private static final String WRITE_DIR_ELEM = "WriteDirectory"; // JDOM tag for output write directory
 
-	private static final String SIM_GROUP_ELEM = "SimulationGroup"; // Element for defining the simulation group context
+	private static final String SIM_GROUP_ELEM = "PrescribedSimulationGroup"; // Element for defining the simulation group context
 	private static final String WAT_ALT_ELEM = "WatAlternative"; // Element describing WAT Alternative (Analysis Period) details
 	private static final String ANALYSIS_PERIOD_ELEM = "AnalysisPeriod"; // Element for Analysis Period metadata
 

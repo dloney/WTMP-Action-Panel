@@ -16,8 +16,8 @@ import hec.model.AbstractSimulation;         // Base class for HEC simulation mo
 import hec2.wat.model.WatAnalysisPeriod;     // WAT analysis period model object; the subject being observed for renames
 
 import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup; // Base class for all simulation groups holding an analysis period reference
-import usbr.wat.plugins.actionpanel.model.SimulationGroup;         // Standard (non-forecast) simulation group implementation
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup; // Forecast-specific simulation group implementation
+import usbr.wat.plugins.actionpanel.model.prescribed.PrescribedSimulationGroup;
+import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimulationGroup; // Forecast-specific simulation group implementation
 
 
 /**
@@ -36,7 +36,7 @@ import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup; // Forecast
  * A parallel name cache ({@code _localApList} / {@code _localApNameList}) is maintained
  * to handle the case where a simulation group holds a stale name string rather than a
  * live object reference to its analysis period. When a rename is detected, both
- * {@link SimulationGroup} and {@link ForecastSimGroup} instances are updated so they
+ * {@link PrescribedSimulationGroup} and {@link ForecastSimulationGroup} instances are updated so they
  * reflect the current period name and are marked as modified.
  *
  * Call {@link #stopListening()} when the listener is no longer needed to prevent memory
@@ -115,7 +115,7 @@ public class AnalysisPeriodRenameListener
 	 *
 	 * When the observable is a {@link WatAnalysisPeriod} and the argument signals a
 	 * name change ({@link NamedType#NAME_CHANGED} or {@link NamedType#RENAME_EVENT}),
-	 * both {@link ForecastSimGroup} and {@link SimulationGroup} collections are scanned
+	 * both {@link ForecastSimulationGroup} and {@link PrescribedSimulationGroup} collections are scanned
 	 * and updated to reflect the new period name.
 	 *
 	 * @param o   the observable that fired the notification; expected to be a
@@ -131,11 +131,11 @@ public class AnalysisPeriodRenameListener
 			// Act only when the notification represents a name-change event
 			if (NamedType.NAME_CHANGED.equals(arg) || NamedType.RENAME_EVENT.equals(arg)) {
 				// Update all forecast simulation groups that reference the renamed period
-				List<ForecastSimGroup> simGroups = _prj.getManagerListForType(ForecastSimGroup.class);
+				List<ForecastSimulationGroup> simGroups = _prj.getManagerListForType(ForecastSimulationGroup.class);
 				updateSimGroups(simGroups, ap);
 
 				// Update all standard simulation groups that reference the renamed period
-				List<SimulationGroup> simGroups2 = _prj.getManagerListForType(SimulationGroup.class);
+				List<PrescribedSimulationGroup> simGroups2 = _prj.getManagerListForType(PrescribedSimulationGroup.class);
 				updateSimGroups(simGroups2, ap);
 			}
 		}

@@ -13,7 +13,7 @@ import rma.util.RMAIO; // RMA I/O utility (imported for potential use by callers
 
 /**
  * Named data object representing a single meteorological dataset configuration
- * within a PlanningSimGroup boundary condition setup.
+ * within a PlanningSimulationGroup boundary condition setup.
  *
  * Each MeteorlogicData entry identifies a specific meteorological data source for
  * use in an ensemble planning compute run. It carries:
@@ -26,7 +26,7 @@ import rma.util.RMAIO; // RMA I/O utility (imported for potential use by callers
  *     When the config file is null, the default historical met config file from
  *     PlanningConfigFiles is returned for backwards compatibility with older save files.
  *
- * Instances are loaded by PlanningSimGroup from the "Meteorology" XML element and
+ * Instances are loaded by PlanningSimulationGroup from the "Meteorology" XML element and
  * resolved by name when configuring BcData boundary conditions. They are persisted
  * as "MeteorologyData" child elements.
  */

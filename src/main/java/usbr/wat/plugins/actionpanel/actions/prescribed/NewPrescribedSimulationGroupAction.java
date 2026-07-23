@@ -3,11 +3,11 @@ package usbr.wat.plugins.actionpanel.actions.prescribed;
 import java.awt.event.ActionEvent;												// Event type delivered when a user triggers a bound action (for example, a button press)
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;							// Plugin entry point used to obtain the Actions window and global context
-import usbr.wat.plugins.actionpanel.commands.NewSimulationGroupCmd;				// Command class that constructs a new SimulationGroup instance for creation workflows
+import usbr.wat.plugins.actionpanel.commands.NewSimulationGroupCmd;				// Command class that constructs a new PrescribedSimulationGroup instance for creation workflows
 import usbr.wat.plugins.actionpanel.editors.NewSimulationGroupDialog;			// Dialog used to create or edit a simulation group’s metadata and settings
-import usbr.wat.plugins.actionpanel.model.SimulationGroup;						// Concrete type representing a simulation group managed within the plugin
+import usbr.wat.plugins.actionpanel.model.prescribed.PrescribedSimulationGroup;
 import usbr.wat.plugins.actionpanel.ui.PrescribedPanel;						    // Panel for prescribed conditions providing access to the active simulation group
-import usbr.wat.plugins.actionpanel.ui.PrescribedSimulationGroupPanel;			// UI panel that lists and manages SimulationGroup entries in the prescribed workflow
+import usbr.wat.plugins.actionpanel.ui.PrescribedSimulationGroupPanel;			// UI panel that lists and manages PrescribedSimulationGroup entries in the prescribed workflow
 
 /**
  * Action that creates a new Simulation Group in the prescribed workflow.
@@ -17,7 +17,7 @@ import usbr.wat.plugins.actionpanel.ui.PrescribedSimulationGroupPanel;			// UI p
  * as the active selection in the prescribed panel.
  */
 @SuppressWarnings("serial")
-public class NewSimulationGroupAction extends BaseActionsPanelAction {
+public class NewPrescribedSimulationGroupAction extends BaseActionsPanelAction {
 	/**
 	 * Panel that displays and manages simulation groups within prescribed.
 	 */
@@ -34,7 +34,7 @@ public class NewSimulationGroupAction extends BaseActionsPanelAction {
 	 * @param prescribedPanel the prescribed panel that will receive the newly created group
 	 * @param simGroupPanel    the UI panel that lists simulation groups and will add the new one
 	 */
-	public NewSimulationGroupAction(PrescribedPanel prescribedPanel, PrescribedSimulationGroupPanel simGroupPanel) {
+	public NewPrescribedSimulationGroupAction(PrescribedPanel prescribedPanel, PrescribedSimulationGroupPanel simGroupPanel) {
 		// Initialize the action with its display label
 		super("New...");
 
@@ -59,8 +59,8 @@ public class NewSimulationGroupAction extends BaseActionsPanelAction {
 		// Create the dialog for new simulation group creation
 		NewSimulationGroupDialog dlg = new NewSimulationGroupDialog(ActionPanelPlugin.getInstance().getActionsWindow(), true, "New Simulation Group");
 
-		// Specify the concrete SimulationGroup class to be created
-		dlg.setSimulationGroupClass(SimulationGroup.class);
+		// Specify the concrete PrescribedSimulationGroup class to be created
+		dlg.setSimulationGroupClass(PrescribedSimulationGroup.class);
 
 		// Provide the factory/command used to instantiate and configure the group
 		dlg.setSimulationGroupFactory(NewSimulationGroupCmd.class);
@@ -79,8 +79,8 @@ public class NewSimulationGroupAction extends BaseActionsPanelAction {
 			return;
 		}
 
-		// Retrieve the newly created SimulationGroup
-		SimulationGroup sg = (SimulationGroup) dlg.getSimulationGroup();
+		// Retrieve the newly created PrescribedSimulationGroup
+		PrescribedSimulationGroup sg = (PrescribedSimulationGroup) dlg.getSimulationGroup();
 
 		// Set the new group as the active selection in the prescribed panel, when available
 		if (_parent != null) {

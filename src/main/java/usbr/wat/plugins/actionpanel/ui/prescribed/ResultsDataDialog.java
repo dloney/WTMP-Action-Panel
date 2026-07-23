@@ -1,4 +1,4 @@
-package usbr.wat.plugins.actionpanel.ui;
+package usbr.wat.plugins.actionpanel.ui.prescribed;
 
 import java.awt.Dialog;              // AWT Dialog reference used as the parent for this modal dialog
 import java.awt.GridBagConstraints;  // Specifies per-cell layout constraints for GridBagLayout
@@ -21,7 +21,7 @@ import rma.swing.RmaJDialog;              // RMA base dialog class providing com
 import rma.swing.RmaJTextArea;            // RMA multi-line text area used for the description input
 import rma.swing.RmaJTextField;           // RMA single-line text field used for the results name input
 
-import usbr.wat.plugins.actionpanel.actions.SaveSimulationResultsAction; // Provides the results folder path for a given simulation and name
+import usbr.wat.plugins.actionpanel.actions.prescribed.SaveSimulationResultsAction; // Provides the results folder path for a given simulation and name
 import usbr.wat.plugins.actionpanel.model.ResultsData;                   // Model object holding all metadata for a saved simulation results snapshot
 
 

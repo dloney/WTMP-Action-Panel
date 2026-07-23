@@ -5,7 +5,7 @@ package usbr.wat.plugins.actionpanel.model.forecast;
  * WTMP Action Panel forecast compute subsystem.
  *
  * Each constant represents a distinct meteorological dataset category that can
- * be associated with a MeteorlogicData entry in a ForecastSimGroup:
+ * be associated with a MeteorlogicData entry in a ForecastSimulationGroup:
  *
  *   Historic: observed historical meteorological records.
  *   L3MTO:    Level-3 Model Training Output; bias-corrected model-derived data.

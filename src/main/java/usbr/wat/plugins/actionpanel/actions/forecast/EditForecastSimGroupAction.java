@@ -7,11 +7,10 @@ import javax.swing.AbstractAction;                                              
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                              // Plugin entry point used to obtain the Actions window and global context
 import usbr.wat.plugins.actionpanel.editors.NewSimulationGroupDialog;               // Dialog used to create or edit a simulation group's metadata and settings
 import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup;                  // Base type representing a simulation group used by the actions
-import usbr.wat.plugins.actionpanel.model.SimulationGroup;                          // Concrete type representing a simulation group (import present even if unused directly here)
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;                // Forecast-specific simulation group type used by the forecast panel
+import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimulationGroup;                // Forecast-specific simulation group type used by the forecast panel
 
 /**
- * Action that opens the editor to modify a forecast {@link ForecastSimGroup}.
+ * Action that opens the editor to modify a forecast {@link ForecastSimulationGroup}.
  *
  * When invoked, this action constructs and shows the edit dialog pre-populated
  * with the current forecast simulation group. If the user confirms changes,
@@ -44,7 +43,7 @@ public class EditForecastSimGroupAction extends AbstractAction {
 		);
 
 		// Retrieve the current forecast simulation group from the forecast panel
-		ForecastSimGroup simGroup = ActionPanelPlugin.getInstance()
+		ForecastSimulationGroup simGroup = ActionPanelPlugin.getInstance()
 				.getActionsWindow()
 				.getForecastPanel()
 				.getSimulationGroup();
@@ -67,6 +66,6 @@ public class EditForecastSimGroupAction extends AbstractAction {
 		ActionPanelPlugin.getInstance()
 				.getActionsWindow()
 				.getForecastPanel()
-				.setSimulationGroup((ForecastSimGroup) sg);
+				.setSimulationGroup((ForecastSimulationGroup) sg);
 	}
 }

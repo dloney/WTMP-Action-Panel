@@ -16,11 +16,10 @@ import rma.swing.RmaJPanel;                                                     
 
 import usbr.wat.plugins.actionpanel.ActionsWindow;                              // Provides ActionsWindow as the parent window that hosts this planning panel
 import usbr.wat.plugins.actionpanel.model.ResultsData;                          // Provides ResultsData for returning the list of selected simulation results
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;            // Provides PlanningSimGroup as the top-level data container for all planning data
-import usbr.wat.plugins.actionpanel.ui.planning.SimulationGroupPanel;           // Provides SimulationGroupPanel for the simulation group selection combo box above the tabs
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSimulationGroup;            // Provides PlanningSimulationGroup as the top-level data container for all planning data
 import usbr.wat.plugins.actionpanel.ui.planning.temptarget.TempTargetPanel;     // Provides TempTargetPanel as the temperature targets tab panel
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;					// Provides the planning set class to the panel
-import usbr.wat.plugins.actionpanel.ui.PlanningSetPanel;  					    // Provides the planning set panel class to the panel
+
 
 /**
  * The top-level planning panel that hosts all planning data entry and review tabs
@@ -40,12 +39,12 @@ import usbr.wat.plugins.actionpanel.ui.PlanningSetPanel;  					    // Provides t
  *
  * When the active tab changes, the previously active panel's state is saved and the
  * newly active panel is notified via {@link AbstractPlanningPanel#panelActivated()}.
- * When a new {@link PlanningSimGroup} is set, all sub-panels are populated with its
+ * When a new {@link PlanningSimulationGroup} is set, all sub-panels are populated with its
  * data. Setting the group to {@code null} clears all panels.
  *
  * @see AbstractPlanningPanel
  * @see SimulationGroupPanel
- * @see PlanningSimGroup
+ * @see PlanningSimulationGroup
  */
 public class PlanningPanel extends RmaJPanel {
 	// The parent ActionsWindow that hosts this planning panel
@@ -76,7 +75,7 @@ public class PlanningPanel extends RmaJPanel {
 	private SimulationPanel _simulationPanel;
 
 	// The currently active planning simulation group; null when no group is selected
-	private PlanningSimGroup _simGroup;
+	private PlanningSimulationGroup _simGroup;
 
 	// The AbstractPlanningPanel tab that is currently selected; used to save state on tab switch
 	private AbstractPlanningPanel _currentPanel;
@@ -239,26 +238,26 @@ public class PlanningPanel extends RmaJPanel {
 	}
 
 	/**
-	 * Returns the currently active {@link PlanningSimGroup}, or {@code null} if no
+	 * Returns the currently active {@link PlanningSimulationGroup}, or {@code null} if no
 	 * simulation group has been selected.
 	 *
-	 * @return the active {@link PlanningSimGroup}, or {@code null}
+	 * @return the active {@link PlanningSimulationGroup}, or {@code null}
 	 */
-	public PlanningSimGroup getSimulationGroup() {
+	public PlanningSimulationGroup getSimulationGroup() {
 		return _simGroup;
 	}
 
 	/**
-	 * Sets the active {@link PlanningSimGroup} and propagates it to all sub-panels.
+	 * Sets the active {@link PlanningSimulationGroup} and propagates it to all sub-panels.
 	 *
 	 * If {@code fsg} is non-null, all sub-panels are populated with its data. If
 	 * {@code fsg} is {@code null}, all sub-panels are cleared and
 	 * {@link #clearPanel()} is called to reset all lower-panel controls.
 	 *
-	 * @param fsg the {@link PlanningSimGroup} to display, or {@code null} to clear
+	 * @param fsg the {@link PlanningSimulationGroup} to display, or {@code null} to clear
 	 *            all panels
 	 */
-	public void setSimulationGroup(PlanningSimGroup fsg) {
+	public void setSimulationGroup(PlanningSimulationGroup fsg) {
 		_simGroup = fsg;
 
 		if (fsg != null) {
@@ -382,16 +381,16 @@ public class PlanningPanel extends RmaJPanel {
 
 	/**
 	 * Refreshes the Simulation tab's table, ensemble set list, and analysis window
-	 * after a change to the given {@link PlanningSimGroup}'s ensemble sets, then
+	 * after a change to the given {@link PlanningSimulationGroup}'s ensemble sets, then
 	 * re-enables the panel and restores the simulation table selection.
 	 *
 	 * Called after a boundary condition set deletion or other operation that causes
 	 * ensemble sets to be added or removed as a side effect.
 	 *
-	 * @param fsg the {@link PlanningSimGroup} whose updated ensemble sets should be
+	 * @param fsg the {@link PlanningSimulationGroup} whose updated ensemble sets should be
 	 *            reflected in the Simulation tab
 	 */
-	public void refreshSimulationPanel(PlanningSimGroup fsg) {
+	public void refreshSimulationPanel(PlanningSimulationGroup fsg) {
 		// Capture the currently highlighted simulation before the table is refreshed
 		WatSimulation simulation = getSelectedSimulation();
 

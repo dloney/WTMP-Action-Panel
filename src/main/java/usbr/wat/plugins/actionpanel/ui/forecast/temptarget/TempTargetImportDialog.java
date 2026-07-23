@@ -25,14 +25,10 @@ import rma.swing.table.RmaTableModel;                           // Provides RmaT
 import rma.util.RMAFilenameFilter;                              // Provides RMAFilenameFilter for restricting the file chooser to .dss files only
 
 import usbr.wat.plugins.actionpanel.model.SharedConfigFiles;                // Provides SharedConfigFiles for resolving the shared river locations config file path
-import usbr.wat.plugins.actionpanel.model.forecast.EnsembleSet;             // Provides EnsembleSet for identifying ensemble sets that depend on a temperature target set being overwritten
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;        // Provides ForecastSimGroup for looking up existing temperature target sets and their dependents
-import usbr.wat.plugins.actionpanel.model.forecast.RiverLocation;           // Provides RiverLocation, the model object populated in the river location combo boxes
-import usbr.wat.plugins.actionpanel.model.forecast.TemperatureTargetSet;    // Provides TemperatureTargetSet, the model object constructed and returned by this dialog
+import usbr.wat.plugins.actionpanel.model.forecast.*;
 import usbr.wat.plugins.actionpanel.ui.forecast.CsvReader;                  // Provides CsvReader for reading the river location config CSV into typed RiverLocation objects
 
 import javax.swing.ButtonGroup;                                 // Provides ButtonGroup for grouping the Import and Create New radio buttons as mutually exclusive
-import javax.swing.DefaultComboBoxModel;                        // Provides DefaultComboBoxModel (imported for potential combo model construction)
 import javax.swing.JButton;                                     // Provides JButton for the OK, Cancel, and file chooser ellipsis buttons
 import javax.swing.JCheckBox;                                   // Provides JCheckBox for the internal checkbox editor reference used to detect checkbox state changes
 import javax.swing.JComboBox;                                   // Provides JComboBox for the river location combo box embedded in the import table column
@@ -98,7 +94,7 @@ import java.util.stream.Collectors;                             // Provides Coll
  *
  * @see TemperatureTargetSet
  * @see TempTargetConsumer
- * @see ForecastSimGroup
+ * @see ForecastSimulationGroup
  */
 public final class TempTargetImportDialog extends RmaJDialog {
     /**
@@ -132,9 +128,9 @@ public final class TempTargetImportDialog extends RmaJDialog {
     private final List<String> _existingSetNames;
 
     /**
-     * The active ForecastSimGroup; used to check for existing sets and their EnsembleSet dependents.
+     * The active ForecastSimulationGroup; used to check for existing sets and their EnsembleSet dependents.
      */
-    private final ForecastSimGroup _fsg;
+    private final ForecastSimulationGroup _fsg;
 
     /**
      * Radio button for selecting the "Import Set From Existing" (DSS file) mode.
@@ -239,10 +235,10 @@ public final class TempTargetImportDialog extends RmaJDialog {
      * @param parent                     the parent Window used for dialog positioning
      * @param existingSetNames           names of temperature target sets already in the simulation group;
      *                                   used for duplicate name detection on OK
-     * @param fsg                        the active ForecastSimGroup providing existing set lookups
+     * @param fsg                        the active ForecastSimulationGroup providing existing set lookups
      * @param consumeTempTargetSetAction callback that receives the selected/created sets on OK
      */
-    public TempTargetImportDialog(Window parent, List<String> existingSetNames, ForecastSimGroup fsg, TempTargetConsumer consumeTempTargetSetAction) {
+    public TempTargetImportDialog(Window parent, List<String> existingSetNames, ForecastSimulationGroup fsg, TempTargetConsumer consumeTempTargetSetAction) {
         super(parent, true);
         setTitle("Select Temperature Target Set");
         getContentPane().setLayout(new GridBagLayout());

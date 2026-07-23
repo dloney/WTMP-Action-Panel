@@ -7,10 +7,10 @@ import com.rma.model.Project;                                                   
 
 import hec2.wat.model.WatAnalysisPeriod;                                            // WAT model type representing the analysis period associated with a simulation group
 import hec2.wat.model.WatSimulation;                                                // WAT model type representing a single simulation scenario or run
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;                // Forecast-specific simulation group type used by the forecast panel and commands
+import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimulationGroup;                // Forecast-specific simulation group type used by the forecast panel and commands
 
 /**
- * Command for creating a new {@link ForecastSimGroup} and populating it with simulations.
+ * Command for creating a new {@link ForecastSimulationGroup} and populating it with simulations.
  *
  *
  * This command extends {@code AbstractNewSimulationGroupCmd} to tailor creation for
@@ -40,12 +40,12 @@ public class NewForecastSimulationGroupCmd extends AbstractNewSimulationGroupCmd
 	/**
 	 * Returns the file extension used for forecast simulation group files.
 	 *
-	 * @return the file extension associated with {@link ForecastSimGroup}
+	 * @return the file extension associated with {@link ForecastSimulationGroup}
 	 */
 	@Override
 	public String getExtension() {
 		// Delegate to the forecast group's static file extension constant
-		return ForecastSimGroup.FILE_EXT;
+		return ForecastSimulationGroup.FILE_EXT;
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class NewForecastSimulationGroupCmd extends AbstractNewSimulationGroupCmd
 	@Override
 	public String getManagerClass() {
 		// Provide the forecast simulation group's class name to the framework
-		return ForecastSimGroup.class.getName();
+		return ForecastSimulationGroup.class.getName();
 	}
 
 	/**
@@ -73,12 +73,12 @@ public class NewForecastSimulationGroupCmd extends AbstractNewSimulationGroupCmd
 	/**
 	 * Returns the created forecast simulation group.
 	 *
-	 * @return the {@link ForecastSimGroup} produced by this command
+	 * @return the {@link ForecastSimulationGroup} produced by this command
 	 */
 	@Override
-	public ForecastSimGroup getSimulationGroup() {
+	public ForecastSimulationGroup getSimulationGroup() {
 		// Narrow the base simulation group type to the forecast-specific type
-		return (ForecastSimGroup) super.getSimulationGroup();
+		return (ForecastSimulationGroup) super.getSimulationGroup();
 	}
 
 }

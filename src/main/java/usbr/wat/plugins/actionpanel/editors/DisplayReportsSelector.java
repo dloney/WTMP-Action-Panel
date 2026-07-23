@@ -69,7 +69,7 @@ import rma.util.RMAIO;                                                      // R
 import usbr.wat.plugins.actionpanel.ActionsWindow;                          // Main actions window used as the UI parent for dialogs and context
 import usbr.wat.plugins.actionpanel.actions.DisplayReportAction;            // Action that locates and displays the latest generated report
 import usbr.wat.plugins.actionpanel.io.ReportOptions;                       // Options bean for report generation settings
-import usbr.wat.plugins.actionpanel.model.ForecastReportingPlugin;          // Reporting plugin interface for forecast-specific report actions
+import usbr.wat.plugins.actionpanel.model.forecast.ForecastReportingPlugin;          // Reporting plugin interface for forecast-specific report actions
 import usbr.wat.plugins.actionpanel.model.ReportPlugin;                     // Base reporting plugin interface used by the reports manager
 import usbr.wat.plugins.actionpanel.model.ReportsManager;                   // Manager that provides registered reporting plugins available to the UI
 import usbr.wat.plugins.actionpanel.model.SimulationReportInfo;             // Model holding per-simulation report information and paths

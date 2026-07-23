@@ -15,17 +15,15 @@ import com.rma.model.Project;                                                   
 import rma.swing.RmaInsets;                                                     // Standardized insets utility for consistent component padding and spacing
 
 import usbr.wat.plugins.actionpanel.actions.AboutAction;                        // Action that opens an About dialog with plugin information
-import usbr.wat.plugins.actionpanel.actions.DeleteSimulationGroupAction;        // Action to delete a simulation group (import present even if unused in this class)
-import usbr.wat.plugins.actionpanel.actions.EditInterativeSimulationAction;     // Action to edit interactive simulation settings and controls
-import usbr.wat.plugins.actionpanel.actions.EditSimulationGroupAction;          // Action to edit the properties of a simulation group
+import usbr.wat.plugins.actionpanel.actions.prescribed.EditInterativeSimulationAction;     // Action to edit interactive simulation settings and controls
+import usbr.wat.plugins.actionpanel.actions.prescribed.EditPrescribedSimulationGroupAction;          // Action to edit the properties of a simulation group
 import usbr.wat.plugins.actionpanel.actions.NewSimulationGroupAction;           // Action to create a new simulation group (import present even if unused in this class)
 import usbr.wat.plugins.actionpanel.actions.PostResultsAction;                  // Action to post or publish results to an external target
 import usbr.wat.plugins.actionpanel.actions.ReviewDataAction;                   // Action to review loaded or processed data prior to running simulations
 import usbr.wat.plugins.actionpanel.actions.SelectAlternativesAction;           // Action to select modeling alternatives (import present even if unused in this class)
-import usbr.wat.plugins.actionpanel.actions.SelectSimulationGroupAction;        // Action to select an existing simulation group (import present even if unused in this class)
 import usbr.wat.plugins.actionpanel.actions.UpdateDataAction;                   // Action to update data sources and refresh datasets
 import usbr.wat.plugins.actionpanel.actions.UpdateModelsAction;                 // Action to update model artifacts and dependencies
-import usbr.wat.plugins.actionpanel.actions.ViewIterationResultsAction;         // Action to view iteration results from interactive simulation runs
+import usbr.wat.plugins.actionpanel.actions.prescribed.ViewIterationResultsAction;         // Action to view iteration results from interactive simulation runs
 import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup;              // Base type representing a simulation group used by the actions panel
 import usbr.wat.plugins.actionpanel.ui.PrescribedPanel;                        // Parent prescribed panel that owns or interacts with this actions panel
 
@@ -59,7 +57,7 @@ public class ActionsPanel extends JPanel {
 	private PostResultsAction _postResultsAction;
 
 	/** Action for editing a simulation group. */
-	private EditSimulationGroupAction _editSimulationAction;
+	private EditPrescribedSimulationGroupAction _editSimulationAction;
 
 	/** Action for editing interactive simulation settings and controls. */
 	private EditInterativeSimulationAction _editInterativeSimAction;

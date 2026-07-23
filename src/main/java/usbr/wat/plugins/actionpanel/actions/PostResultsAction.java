@@ -1,7 +1,6 @@
 package usbr.wat.plugins.actionpanel.actions;
 
 import java.awt.event.ActionEvent;			// Event type delivered when a user triggers a bound action (for example, a button press)
-
 import javax.swing.AbstractAction;			// Swing base class for encapsulating an action that can be attached to UI components
 
 /**

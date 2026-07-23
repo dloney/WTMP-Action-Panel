@@ -6,7 +6,7 @@ import hec.io.TimeSeriesContainer;                                          // P
 import rma.swing.table.RmaTableModel;                                       // Provides RmaTableModel, the RMA base table model whose row and column lifecycle this class extends
 import rma.util.RMAConst;                                                   // Provides RMAConst for the HEC_UNDEFINED_DOUBLE and HEC_UNDEFINED_INT sentinel values
 
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;        // Provides PlanningSimGroup for accessing the analysis period run time window during data load
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSimulationGroup;        // Provides PlanningSimulationGroup for accessing the analysis period run time window during data load
 import usbr.wat.plugins.actionpanel.model.planning.TemperatureTargetSet;    // Provides TemperatureTargetSet, the model object whose time-series data populates this table model
 
 import java.time.LocalDate;                                                 // Provides LocalDate for parsing ISO date strings entered in the Date column
@@ -261,9 +261,9 @@ final class TempTargetTableModel extends RmaTableModel {
      * If that assumption does not hold, an efficient time-lookup algorithm would be needed.
      *
      * @param tempTargetSet the TemperatureTargetSet whose time-series data populates the model
-     * @param fsg           the PlanningSimGroup providing the analysis period run time window
+     * @param fsg           the PlanningSimulationGroup providing the analysis period run time window
      */
-    void setTempTargetSet(TemperatureTargetSet tempTargetSet, PlanningSimGroup fsg) {
+    void setTempTargetSet(TemperatureTargetSet tempTargetSet, PlanningSimulationGroup fsg) {
         // Remove all existing row data before loading the new set
         _rowDataList.clear();
 

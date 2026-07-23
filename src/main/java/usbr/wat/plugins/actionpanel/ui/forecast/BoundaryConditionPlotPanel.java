@@ -38,8 +38,7 @@ import rma.swing.RmaJComboBox;           // RMA-enhanced combo box with typed mo
 import rma.swing.RmaNavigationPanel;     // RMA panel providing previous/next navigation buttons wired to a combo box
 
 import usbr.wat.plugins.actionpanel.model.forecast.BcData;                       // Model object describing a boundary condition data pairing (ops + met)
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;             // Forecast simulation group providing the group name used in the pathname file path
-import usbr.wat.plugins.actionpanel.ui.forecast.BoundaryConditionLocationPair;   // Value object pairing a location name, parameter, and DSS pathname
+import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimulationGroup;             // Forecast simulation group providing the group name used in the pathname file path
 
 
 /**
@@ -51,7 +50,7 @@ import usbr.wat.plugins.actionpanel.ui.forecast.BoundaryConditionLocationPair;  
  *   A G2dPanel that renders the time-series plot for the selected location.
  *
  * Data flow:
- *   fillPanel is called with a ForecastSimGroup and a BcData object. It builds the
+ *   fillPanel is called with a ForecastSimulationGroup and a BcData object. It builds the
  *   absolute path to a CSV pathname file that lists all boundary condition locations
  *   for the given group and data pairing, reads that file via
  *   readBoundaryConditionLocationPathPairs, and populates the combo box. Selecting
@@ -88,7 +87,7 @@ public class BoundaryConditionPlotPanel extends EnabledJPanel {
 	/**
 	 * The forecast simulation group that owns the active boundary condition data.
 	 */
-	private ForecastSimGroup _fsg;
+	private ForecastSimulationGroup _fsg;
 
 	/**
 	 * The location pair that was most recently selected in the combo box.
@@ -373,7 +372,7 @@ public class BoundaryConditionPlotPanel extends EnabledJPanel {
 	 * @param fsg    the forecast simulation group that owns the boundary condition data
 	 * @param bcData the boundary condition data to display; pass null to clear the panel
 	 */
-	public void fillPanel(ForecastSimGroup fsg, BcData bcData) {
+	public void fillPanel(ForecastSimulationGroup fsg, BcData bcData) {
 		_fsg = fsg;
 		_bcData = bcData;
 

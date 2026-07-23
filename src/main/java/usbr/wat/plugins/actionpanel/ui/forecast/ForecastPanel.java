@@ -16,8 +16,7 @@ import rma.swing.RmaJPanel;                                                     
 
 import usbr.wat.plugins.actionpanel.ActionsWindow;                              // Provides ActionsWindow as the parent window that hosts this forecast panel
 import usbr.wat.plugins.actionpanel.model.ResultsData;                          // Provides ResultsData for returning the list of selected simulation results
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;            // Provides ForecastSimGroup as the top-level data container for all forecast data
-import usbr.wat.plugins.actionpanel.ui.forecast.SimulationGroupPanel;                    // Provides SimulationGroupPanel for the simulation group selection combo box above the tabs
+import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimulationGroup;            // Provides ForecastSimulationGroup as the top-level data container for all forecast data
 import usbr.wat.plugins.actionpanel.ui.forecast.temptarget.TempTargetPanel;     // Provides TempTargetPanel as the temperature targets tab panel
 
 /**
@@ -38,12 +37,12 @@ import usbr.wat.plugins.actionpanel.ui.forecast.temptarget.TempTargetPanel;     
  *
  * When the active tab changes, the previously active panel's state is saved and the
  * newly active panel is notified via {@link AbstractForecastPanel#panelActivated()}.
- * When a new {@link ForecastSimGroup} is set, all sub-panels are populated with its
+ * When a new {@link ForecastSimulationGroup} is set, all sub-panels are populated with its
  * data. Setting the group to {@code null} clears all panels.
  *
  * @see AbstractForecastPanel
  * @see SimulationGroupPanel
- * @see ForecastSimGroup
+ * @see ForecastSimulationGroup
  */
 public class ForecastPanel extends RmaJPanel {
 	// The parent ActionsWindow that hosts this forecast panel
@@ -74,7 +73,7 @@ public class ForecastPanel extends RmaJPanel {
 	private SimulationPanel _simulationPanel;
 
 	// The currently active forecast simulation group; null when no group is selected
-	private ForecastSimGroup _simGroup;
+	private ForecastSimulationGroup _simGroup;
 
 	// The AbstractForecastPanel tab that is currently selected; used to save state on tab switch
 	private AbstractForecastPanel _currentPanel;
@@ -226,26 +225,26 @@ public class ForecastPanel extends RmaJPanel {
 	}
 
 	/**
-	 * Returns the currently active {@link ForecastSimGroup}, or {@code null} if no
+	 * Returns the currently active {@link ForecastSimulationGroup}, or {@code null} if no
 	 * simulation group has been selected.
 	 *
-	 * @return the active {@link ForecastSimGroup}, or {@code null}
+	 * @return the active {@link ForecastSimulationGroup}, or {@code null}
 	 */
-	public ForecastSimGroup getSimulationGroup() {
+	public ForecastSimulationGroup getSimulationGroup() {
 		return _simGroup;
 	}
 
 	/**
-	 * Sets the active {@link ForecastSimGroup} and propagates it to all sub-panels.
+	 * Sets the active {@link ForecastSimulationGroup} and propagates it to all sub-panels.
 	 *
 	 * If {@code fsg} is non-null, all sub-panels are populated with its data. If
 	 * {@code fsg} is {@code null}, all sub-panels are cleared and
 	 * {@link #clearPanel()} is called to reset all lower-panel controls.
 	 *
-	 * @param fsg the {@link ForecastSimGroup} to display, or {@code null} to clear
+	 * @param fsg the {@link ForecastSimulationGroup} to display, or {@code null} to clear
 	 *            all panels
 	 */
-	public void setSimulationGroup(ForecastSimGroup fsg) {
+	public void setSimulationGroup(ForecastSimulationGroup fsg) {
 		_simGroup = fsg;
 
 		if (fsg != null) {
@@ -369,16 +368,16 @@ public class ForecastPanel extends RmaJPanel {
 
 	/**
 	 * Refreshes the Simulation tab's table, ensemble set list, and analysis window
-	 * after a change to the given {@link ForecastSimGroup}'s ensemble sets, then
+	 * after a change to the given {@link ForecastSimulationGroup}'s ensemble sets, then
 	 * re-enables the panel and restores the simulation table selection.
 	 *
 	 * Called after a boundary condition set deletion or other operation that causes
 	 * ensemble sets to be added or removed as a side effect.
 	 *
-	 * @param fsg the {@link ForecastSimGroup} whose updated ensemble sets should be
+	 * @param fsg the {@link ForecastSimulationGroup} whose updated ensemble sets should be
 	 *            reflected in the Simulation tab
 	 */
-	public void refreshSimulationPanel(ForecastSimGroup fsg) {
+	public void refreshSimulationPanel(ForecastSimulationGroup fsg) {
 		// Capture the currently highlighted simulation before the table is refreshed
 		WatSimulation simulation = getSelectedSimulation();
 

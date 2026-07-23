@@ -17,7 +17,7 @@ import org.jdom.Element;          // JDOM XML Element used for serializing and d
  *   - A path to the operations file (_opsFile) that defines the reservoir operating
  *     rules or flow schedules for this scenario.
  *
- * Instances are loaded by PlanningSimGroup from the "Operations" XML element and
+ * Instances are loaded by PlanningSimulationGroup from the "Operations" XML element and
  * resolved by name in BcData when configuring boundary conditions for an ensemble
  * set. They are persisted as "OperationsData" child elements.
  */

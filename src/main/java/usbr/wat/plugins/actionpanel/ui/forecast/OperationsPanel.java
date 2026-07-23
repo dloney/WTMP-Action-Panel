@@ -22,7 +22,6 @@ import java.util.regex.Pattern;                                 // Provides Patt
 import java.util.stream.Collectors;                             // Provides Collectors for terminal stream operations such as collecting cascade dependents to a List
 
 import javax.swing.JButton;                                     // Provides JButton for the "Import..." action button in the lower panel
-import javax.swing.JOptionPane;                                 // Provides JOptionPane for displaying modal error and confirmation dialogs to the user
 import javax.swing.UIManager;                                   // Provides UIManager for retrieving the current Swing look-and-feel table font
 
 import com.rma.model.Project;                                   // Provides Project for resolving relative operations file paths to absolute paths
@@ -46,13 +45,13 @@ import rma.swing.RmaJTable;                                     // Provides RmaJ
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                  // Provides ActionPanelPlugin for accessing the singleton plugin instance and its window
 import usbr.wat.plugins.actionpanel.model.forecast.BcData;              // Provides BcData, the boundary condition data model used to detect operations data dependencies
 import usbr.wat.plugins.actionpanel.model.forecast.EnsembleSet;         // Provides EnsembleSet for identifying ensemble sets that depend on boundary condition data
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;    // Provides ForecastSimGroup, the top-level model grouping all forecast simulation data
+import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimulationGroup;    // Provides ForecastSimulationGroup, the top-level model grouping all forecast simulation data
 import usbr.wat.plugins.actionpanel.model.forecast.OperationsData;      // Provides OperationsData, the model object representing a single operations dataset and its file path
 
 /**
  * Panel that displays and manages the Operations tab within the Forecast Action Panel.
  * It presents a table of available operations datasets loaded from the active
- * ForecastSimGroup, a detail info table showing the selected dataset's metadata,
+ * ForecastSimulationGroup, a detail info table showing the selected dataset's metadata,
  * and an ExcelTable for rendering the contents of the associated operations file
  * (either a .csv or a .xlsx converted to CSV on the fly).
  *
@@ -154,9 +153,9 @@ public class OperationsPanel extends AbstractForecastPanel<OperationsData> {
 	private RmaJTable _excelTable;
 
 	/**
-	 * The ForecastSimGroup currently displayed by this panel; null when no simulation is active.
+	 * The ForecastSimulationGroup currently displayed by this panel; null when no simulation is active.
 	 */
-	private ForecastSimGroup _fsg;
+	private ForecastSimulationGroup _fsg;
 
 	/**
 	 * Constructs a new OperationsPanel and wires it to the parent ForecastPanel.
@@ -251,7 +250,7 @@ public class OperationsPanel extends AbstractForecastPanel<OperationsData> {
 
 	/**
 	 * Opens the ImportOperationsWindow to let the user select and import an operations
-	 * dataset into the current ForecastSimGroup. If a pre-constructed dialog is provided
+	 * dataset into the current ForecastSimulationGroup. If a pre-constructed dialog is provided
 	 * it is used directly; otherwise a new one is created. Aborts silently if the user
 	 * cancels the dialog.
 	 *
@@ -318,14 +317,14 @@ public class OperationsPanel extends AbstractForecastPanel<OperationsData> {
 	}
 
 	/**
-	 * Loads the panel for the given ForecastSimGroup: clears any previous state,
+	 * Loads the panel for the given ForecastSimulationGroup: clears any previous state,
 	 * populates the upper operations table with all datasets in the group, and
 	 * displays the last dataset's file contents in the ExcelTable area.
 	 *
-	 * @param fsg the ForecastSimGroup whose operations data should be displayed, or null to disable
+	 * @param fsg the ForecastSimulationGroup whose operations data should be displayed, or null to disable
 	 */
 	@Override
-	public void fillPanel(ForecastSimGroup fsg) {
+	public void fillPanel(ForecastSimulationGroup fsg) {
 		// Reset the lower panel before repopulating to avoid stale content
 		clearPanel();
 
@@ -359,7 +358,7 @@ public class OperationsPanel extends AbstractForecastPanel<OperationsData> {
 	/**
 	 * Resets the lower panel by removing the current ExcelTable, replacing it with a
 	 * fresh empty RmaJTable placeholder, and triggering a layout refresh. Also disables
-	 * the panel when no ForecastSimGroup is loaded.
+	 * the panel when no ForecastSimulationGroup is loaded.
 	 */
 	@Override
 	protected void clearPanel() {
@@ -393,14 +392,14 @@ public class OperationsPanel extends AbstractForecastPanel<OperationsData> {
 	}
 
 	/**
-	 * Removes the given OperationsData entry from the active ForecastSimGroup's
+	 * Removes the given OperationsData entry from the active ForecastSimulationGroup's
 	 * operations data list.
 	 *
-	 * @param fsg  the ForecastSimGroup from which the data is removed
+	 * @param fsg  the ForecastSimulationGroup from which the data is removed
 	 * @param data the OperationsData entry to remove
 	 */
 	@Override
-	protected void removeData(ForecastSimGroup fsg, OperationsData data) {
+	protected void removeData(ForecastSimulationGroup fsg, OperationsData data) {
 		fsg.removeOperationsData(data);
 	}
 

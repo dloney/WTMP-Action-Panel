@@ -21,7 +21,7 @@ import rma.swing.RmaJDescriptionField;                                      // P
 import rma.swing.RmaJTextField;                                             // Provides RmaJTextField for the operations name text field
 import rma.util.RMAFilenameFilter;                                          // Provides RMAFilenameFilter for constructing file extension filters (xlsx, csv) for the file chooser
 
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;        // Provides ForecastSimGroup as the simulation group passed to fillForm (used to reset the cancelled state)
+import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimulationGroup;        // Provides ForecastSimulationGroup as the simulation group passed to fillForm (used to reset the cancelled state)
 import usbr.wat.plugins.actionpanel.model.forecast.OperationsData;          // Provides OperationsData as the output data type constructed from the completed form fields
 
 /**
@@ -297,10 +297,10 @@ public class ImportOperationsWindow extends ImportForecastWindow {
 	 * treated as a cancellation. The form fields are not cleared, allowing the user to
 	 * review or edit the previously entered values.
 	 *
-	 * @param fsg the {@link ForecastSimGroup} for the current simulation group; not
+	 * @param fsg the {@link ForecastSimulationGroup} for the current simulation group; not
 	 *            used directly in the current implementation
 	 */
-	public void fillForm(ForecastSimGroup fsg) {
+	public void fillForm(ForecastSimulationGroup fsg) {
 		// Reset the cancelled flag; it will be cleared to false only on a valid OK submission
 		_canceled = true;
 	}

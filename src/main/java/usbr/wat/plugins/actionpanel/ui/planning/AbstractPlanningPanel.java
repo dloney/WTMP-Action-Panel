@@ -37,7 +37,7 @@ import rma.swing.table.RmaTableModel;                               // Provides 
 
 import usbr.wat.plugins.actionpanel.model.planning.BcData;                                  // Provides BcData for identifying boundary condition sets affected by a delete or overwrite
 import usbr.wat.plugins.actionpanel.model.planning.EnsembleSet;                             // Provides EnsembleSet for identifying ensemble sets that must also be deleted when dependent data is removed
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;                        // Provides PlanningSimGroup as the top-level data container populated into and read from the panel tables
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSimulationGroup;                        // Provides PlanningSimulationGroup as the top-level data container populated into and read from the panel tables
 import usbr.wat.plugins.actionpanel.ui.planning.temptarget.TempTargetPlanningTableModel;    // Provides TempTargetPlanningTableModel as the specialised table model for the temperature target table
 
 /**
@@ -71,7 +71,7 @@ import usbr.wat.plugins.actionpanel.ui.planning.temptarget.TempTargetPlanningTab
  *
  * @see PlanningTable
  * @see PlanningPanel
- * @see PlanningSimGroup
+ * @see PlanningSimulationGroup
  */
 public abstract class AbstractPlanningPanel<T extends NamedType> extends RmaJPanel {
 	// Tracks all AbstractPlanningPanel instances created during the session so that
@@ -646,7 +646,7 @@ public abstract class AbstractPlanningPanel<T extends NamedType> extends RmaJPan
 	 * If the name is not in use, appends the new item to the table and data list and
 	 * selects its row.
 	 *
-	 * @param fsg      the {@link PlanningSimGroup} the data belongs to; passed to the
+	 * @param fsg      the {@link PlanningSimulationGroup} the data belongs to; passed to the
 	 *                 delete-for-overwrite path
 	 * @param table    the {@link PlanningTable} into which the new item is inserted
 	 * @param dlg      the {@link ImportPlanningWindow} to re-open if the user cancels overwrite
@@ -656,7 +656,7 @@ public abstract class AbstractPlanningPanel<T extends NamedType> extends RmaJPan
 	 * overwrite); {@code false} if the user cancelled the overwrite
 	 */
 	@SuppressWarnings("unchecked")
-	protected boolean importData(PlanningSimGroup fsg, PlanningTable table, ImportPlanningWindow dlg, List<T> dataList, T newData) {
+	protected boolean importData(PlanningSimulationGroup fsg, PlanningTable table, ImportPlanningWindow dlg, List<T> dataList, T newData) {
 		boolean retVal = true;
 
 		if (table.isNameUsed(newData.getName())) {
@@ -772,7 +772,7 @@ public abstract class AbstractPlanningPanel<T extends NamedType> extends RmaJPan
 	 * in a {@code finally} block. If boundary condition sets or ensemble sets were also
 	 * deleted as a cascade, their respective panels are refreshed.
 	 *
-	 * @param fsg             the {@link PlanningSimGroup} from which {@code data} is removed
+	 * @param fsg             the {@link PlanningSimulationGroup} from which {@code data} is removed
 	 * @param data            the data item to delete
 	 * @param table           the {@link PlanningTable} from which the corresponding row is removed
 	 * @param bcDataUsingData boundary condition sets deleted as a cascade; if non-empty, the
@@ -780,7 +780,7 @@ public abstract class AbstractPlanningPanel<T extends NamedType> extends RmaJPan
 	 * @param eSetsUsingData  ensemble sets deleted as a cascade; if non-empty, the simulation
 	 *                        panel is refreshed via {@link PlanningPanel#refreshSimulationPanel}
 	 */
-	protected void performDelete(PlanningSimGroup fsg, T data, PlanningTable table, List<BcData> bcDataUsingData, List<EnsembleSet> eSetsUsingData) {
+	protected void performDelete(PlanningSimulationGroup fsg, T data, PlanningTable table, List<BcData> bcDataUsingData, List<EnsembleSet> eSetsUsingData) {
 		try {
 			// Show a wait cursor while the delete and save operations run
 			setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -841,16 +841,16 @@ public abstract class AbstractPlanningPanel<T extends NamedType> extends RmaJPan
 	}
 
 	/**
-	 * Removes the given data item from the supplied {@link PlanningSimGroup}'s internal
+	 * Removes the given data item from the supplied {@link PlanningSimulationGroup}'s internal
 	 * data structures.
 	 *
 	 * Concrete subclasses implement this to perform the type-specific removal logic
 	 * (e.g., removing a meteorology record or a temperature target set).
 	 *
-	 * @param fsg  the {@link PlanningSimGroup} from which {@code data} is removed
+	 * @param fsg  the {@link PlanningSimulationGroup} from which {@code data} is removed
 	 * @param data the data item to remove
 	 */
-	protected abstract void removeData(PlanningSimGroup fsg, T data);
+	protected abstract void removeData(PlanningSimulationGroup fsg, T data);
 
 	/**
 	 * Called when a row in the panel's primary table is selected.
@@ -985,17 +985,17 @@ public abstract class AbstractPlanningPanel<T extends NamedType> extends RmaJPan
 	protected abstract void savePanel();
 
 	/**
-	 * Loads the given {@link PlanningSimGroup} into the panel, replacing the current table
+	 * Loads the given {@link PlanningSimulationGroup} into the panel, replacing the current table
 	 * contents and re-attaching selection listeners around the fill operation to prevent
 	 * spurious selection events during the data load.
 	 *
-	 * Selection listeners are temporarily removed before {@link #fillPanel(PlanningSimGroup)}
+	 * Selection listeners are temporarily removed before {@link #fillPanel(PlanningSimulationGroup)}
 	 * is called and re-added afterward, ensuring that programmatic row changes during the
 	 * fill do not trigger the selection handler.
 	 *
-	 * @param fsg the {@link PlanningSimGroup} whose data is to be displayed in this panel
+	 * @param fsg the {@link PlanningSimulationGroup} whose data is to be displayed in this panel
 	 */
-	public void setSimulationGroup(PlanningSimGroup fsg) {
+	public void setSimulationGroup(PlanningSimulationGroup fsg) {
 		// Capture the current selection listeners so they can be removed and re-added
 		DefaultListSelectionModel selectionModel = (DefaultListSelectionModel) getTableForPanel().getSelectionModel();
 		ListSelectionListener[] selectionListeners = selectionModel.getListeners(ListSelectionListener.class);
@@ -1035,14 +1035,14 @@ public abstract class AbstractPlanningPanel<T extends NamedType> extends RmaJPan
 	}
 
 	/**
-	 * Populates this panel's table with data from the given {@link PlanningSimGroup}.
+	 * Populates this panel's table with data from the given {@link PlanningSimulationGroup}.
 	 * <p>
 	 * Concrete subclasses implement this to read the relevant data items from the
 	 * simulation group and add them as rows to the primary table.
 	 *
-	 * @param fsg the {@link PlanningSimGroup} whose data should be displayed
+	 * @param fsg the {@link PlanningSimulationGroup} whose data should be displayed
 	 */
-	public abstract void fillPanel(PlanningSimGroup fsg);
+	public abstract void fillPanel(PlanningSimulationGroup fsg);
 
 	// -------------------------------------------------------------------------
 	// Inner class: PlanningTable

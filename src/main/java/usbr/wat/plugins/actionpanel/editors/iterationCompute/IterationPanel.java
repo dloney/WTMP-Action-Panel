@@ -8,7 +8,7 @@ import javax.swing.border.TitledBorder; // Titled border that labels this panel 
 import hec2.plugin.model.ModelAlternative; // Represents a model alternative configuration within a WAT simulation
 import hec2.wat.model.WatSimulation;       // Represents a WAT simulation; propagated to sub-panels via setSimulation()
 
-import usbr.wat.plugins.actionpanel.editors.EditIterationSettingsDialog;     // Hosting dialog providing simulation and alternative context
+import usbr.wat.plugins.actionpanel.editors.prescribed.EditIterationSettingsDialog;     // Hosting dialog providing simulation and alternative context
 import usbr.wat.plugins.actionpanel.model.IterationSettings;                 // Data model holding BC assignments and sensitivity settings for an iteration
 import usbr.wat.plugins.actionpanel.model.ModelAltIterationSettings;         // Per-model-alternative BC settings object retrieved from IterationSettings
 import usbr.wat.plugins.actionpanel.model.SensitivitySettings;               // Settings object holding pre/post-compute script configurations

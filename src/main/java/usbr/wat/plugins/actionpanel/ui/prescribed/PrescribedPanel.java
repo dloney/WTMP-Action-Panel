@@ -39,10 +39,8 @@ import usbr.wat.plugins.actionpanel.ActionPanelPlugin;              // Singleton
 import usbr.wat.plugins.actionpanel.ActionsPanel;                   // Left-side panel containing action buttons for the simulation group
 import usbr.wat.plugins.actionpanel.ActionsWindow;                  // Top-level WTMP actions window that owns this panel
 import usbr.wat.plugins.actionpanel.SimulationActionsPanel;         // Bottom panel hosting simulation-level action buttons
-import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup;  // Base model class for all simulation group types
-import usbr.wat.plugins.actionpanel.model.ResultsData;              // Model object representing a saved simulation results snapshot
-import usbr.wat.plugins.actionpanel.model.SimulationGroup;          // Standard (non-forecast) simulation group model
-import usbr.wat.plugins.actionpanel.model.SimulationReportInfo;     // Data transfer object carrying per-simulation report metadata
+import usbr.wat.plugins.actionpanel.model.*;
+import usbr.wat.plugins.actionpanel.model.prescribed.PrescribedSimulationGroup;
 import usbr.wat.plugins.actionpanel.ui.tree.SimulationTreeTable;    // Custom tree-table component displaying simulations and their results
 import usbr.wat.plugins.actionpanel.ui.tree.SimulationTreeTableModel; // Tree-table model backing the simulation table
 
@@ -134,7 +132,7 @@ public class PrescribedPanel extends AbstractSimulationPanel {
 	/**
 	 * The simulation group currently displayed by this panel.
 	 */
-	private SimulationGroup _simGroup;
+	private PrescribedSimulationGroup _simGroup;
 
 	/**
 	 * Toolbar panel for selecting and managing prescribed simulation groups.
@@ -544,24 +542,24 @@ public class PrescribedPanel extends AbstractSimulationPanel {
 	 * display, analysis period fields, and simulation table.
 	 *
 	 * A wait cursor is shown for the duration of the load. If asg is not a
-	 * SimulationGroup the analysis period fields are blanked. The actions panel is
+	 * PrescribedSimulationGroup the analysis period fields are blanked. The actions panel is
 	 * always updated with the new group regardless of type.
 	 *
-	 * @param asg the simulation group to display; pass null or a non-SimulationGroup
+	 * @param asg the simulation group to display; pass null or a non-PrescribedSimulationGroup
 	 *            type to clear the analysis period fields
 	 */
 	@Override
 	public void setSimulationGroup(AbstractSimulationGroup asg) {
 		// Show a wait cursor while the table and fields are being populated
 		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-		_simGroup = (SimulationGroup) asg;
+		_simGroup = (PrescribedSimulationGroup) asg;
 
 		try {
 			// Clear any previously displayed data before loading the new group
 			clearForm();
 
-			if (asg instanceof SimulationGroup) {
-				SimulationGroup sg = (SimulationGroup) asg;
+			if (asg instanceof PrescribedSimulationGroup) {
+				PrescribedSimulationGroup sg = (PrescribedSimulationGroup) asg;
 
 				// Populate the simulation tree-table with the group's simulations
 				setSimulationTable(sg);
@@ -577,7 +575,7 @@ public class PrescribedPanel extends AbstractSimulationPanel {
 				fillAnalysisPeriodFields(ap);
 
 			} else {
-				// Non-SimulationGroup type provided; clear the analysis period fields
+				// Non-PrescribedSimulationGroup type provided; clear the analysis period fields
 				_apLabel.setText("");
 				_apStartLabel.setText("");
 				_apEndLabel.setText("");
@@ -636,12 +634,12 @@ public class PrescribedPanel extends AbstractSimulationPanel {
 
 
 	/**
-	 * Returns the SimulationGroup currently displayed by this panel.
+	 * Returns the PrescribedSimulationGroup currently displayed by this panel.
 	 *
-	 * @return the active SimulationGroup, or null if none is set
+	 * @return the active PrescribedSimulationGroup, or null if none is set
 	 */
 	@Override
-	public SimulationGroup getSimulationGroup() {
+	public PrescribedSimulationGroup getSimulationGroup() {
 		return _simGroup;
 	}
 

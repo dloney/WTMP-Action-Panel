@@ -1,4 +1,4 @@
-package usbr.wat.plugins.actionpanel.editors;
+package usbr.wat.plugins.actionpanel.editors.prescribed;
 
 import java.util.ArrayList;                          // Resizable-array implementation of the List interface
 import java.util.List;                               // Ordered collection interface used for DSS identifier lists
@@ -17,6 +17,7 @@ import hec.model.RunTimeWindow;                      // Represents a start-to-en
 
 import usbr.wat.plugins.actionpanel.editors.iterationCompute.IterationBcPanel;      // Base panel class providing the BC (boundary condition) table and shared controls
 import usbr.wat.plugins.actionpanel.editors.iterationCompute.PositionAnalysisPanel; // Parent panel that manages position-analysis settings, including the max element count
+
 
 /**
  * Panel for managing boundary condition (BC) DSS inputs for a Position Analysis

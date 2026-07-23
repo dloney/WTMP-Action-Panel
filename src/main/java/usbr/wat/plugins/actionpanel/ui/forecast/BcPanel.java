@@ -14,7 +14,6 @@ import java.util.List;                                                      // P
 import java.util.Vector;                                                    // Provides Vector as the row data container required by RmaJTable's row insertion methods
 import java.util.logging.Level;                                             // Provides Level for categorising log messages (CONFIG used for script result logging)
 import java.util.logging.Logger;                                            // Provides Logger for recording script execution results and directory creation failures
-import java.util.stream.Collectors;                                         // Provides Collectors for terminal stream operations (not directly used; retained for potential use)
 
 import javax.swing.JButton;                                                 // Provides JButton for the "Create B.C. Sets..." button in the lower panel
 import javax.swing.JOptionPane;                                             // Provides JOptionPane for displaying error and confirmation dialogs
@@ -29,13 +28,7 @@ import rma.swing.RmaInsets;                                                 // P
 import rma.swing.RmaJTable;                                                 // Provides RmaJTable as the base class for the boundary condition info table in the lower panel
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                      // Provides ActionPanelPlugin for accessing the singleton plugin instance and its actions window
 
-import usbr.wat.plugins.actionpanel.model.forecast.BcData;                  // Provides BcData as the typed data item this panel manages (boundary condition set records)
-import usbr.wat.plugins.actionpanel.model.forecast.EnsembleSet;             // Provides EnsembleSet for identifying ensemble sets that depend on boundary condition data being deleted
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastConfigFiles;     // Provides ForecastConfigFiles for resolving the project-relative flow pattern configuration file path
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;        // Provides ForecastSimGroup as the top-level data container holding all forecast data for a simulation
-import usbr.wat.plugins.actionpanel.model.forecast.MeteorlogicData;         // Provides MeteorlogicData for looking up the meteorology record referenced by a boundary condition set
-import usbr.wat.plugins.actionpanel.model.forecast.OperationsData;          // Provides OperationsData for looking up the operations record referenced by a boundary condition set
-import usbr.wat.plugins.actionpanel.ui.forecast.BoundaryConditionPlotPanel;          // Provides BoundaryConditionPlotPanel for rendering the time-series plot of the selected BC set
+import usbr.wat.plugins.actionpanel.model.forecast.*;
 
 /**
  * The forecast panel responsible for displaying, creating, and deleting boundary
@@ -77,7 +70,7 @@ public class BcPanel extends AbstractForecastPanel<BcData> {
 	private BoundaryConditionPlotPanel _plotPanel;
 
 	// The currently active forecast simulation group; set when fillPanel is called
-	private ForecastSimGroup _fsg;
+	private ForecastSimulationGroup _fsg;
 
 	/**
 	 * Constructs a {@code BcPanel} and delegates all shared initialisation to the
@@ -488,17 +481,17 @@ public class BcPanel extends AbstractForecastPanel<BcData> {
 
 	/**
 	 * Populates the BC table and plot panel with data from the given
-	 * {@link ForecastSimGroup}, replacing any previously displayed data.
+	 * {@link ForecastSimulationGroup}, replacing any previously displayed data.
 	 *
 	 * Enables or disables the entire panel based on whether {@code fsg} is non-null.
 	 * If the simulation group has at least one BC set, the plot panel is pre-populated
 	 * with the first item's data.
 	 *
-	 * @param fsg the {@link ForecastSimGroup} whose BC data is to be displayed, or
+	 * @param fsg the {@link ForecastSimulationGroup} whose BC data is to be displayed, or
 	 *            {@code null} to clear and disable the panel
 	 */
 	@Override
-	public void fillPanel(ForecastSimGroup fsg) {
+	public void fillPanel(ForecastSimulationGroup fsg) {
 		// Enable or disable the panel based on whether a simulation group is present
 		setEnabled(fsg != null);
 		_fsg = fsg;
@@ -608,14 +601,14 @@ public class BcPanel extends AbstractForecastPanel<BcData> {
 	}
 
 	/**
-	 * Removes the given {@link BcData} item from the supplied {@link ForecastSimGroup}'s
+	 * Removes the given {@link BcData} item from the supplied {@link ForecastSimulationGroup}'s
 	 * internal BC data list.
 	 *
-	 * @param fsg  the {@link ForecastSimGroup} from which the BC data is removed
+	 * @param fsg  the {@link ForecastSimulationGroup} from which the BC data is removed
 	 * @param data the {@link BcData} item to remove
 	 */
 	@Override
-	protected void removeData(ForecastSimGroup fsg, BcData data) {
+	protected void removeData(ForecastSimulationGroup fsg, BcData data) {
 		fsg.removeBcData(data);
 	}
 

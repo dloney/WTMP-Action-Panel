@@ -13,7 +13,7 @@ import hec2.wat.model.WatSimulation; // Represents a WAT simulation; propagated 
 import rma.swing.RmaInsets;          // Pre-defined Insets constants for consistent component spacing
 import rma.swing.RmaJTextField;      // RMA-extended text field used as a read-only script entry-point display
 
-import usbr.wat.plugins.actionpanel.editors.EditIterationSettingsDialog; // Hosting dialog providing simulation context
+import usbr.wat.plugins.actionpanel.editors.prescribed.EditIterationSettingsDialog; // Hosting dialog providing simulation context
 import usbr.wat.plugins.actionpanel.model.ActionComputable;              // Provides the required Python method signature constant
 import usbr.wat.plugins.actionpanel.model.SensitivitySettings;           // Data model holding pre/post-compute script configurations
 

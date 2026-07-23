@@ -8,14 +8,14 @@ import com.rma.model.Project;                                           // Acces
 import hec2.wat.model.WatAnalysisPeriod;                                // WAT model type representing the analysis period associated with a simulation group
 import hec2.wat.model.WatSimulation;                                    // WAT model type representing a single simulation scenario or run
 
-import usbr.wat.plugins.actionpanel.model.SimulationGroup;              // Concrete simulation group type used for prescribed conditions workflows
+import usbr.wat.plugins.actionpanel.model.prescribed.PrescribedSimulationGroup;
 
 /**
- * Command for creating a new SimulationGroup and populating it with simulations.
+ * Command for creating a new PrescribedSimulationGroup and populating it with simulations.
  *
  * This command specializes {@link AbstractNewSimulationGroupCmd} for the
  * prescribed conditions workflow. It identifies the manager class, type, and
- * file extension for {@link SimulationGroup}, and defaults to running the
+ * file extension for {@link PrescribedSimulationGroup}, and defaults to running the
  * extract step for copied simulations.
  */
 public class NewSimulationGroupCmd extends AbstractNewSimulationGroupCmd {
@@ -38,25 +38,25 @@ public class NewSimulationGroupCmd extends AbstractNewSimulationGroupCmd {
 	}
 
 	/**
-	 * Returns the file extension used for SimulationGroup files.
+	 * Returns the file extension used for PrescribedSimulationGroup files.
 	 *
-	 * @return the file extension associated with SimulationGroup
+	 * @return the file extension associated with PrescribedSimulationGroup
 	 */
 	@Override
 	public String getExtension() {
 		// Provide the simulation group file extension
-		return SimulationGroup.FILE_EXT;
+		return PrescribedSimulationGroup.FILE_EXT;
 	}
 
 	/**
-	 * Returns the fully qualified manager class name for SimulationGroup.
+	 * Returns the fully qualified manager class name for PrescribedSimulationGroup.
 	 *
 	 * @return the manager class name
 	 */
 	@Override
 	public String getManagerClass() {
 		// Identify the manager class handled by this command
-		return SimulationGroup.class.getName();
+		return PrescribedSimulationGroup.class.getName();
 	}
 
 	/**
@@ -71,13 +71,13 @@ public class NewSimulationGroupCmd extends AbstractNewSimulationGroupCmd {
 	}
 
 	/**
-	 * Returns the created SimulationGroup.
+	 * Returns the created PrescribedSimulationGroup.
 	 *
-	 * @return the SimulationGroup produced by this command
+	 * @return the PrescribedSimulationGroup produced by this command
 	 */
 	@Override
-	public SimulationGroup getSimulationGroup() {
+	public PrescribedSimulationGroup getSimulationGroup() {
 		// Narrow the base simulation group type to the prescribed conditions type
-		return (SimulationGroup) super.getSimulationGroup();
+		return (PrescribedSimulationGroup) super.getSimulationGroup();
 	}
 }

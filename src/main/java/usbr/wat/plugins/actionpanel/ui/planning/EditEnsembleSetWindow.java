@@ -25,10 +25,7 @@ import rma.swing.RmaJList;                                                      
 import rma.swing.RmaJTable;                                                             // Provides RmaJTable as the base table class for the BC and temperature target selection tables
 import rma.swing.list.RmaListModel;                                                     // Provides RmaListModel as the typed list model used by the ensemble set selection list
 
-import usbr.wat.plugins.actionpanel.model.planning.BcData;                              // Provides BcData as the boundary condition data type displayed in the BC selection table
-import usbr.wat.plugins.actionpanel.model.planning.EnsembleSet;                         // Provides EnsembleSet as the data type managed and displayed in the selection list
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;                    // Provides PlanningSimGroup as the top-level container for BC data and ensemble sets
-import usbr.wat.plugins.actionpanel.model.planning.TemperatureTargetSet;                // Provides TemperatureTargetSet as the data type displayed in the temperature target selection table
+import usbr.wat.plugins.actionpanel.model.planning.*;
 
 /**
  * A modal dialog for creating and removing EnsembleSet instances within a
@@ -49,7 +46,7 @@ import usbr.wat.plugins.actionpanel.model.planning.TemperatureTargetSet;        
  * @see EnsembleSet
  * @see BcData
  * @see TemperatureTargetSet
- * @see PlanningSimGroup
+ * @see PlanningSimulationGroup
  */
 public class EditEnsembleSetWindow extends RmaJDialog {
 	// Dynamic status label; reserved for future use (currently updated by the disabled tableRowsSelected path)
@@ -68,7 +65,7 @@ public class EditEnsembleSetWindow extends RmaJDialog {
 	private boolean _canceled;
 
 	// The planning simulation group whose ensemble sets are being edited
-	private PlanningSimGroup _simGroup;
+	private PlanningSimulationGroup _simGroup;
 
 	// The scrollable list displaying the ensemble sets currently staged for the simulation
 	private RmaJList<EnsembleSet> _selectionList;
@@ -639,8 +636,8 @@ public class EditEnsembleSetWindow extends RmaJDialog {
 	/**
 	 * Commits all pending additions and deletions to the simulation group.
 	 *
-	 * Iterates _esetsToDelete and calls PlanningSimGroup.deleteEnsembleSet for each,
-	 * then iterates _esetsToAdd and calls PlanningSimGroup.addEnsembleSet for each.
+	 * Iterates _esetsToDelete and calls PlanningSimulationGroup.deleteEnsembleSet for each,
+	 * then iterates _esetsToAdd and calls PlanningSimulationGroup.addEnsembleSet for each.
 	 *
 	 * @return true always, indicating the save completed without error
 	 */
@@ -668,12 +665,12 @@ public class EditEnsembleSetWindow extends RmaJDialog {
 	 * currently registered for the given simulation. If no ensemble sets exist for the
 	 * simulation, an empty list is used.
 	 *
-	 * @param simulationGroup the PlanningSimGroup whose BC data, temperature target sets,
+	 * @param simulationGroup the PlanningSimulationGroup whose BC data, temperature target sets,
 	 *                        and ensemble sets are loaded into the controls; must not be null
 	 * @param sim             the WatSimulation that scopes which ensemble sets are
 	 *                        displayed; must not be null
 	 */
-	public void fillForm(PlanningSimGroup simulationGroup, WatSimulation sim) {
+	public void fillForm(PlanningSimulationGroup simulationGroup, WatSimulation sim) {
 		// Store references to the simulation group and simulation for use in subsequent operations
 		_simGroup = simulationGroup;
 		_simulation = sim;

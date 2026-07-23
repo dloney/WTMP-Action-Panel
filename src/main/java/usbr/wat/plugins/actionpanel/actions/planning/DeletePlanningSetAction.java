@@ -15,10 +15,10 @@ import hec2.wat.model.WatSimulation;                                            
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                          // Plugin entry point used to obtain the Actions window and global context
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;     			// The Set model this action deletes
-import usbr.wat.plugins.actionpanel.ui.PlanningSetPanel;   						// Panel that hosts Sets and receives deletion notifications
-import usbr.wat.plugins.actionpanel.ui.BasePlanningSetPanel;    				// Base class that gets implemented
+import usbr.wat.plugins.actionpanel.ui.planning.PlanningSetPanel;   						// Panel that hosts Sets and receives deletion notifications
+import usbr.wat.plugins.actionpanel.ui.planning.BasePlanningSetPanel;    				// Base class that gets implemented
 import usbr.wat.plugins.actionpanel.ActionsWindow; 								// Import the action windows class
-import usbr.wat.plugins.actionpanel.model.AbstractPlanningSet;					// Imports the abstract set class
+import usbr.wat.plugins.actionpanel.model.planning.AbstractPlanningSet;					// Imports the abstract set class
 
 /**
  * Action that deletes the {@link PlanningSet} currently selected in the owning

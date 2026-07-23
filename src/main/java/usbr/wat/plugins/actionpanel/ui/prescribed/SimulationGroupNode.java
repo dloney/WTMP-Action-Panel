@@ -1,4 +1,4 @@
-package usbr.wat.plugins.actionpanel.ui;
+package usbr.wat.plugins.actionpanel.ui.prescribed;
 
 import java.awt.EventQueue;           // Provides invokeLater for scheduling tree mutations on the EDT
 import java.awt.event.ActionListener; // Marker interface implemented as part of ProjectPaneActionNode contract
@@ -36,11 +36,11 @@ import hec2.wat.util.WatI18n;               // Provides internationalised messag
 
 import rma.swing.RmaImage;                                         // Utility for loading image icons from the classpath
 import usbr.wat.plugins.actionpanel.SimGroupContainerNode;         // Parent container node that tracks which simulation groups have been added
-import usbr.wat.plugins.actionpanel.model.SimulationGroup;         // Simulation group model object wrapped by this node
+import usbr.wat.plugins.actionpanel.model.prescribed.PrescribedSimulationGroup;
 
 
 /**
- * Project tree node that represents a SimulationGroup in the WAT project browser.
+ * Project tree node that represents a PrescribedSimulationGroup in the WAT project browser.
  *
  * This node extends ManagerNode and implements several RMA tree interfaces to
  * integrate fully with the WAT project tree and content pane:
@@ -55,7 +55,7 @@ import usbr.wat.plugins.actionpanel.model.SimulationGroup;         // Simulation
  * Two construction modes are supported:
  *   Default "Simulation Group" label -- used when this node represents all simulations
  *   not yet assigned to any named group (the "catch-all" node).
- *   Object-initialized -- wraps a specific SimulationGroup manager object.
+ *   Object-initialized -- wraps a specific PrescribedSimulationGroup manager object.
  *
  * Tree child management:
  *   When the system property "SimGroupNode.HasSimulations" is true, child
@@ -109,7 +109,7 @@ public class SimulationGroupNode extends ManagerNode
 
 	/**
 	 * Constructs a node wrapping the given manager object (expected to be a
-	 * SimulationGroup or ManagerProxy).
+	 * PrescribedSimulationGroup or ManagerProxy).
 	 *
 	 * The node label is set to an empty string initially; the actual display name
 	 * is provided by the wrapped manager via the superclass toString logic. A project
@@ -182,7 +182,7 @@ public class SimulationGroupNode extends ManagerNode
 	 * "SimGroupNode.HasSimulations" is set to true. The child addition is deferred
 	 * to the EDT via invokeLater to avoid modifying the tree model from a non-EDT thread.
 	 *
-	 * @param proxy the ManagerProxy wrapping the SimulationGroup for this node
+	 * @param proxy the ManagerProxy wrapping the PrescribedSimulationGroup for this node
 	 */
 	@Override
 	public void setManagerProxy(ManagerProxy proxy) {
@@ -196,16 +196,16 @@ public class SimulationGroupNode extends ManagerNode
 
 
 	/**
-	 * Retrieves the current SimulationGroup from the manager and adds all of its
-	 * simulations to the display. If no SimulationGroup is currently assigned to
+	 * Retrieves the current PrescribedSimulationGroup from the manager and adds all of its
+	 * simulations to the display. If no PrescribedSimulationGroup is currently assigned to
 	 * the manager, the method returns without taking any action. Delegates the
 	 * actual addition logic to the overloaded addSimulations(List) method.
 	 */
 	private void addSimulations() {
-		// Retrieve the current manager and cast it to a SimulationGroup
-		SimulationGroup simGroup = (SimulationGroup) getManager();
+		// Retrieve the current manager and cast it to a PrescribedSimulationGroup
+		PrescribedSimulationGroup simGroup = (PrescribedSimulationGroup) getManager();
 
-		// Only proceed if a valid SimulationGroup is available
+		// Only proceed if a valid PrescribedSimulationGroup is available
 		if (simGroup != null) {
 			// Retrieve the full list of simulations belonging to this group
 			List<WatSimulation> sims = simGroup.getSimulations();
@@ -294,7 +294,7 @@ public class SimulationGroupNode extends ManagerNode
 
 
 	/**
-	 * Builds and returns the list of content tree nodes for the current SimulationGroup.
+	 * Builds and returns the list of content tree nodes for the current PrescribedSimulationGroup.
 	 * The method constructs nodes across four sections:
 	 *   1. For transitory groups, simulation nodes are rebuilt from the current children
 	 *      using the project node factory to ensure an up-to-date representation.
@@ -311,8 +311,8 @@ public class SimulationGroupNode extends ManagerNode
 		// Initialize the list that will accumulate all content nodes for this group
 		List contentNodes = new ArrayList<>();
 
-		// Retrieve the current manager and cast it to a SimulationGroup
-		SimulationGroup simGroup = (SimulationGroup) getManager();
+		// Retrieve the current manager and cast it to a PrescribedSimulationGroup
+		PrescribedSimulationGroup simGroup = (PrescribedSimulationGroup) getManager();
 
 		// --- Section 1: transitory group -- rebuild simulation nodes from current children ---
 		if (simGroup.isTransitory()) {
@@ -461,12 +461,12 @@ public class SimulationGroupNode extends ManagerNode
 
 
 	/**
-	 * Returns the list of WatSimulation objects belonging to the wrapped SimulationGroup.
+	 * Returns the list of WatSimulation objects belonging to the wrapped PrescribedSimulationGroup.
 	 *
 	 * @return the group's simulation list; never null but may be empty
 	 */
 	public List<WatSimulation> getSimulations() {
-		SimulationGroup simGroup = (SimulationGroup) getManager();
+		PrescribedSimulationGroup simGroup = (PrescribedSimulationGroup) getManager();
 		return simGroup.getSimulations();
 	}
 
@@ -499,7 +499,7 @@ public class SimulationGroupNode extends ManagerNode
 
 	/**
 	 * Populates this node with all WatSimulation objects that are not members of any
-	 * named SimulationGroup in the current project.
+	 * named PrescribedSimulationGroup in the current project.
 	 *
 	 * The method:
 	 * 1. Retrieves all simulations and all simulation groups from the project.
@@ -518,7 +518,7 @@ public class SimulationGroupNode extends ManagerNode
 		}
 
 		List<WatSimulation> allSims = Project.getCurrentProject().getManagerListForType(WatSimulation.class);
-		List<SimulationGroup> simGroups = Project.getCurrentProject().getManagerListForType(SimulationGroup.class);
+		List<PrescribedSimulationGroup> simGroups = Project.getCurrentProject().getManagerListForType(PrescribedSimulationGroup.class);
 
 		int cnt = simGroups.size();
 		List<WatSimulation> sgSims;
@@ -530,7 +530,7 @@ public class SimulationGroupNode extends ManagerNode
 			containerParent = (SimGroupContainerNode) parentNode;
 		}
 
-		SimulationGroup simGrp;
+		PrescribedSimulationGroup simGrp;
 		boolean addedNodes = false;
 
 		for (int i = 0; i < cnt; i++) {
@@ -559,13 +559,13 @@ public class SimulationGroupNode extends ManagerNode
 
 
 	/**
-	 * Returns the SimulationGroup wrapped by this node.
+	 * Returns the PrescribedSimulationGroup wrapped by this node.
 	 *
-	 * @return the SimulationGroup cast from the underlying manager; may be null if no
+	 * @return the PrescribedSimulationGroup cast from the underlying manager; may be null if no
 	 * manager has been set
 	 */
-	private SimulationGroup getSimulationGroup() {
-		return (SimulationGroup) getManager();
+	private PrescribedSimulationGroup getSimulationGroup() {
+		return (PrescribedSimulationGroup) getManager();
 	}
 
 

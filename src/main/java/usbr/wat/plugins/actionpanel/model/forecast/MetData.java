@@ -3,7 +3,7 @@ package usbr.wat.plugins.actionpanel.model.forecast;
 import hec.lang.NamedType; // HEC base class providing a name field and modification tracking
 
 /**
- * Named data object representing a meteorological dataset within a ForecastSimGroup.
+ * Named data object representing a meteorological dataset within a ForecastSimulationGroup.
  *
  * Acts as a lightweight named placeholder for a meteorological data scenario (such as
  * a historical or synthetic weather dataset) that can be selected when configuring a
@@ -13,7 +13,7 @@ import hec.lang.NamedType; // HEC base class providing a name field and modifica
  * fields for file paths or DSS identifiers may be added in future versions as the
  * meteorological data model is expanded.
  *
- * Instances are loaded by ForecastSimGroup from the "Meteorology" XML element and
+ * Instances are loaded by ForecastSimulationGroup from the "Meteorology" XML element and
  * resolved by name in BcData when loading boundary condition configurations.
  *
  */

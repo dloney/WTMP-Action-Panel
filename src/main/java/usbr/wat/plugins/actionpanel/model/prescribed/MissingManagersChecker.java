@@ -1,4 +1,4 @@
-package usbr.wat.plugins.actionpanel.model;
+package usbr.wat.plugins.actionpanel.model.prescribed;
 
 import java.util.List;          // Ordered collection interface for lists of file paths returned by the file manager
 import java.util.logging.Logger; // JDK logger for recording when managers are re-added to the project
@@ -17,6 +17,7 @@ import hec2.wat.model.WatSimulationContainer;  // WAT simulation container manag
 import rma.util.RMAFilenameFilter; // RMA file filter for restricting directory listings to a specific extension
 import rma.util.RMAIO;             // RMA I/O utility for path concatenation
 
+
 /**
  * Utility class that scans the study's WAT sub-directory structure for manager
  * files that exist on disk but are not registered in the project's .sty file.
@@ -29,7 +30,7 @@ import rma.util.RMAIO;             // RMA I/O utility for path concatenation
  *   - WatAlternative      (.walt files in wat/alts/)
  *   - WatSimulation       (.simulation files in wat/sims/)
  *   - WatSimulationContainer (.container files in wat/sims/)
- *   - SimulationGroup     (.simgrp files in wat/simGroups/)
+ *   - PrescribedSimulationGroup     (.simgrp files in wat/simGroups/)
  *
  * Each missing manager is instantiated, associated with its file, and loaded via
  * readData(). Successfully loaded managers are added back to the project registry.
@@ -110,7 +111,7 @@ public class MissingManagersChecker {
 			path = simGroupFiles.get(i);
 
 			// Only add the simulation group if it is not already known to the project
-			proxy = _project.getManagerProxyByPath(path, SimulationGroup.class);
+			proxy = _project.getManagerProxyByPath(path, PrescribedSimulationGroup.class);
 			if (proxy == null) {
 				addSimulationGroup(path);
 			}
@@ -118,12 +119,12 @@ public class MissingManagersChecker {
 	}
 
 	/**
-	 * Creates a new SimulationGroup, reads it from the given file path, and registers it.
+	 * Creates a new PrescribedSimulationGroup, reads it from the given file path, and registers it.
 	 *
 	 * @param path the absolute path to the .simgrp file to load
 	 */
 	private void addSimulationGroup(String path) {
-		SimulationGroup simGroup = new SimulationGroup();
+		PrescribedSimulationGroup simGroup = new PrescribedSimulationGroup();
 		addManager(simGroup, path);
 	}
 

@@ -36,34 +36,30 @@ import rma.swing.RmaInsets;                                                     
 import rma.swing.RmaJDialog;                                                            // Base dialog class with RMA-specific behaviors used for plugin windows
 
 import usbr.wat.plugins.actionpanel.actions.DeleteSimulationGroupAction;                // Action that deletes a simulation group and coordinates UI updates
-import usbr.wat.plugins.actionpanel.actions.forecast.DeleteForecastSimGroupAction;      // Action for deleting forecast simulation groups (import may be used by forecast UI components)
 import usbr.wat.plugins.actionpanel.gitIntegration.utils.GitRepoUtils;                  // Utility for checking repository status and out-of-date conditions relative to Git
 import usbr.wat.plugins.actionpanel.listener.AnalysisPeriodRenameListener;              // Listener that tracks and applies changes when analysis periods are renamed
-import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup;                      // Base type representing a simulation group used by the actions window
-import usbr.wat.plugins.actionpanel.model.MissingManagersChecker;                       // Utility that checks for required managers and reports missing ones
-import usbr.wat.plugins.actionpanel.model.ResultsData;                                  // Data model representing results entries available for selection
-import usbr.wat.plugins.actionpanel.model.SimulationGroup;                              // Concrete type representing a simulation group managed within the plugin
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;                    // Forecast-specific simulation group type used by the forecast panel
+import usbr.wat.plugins.actionpanel.model.*;
+import usbr.wat.plugins.actionpanel.model.prescribed.MissingManagersChecker;
+import usbr.wat.plugins.actionpanel.model.prescribed.PrescribedSimulationGroup;
 import usbr.wat.plugins.actionpanel.ui.ActionsProjectTab;                               // Project tab that surfaces WTMP workflow actions within the host application
-import usbr.wat.plugins.actionpanel.ui.BaseSimulationGroupPanel;                        // Panel exposing common simulation-group functionality and flags
 import usbr.wat.plugins.actionpanel.ui.PrescribedPanel;                                 // Panel for prescribed conditions workflows including data review and simulation editing
-import usbr.wat.plugins.actionpanel.ui.SimulationGroupNode;                             // Node type used in the project tree to represent a simulation group
+import usbr.wat.plugins.actionpanel.ui.prescribed.SimulationGroupNode;                             // Node type used in the project tree to represent a simulation group
 import usbr.wat.plugins.actionpanel.ui.forecast.ForecastPanel;                          // Panel for forecast conditions workflows including forecast-specific simulations
 import usbr.wat.plugins.actionpanel.ui.planning.PlanningPanel;                          // Panel for the Planning workflow, hosting the Set/Simulation Group pairing and its six sub-tabs
 
 /**
  * Main window for the WTMP Actions plugin.
  *
- * Hosts tabbed panels for prescribed and forecast workflows, integrates with
+ * Hosts tabbed panels for workflows, integrates with
  * the project lifecycle, manages simulation group selection, and coordinates
  * repository status checks and plugin loading.
  */
 @SuppressWarnings("serial")
 public class ActionsWindow extends RmaJDialog {
-	// Static initialization registers the SimulationGroup node mapping and sets system properties
+	// Static initialization registers the PrescribedSimulationGroup node mapping and sets system properties
 	static {
-		// Map SimulationGroup objects to SimulationGroupNode in the project tree
-		ProjectNodeFactory.addObjectToNodeMapping(SimulationGroup.class, SimulationGroupNode.class);
+		// Map PrescribedSimulationGroup objects to SimulationGroupNode in the project tree
+		ProjectNodeFactory.addObjectToNodeMapping(PrescribedSimulationGroup.class, SimulationGroupNode.class);
 
 		// Use simulation names for the runs folder to improve clarity
 		System.setProperty("UseSimNameInRunsFolder", "true");
@@ -76,7 +72,7 @@ public class ActionsWindow extends RmaJDialog {
 	private JTabbedPane _tabbedPane;
 
 	// Currently selected simulation group, if any
-	private SimulationGroup _sg;
+	private PrescribedSimulationGroup _sg;
 
 	// Listener for WatSimulation add/delete events
 	private ProjectSimulationListener _projectSimulationListener;
@@ -84,7 +80,7 @@ public class ActionsWindow extends RmaJDialog {
 	// Actions tab integrated into the project pane
 	private ActionsProjectTab _actionsProjTab;
 
-	// Listener for SimulationGroup add/delete events
+	// Listener for PrescribedSimulationGroup add/delete events
 	private ProjectSimulationGroupListener _projectSimulationGroupListener;
 
 	// Panel for prescribed conditions workflows
@@ -207,6 +203,18 @@ public class ActionsWindow extends RmaJDialog {
 	{
 		return _planningPanel;
 	}
+
+	/**
+	 * Returns the panel used for the workflow workflow.
+	 *
+	 * @return the planning panel
+	 */
+	public SimulationPanel getWorkflowSimulationPanel()
+	{
+		return _planningPanel;
+	}
+
+
 
 	/**
 	 * Inserts the WTMP tab into the host application's project pane.
@@ -438,7 +446,7 @@ public class ActionsWindow extends RmaJDialog {
 	 *
 	 * @param sg the simulation group to activate
 	 */
-	public void setSimulationGroup(SimulationGroup sg) {
+	public void setSimulationGroup(PrescribedSimulationGroup sg) {
 		// Indicate work in progress to the user
 		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
@@ -482,6 +490,7 @@ public class ActionsWindow extends RmaJDialog {
 		// Identify which tab is currently active
 		Component comp = _tabbedPane.getSelectedComponent();
 
+		// todo: this needs to include planing
 		if ( comp == _prescribedPanel ) {
 			// Delegate to the prescribed panel when it is active
 			return _prescribedPanel.getSelectedSimulations();
@@ -504,6 +513,7 @@ public class ActionsWindow extends RmaJDialog {
 		// Identify which tab is currently active
 		Component comp = _tabbedPane.getSelectedComponent();
 
+		// todo: this needs to include planing
 		if ( comp == _prescribedPanel ) {
 			// Delegate to the prescribed panel when it is active
 			return _prescribedPanel.getSelectedResults();
@@ -526,6 +536,7 @@ public class ActionsWindow extends RmaJDialog {
 		// Identify which tab is currently active
 		Component comp = _tabbedPane.getSelectedComponent();
 
+		// todo: this needs to include planing
 		if ( comp == _prescribedPanel ) {
 			// Delegate to the prescribed panel when it is active
 			return _prescribedPanel.getSimulationGroup();
@@ -555,7 +566,7 @@ public class ActionsWindow extends RmaJDialog {
 	}
 
 	/**
-	 * Listener for SimulationGroup manager events.
+	 * Listener for PrescribedSimulationGroup manager events.
 	 *
 	 * Responds to deletion events by clearing the active selection and
 	 * invoking the delete action to remove the group from the project.
@@ -584,12 +595,12 @@ public class ActionsWindow extends RmaJDialog {
 		/**
 		 * Returns the manager class this listener handles.
 		 *
-		 * @return the SimulationGroup manager class
+		 * @return the PrescribedSimulationGroup manager class
 		 */
 		@Override
 		public Class<?> getManagerClass()
 		{
-			return SimulationGroup.class;
+			return PrescribedSimulationGroup.class;
 		}
 
 		/**
@@ -608,7 +619,7 @@ public class ActionsWindow extends RmaJDialog {
 			}
 
 			// Retrieve the deleted simulation group
-			SimulationGroup simGroup = (SimulationGroup) proxy.getManager();
+			PrescribedSimulationGroup simGroup = (PrescribedSimulationGroup) proxy.getManager();
 
 			// If the deleted manager is currently selected, clear the selection
 			if ( proxy.getManager()==getSimulationGroup() ) {

@@ -62,17 +62,13 @@ import rma.util.RMAIO;                                                      // P
 
 import usbr.wat.plugins.actionpanel.actions.ReviewDataAction;               // Provides ReviewDataAction, the Swing Action for triggering a data review workflow
 import usbr.wat.plugins.actionpanel.actions.UpdateDataAction;               // Provides UpdateDataAction, the Swing Action for triggering a data update workflow
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastConfigFiles;     // Provides ForecastConfigFiles for resolving config file paths relative to the project
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;        // Provides ForecastSimGroup, the top-level model grouping forecast simulations together
-import usbr.wat.plugins.actionpanel.model.forecast.IcReservoirInfo;         // Provides IcReservoirInfo, a model object holding per-reservoir initial condition metadata
-import usbr.wat.plugins.actionpanel.model.forecast.InitialConditions;       // Provides InitialConditions, the model object storing selected temperature-depth profiles
-import usbr.wat.plugins.actionpanel.model.forecast.Profile;                 // Provides Profile, representing a single dated temperature-depth profile read from CSV
+import usbr.wat.plugins.actionpanel.model.forecast.*;
 
 /**
  * Panel that displays and manages the Initial Conditions tab within the Forecast
  * Action Panel. It presents per-reservoir tables of dated temperature-depth profiles
  * (loaded from CSV files), renders the currently selected profile as a paired-data
- * plot, and persists the user's selection back to the ForecastSimGroup model.
+ * plot, and persists the user's selection back to the ForecastSimulationGroup model.
  *
  * Each reservoir gets one RmaJTable (for profile selection) and one G2dPanel
  * (for the corresponding temperature-depth plot). Both are stored together in a
@@ -80,7 +76,7 @@ import usbr.wat.plugins.actionpanel.model.forecast.Profile;                 // P
  *
  * @see AbstractForecastPanel
  * @see InitialConditions
- * @see ForecastSimGroup
+ * @see ForecastSimulationGroup
  */
 public class InitialConditionsPanel extends AbstractForecastPanel<InitialConditions> {
 	/**
@@ -166,9 +162,9 @@ public class InitialConditionsPanel extends AbstractForecastPanel<InitialConditi
 	private boolean _ignoreTableModification = false;
 
 	/**
-	 * The ForecastSimGroup currently displayed by this panel; null when no simulation is selected.
+	 * The ForecastSimulationGroup currently displayed by this panel; null when no simulation is selected.
 	 */
-	private ForecastSimGroup _fsg;
+	private ForecastSimulationGroup _fsg;
 
 	/**
 	 * Constructs a new InitialConditionsPanel and registers all required event listeners.
@@ -853,14 +849,14 @@ public class InitialConditionsPanel extends AbstractForecastPanel<InitialConditi
 	}
 
 	/**
-	 * Removal of initial condition data from a ForecastSimGroup is not currently
+	 * Removal of initial condition data from a ForecastSimulationGroup is not currently
 	 * supported; this method intentionally does nothing.
 	 *
-	 * @param fsg  the ForecastSimGroup from which data would be removed
+	 * @param fsg  the ForecastSimulationGroup from which data would be removed
 	 * @param data the InitialConditions object that would be removed
 	 */
 	@Override
-	protected void removeData(ForecastSimGroup fsg, InitialConditions data) {
+	protected void removeData(ForecastSimulationGroup fsg, InitialConditions data) {
 		//not currently supported
 	}
 
@@ -1028,7 +1024,7 @@ public class InitialConditionsPanel extends AbstractForecastPanel<InitialConditi
 	@Override
 	protected void savePanel() {
 		// Retrieve the forecast simulation group that holds the initial conditions
-		ForecastSimGroup simGrp = _forecastPanel.getSimulationGroup();
+		ForecastSimulationGroup simGrp = _forecastPanel.getSimulationGroup();
 
 		// Only proceed if a valid simulation group is available
 		if (simGrp != null) {
@@ -1104,15 +1100,15 @@ public class InitialConditionsPanel extends AbstractForecastPanel<InitialConditi
 	}
 
 	/**
-	 * Loads the panel for the given ForecastSimGroup: rebuilds the plots panel,
+	 * Loads the panel for the given ForecastSimulationGroup: rebuilds the plots panel,
 	 * restores previously selected profiles to the tables, redraws all plots,
 	 * and refreshes the upper summary table.
 	 *
-	 * @param fsg the ForecastSimGroup whose InitialConditions should be displayed,
+	 * @param fsg the ForecastSimulationGroup whose InitialConditions should be displayed,
 	 *            or null to disable the panel
 	 */
 	@Override
-	public void fillPanel(ForecastSimGroup fsg) {
+	public void fillPanel(ForecastSimulationGroup fsg) {
 		// Disable the entire panel when no simulation group is provided
 		setEnabled(fsg != null);
 		clearTableSelections();

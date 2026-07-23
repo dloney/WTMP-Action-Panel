@@ -16,13 +16,13 @@ import hec2.wat.model.WatSimulation;                                            
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                          // Plugin entry point used to obtain the Actions window and global context
 import usbr.wat.plugins.actionpanel.ActionsWindow;                              // Main actions window used as the UI parent for dialogs and status updates
 import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup;              // Base type representing a simulation group used by the actions
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;            // Forecast-specific simulation group type used by the forecast panel
+import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimulationGroup;            // Forecast-specific simulation group type used by the forecast panel
 import usbr.wat.plugins.actionpanel.ui.BaseSimulationGroupPanel;                // Panel exposing common simulation-group functionality and flags
 
 /**
  * Action that deletes one or more forecast simulation groups selected by the user.
  *
- * Presents an object chooser dialog filtered to {@link ForecastSimGroup} proxies,
+ * Presents an object chooser dialog filtered to {@link ForecastSimulationGroup} proxies,
  * performs deletion of the selected group managers and their simulations, and
  * notifies the UI to refresh.
  */
@@ -57,7 +57,7 @@ public class DeleteForecastSimGroupAction extends AbstractAction {
 	/**
 	 * Handles the user-triggered event to delete selected forecast simulation groups.
 	 * <p>
-	 * Shows an {@code ObjectChooser} in delete mode for {@link ForecastSimGroup} entries,
+	 * Shows an {@code ObjectChooser} in delete mode for {@link ForecastSimulationGroup} entries,
 	 * deletes each selected group and its simulations, notifies the parent panel, and
 	 * refreshes the forecast panel's group list.
 	 *
@@ -65,8 +65,8 @@ public class DeleteForecastSimGroupAction extends AbstractAction {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// Retrieve all manager proxies for ForecastSimGroup from the current project
-		List<ManagerProxy> simGroups = Project.getCurrentProject().getManagerProxyListForType(ForecastSimGroup.class);
+		// Retrieve all manager proxies for ForecastSimulationGroup from the current project
+		List<ManagerProxy> simGroups = Project.getCurrentProject().getManagerProxyListForType(ForecastSimulationGroup.class);
 
 		// Create the chooser dialog in delete mode with the available proxies
 		ObjectChooser chooser = new ObjectChooser(ActionPanelPlugin.getInstance().getActionsWindow(), true, simGroups, ObjectChooser.DELETE);

@@ -69,11 +69,8 @@ import rma.util.RMAIO; // Import utility class for file path concatenation and s
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin; // Import action panel plugin singleton for accessing UI components
 import usbr.wat.plugins.actionpanel.actions.planning.RunPlanningSimulationAction; // Import planning simulation action class with helper methods for parsing member sets
-import usbr.wat.plugins.actionpanel.model.BaseComputeSettings; // Import base settings interface for iteration configuration access
 import usbr.wat.plugins.actionpanel.model.ComputeSettings; // Import compute settings class managing Python script configurations
 import usbr.wat.plugins.actionpanel.model.ComputeType; // Import enum type specifying standard/iterative/position analysis modes
-import usbr.wat.plugins.actionpanel.model.planning.IcPathMap; // Import initial condition path mapping utility for IC data copy operations
-import usbr.wat.plugins.actionpanel.model.ModelAltIterationSettings; // Import iteration settings class defining member array configuration
 import usbr.wat.plugins.actionpanel.model.UsbrComputable; // Import user-specific computable interface extending base computational methods
 import usbr.wat.plugins.actionpanel.ui.planning.CsvReader; // Import CSV reader utility for parsing configuration files
 
@@ -144,7 +141,7 @@ public class PlanningActionComputable implements UsbrComputable, RealizationComp
 	 * the starting collection number to copy the data to the collections output file
 	 */
 	private final List<EnsembleSet> _selectedESets; // Collection of selected ensemble sets for processing this planning scenario
-	private PlanningSimGroup _simGroup; // Reference to planning simulation group object managing initial conditions and structure
+	private PlanningSimulationGroup _simGroup; // Reference to planning simulation group object managing initial conditions and structure
 	private WatSimulation _sim; // The underlying WAT simulation model instance being computed for this planning workflow
 
 	// Path string stored temporarily to identify where iteration results are written to disk
@@ -199,7 +196,7 @@ public class PlanningActionComputable implements UsbrComputable, RealizationComp
 	private JProgressBar _lifecyclePbar; // Lifecycle progress bar component reference
 
 	// Constructor accepting simulation group and data
-	public PlanningActionComputable(PlanningSimGroup simGroup, WatSimulation sim, List<EnsembleSet> selectedESets, boolean recomputeAll) {
+	public PlanningActionComputable(PlanningSimulationGroup simGroup, WatSimulation sim, List<EnsembleSet> selectedESets, boolean recomputeAll) {
 		super(); // Invoke superclass default constructor
 		_simGroup = simGroup; // Assign planning simulation group reference instance variable
 		_sim = sim; // Assign simulation model instance reference variable

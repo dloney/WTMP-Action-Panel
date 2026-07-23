@@ -1,4 +1,4 @@
-package usbr.wat.plugins.actionpanel.ui;
+package usbr.wat.plugins.actionpanel.ui.prescribed;
 
 import java.awt.GridBagConstraints;  // Specifies per-cell layout constraints for GridBagLayout
 import java.awt.GridBagLayout;       // Flexible grid-based Swing layout manager
@@ -18,7 +18,7 @@ import rma.swing.RmaJDescriptionField;    // RMA text field intended for descrip
 import rma.swing.RmaJDialog;              // RMA base dialog class providing common dialog behaviour
 import rma.swing.RmaJTextField;           // RMA single-line text field for the new simulation name prefix
 
-import usbr.wat.plugins.actionpanel.model.SimulationGroup; // Simulation group whose name is appended as a suffix to the new simulation name
+import usbr.wat.plugins.actionpanel.model.prescribed.PrescribedSimulationGroup;
 
 
 /**
@@ -87,7 +87,7 @@ public class SaveSimulationAsDialog extends RmaJDialog {
 	 * Constructs the dialog, builds all controls, attaches listeners, and positions
 	 * it relative to the parent window.
 	 *
-	 * After construction, call fillForm(SimulationGroup, WatSimulation) before
+	 * After construction, call fillForm(PrescribedSimulationGroup, WatSimulation) before
 	 * making the dialog visible to pre-populate the read-only info labels and defaults.
 	 *
 	 * @param parent the owning window used to centre the dialog and establish modality
@@ -354,7 +354,7 @@ public class SaveSimulationAsDialog extends RmaJDialog {
 	 * @param srcSim   the source simulation being copied; its name and description are
 	 *                 used as display values and defaults
 	 */
-	public void fillForm(SimulationGroup simGroup, WatSimulation srcSim) {
+	public void fillForm(PrescribedSimulationGroup simGroup, WatSimulation srcSim) {
 		// Display the group name in the read-only info row
 		_simGroupLbl.setText(simGroup.getName());
 

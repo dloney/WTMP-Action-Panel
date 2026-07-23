@@ -257,7 +257,7 @@ public abstract class AbstractSimulationGroup extends AbstractXMLManager {
 	public boolean saveData(RmaFile file) {
 		// Validate that target file is not null before proceeding
 		if (file == null) {
-			System.out.println("SimulationGroup.saveData: No file!"); // Log warning for missing file target
+			System.out.println("PrescribedSimulationGroup.saveData: No file!"); // Log warning for missing file target
 			return false; // Return failure indication
 		}
 

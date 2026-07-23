@@ -473,7 +473,7 @@ public abstract class AbstractSimulationPanel extends EnabledJPanel
 	 * Returns the simulation group model that this panel currently displays.
 	 *
 	 * Subclasses must implement this method to supply the concrete group type
-	 * (SimulationGroup, ForecastSimGroup, etc.) appropriate to their context.
+	 * (PrescribedSimulationGroup, ForecastSimulationGroup, etc.) appropriate to their context.
 	 *
 	 * @return the active AbstractSimulationGroup; must not be null after initialization
 	 */

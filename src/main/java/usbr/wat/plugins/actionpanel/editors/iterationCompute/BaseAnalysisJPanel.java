@@ -20,7 +20,7 @@ import rma.swing.RmaInsets;            // Pre-defined Insets constants for consi
 import rma.swing.RmaJIntegerField;     // RMA integer input field used for the Maximum members value
 import rma.swing.RmaJIntegerSetField;  // RMA set-entry field for specifying a set of integer member indices
 
-import usbr.wat.plugins.actionpanel.editors.EditIterationSettingsDialog; // Hosting dialog that provides simulation context
+import usbr.wat.plugins.actionpanel.editors.prescribed.EditIterationSettingsDialog; // Hosting dialog that provides simulation context
 import usbr.wat.plugins.actionpanel.model.BaseComputeSettings;           // Data model holding member indices and maximum member value
 
 /**

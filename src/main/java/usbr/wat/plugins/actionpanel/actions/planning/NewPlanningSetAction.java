@@ -4,10 +4,10 @@ import java.awt.event.ActionEvent;   // Event type delivered when a user trigger
 import javax.swing.AbstractAction;   // Swing base class for encapsulating an action that can be attached to UI components
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                      // Plugin entry point used to obtain the Actions window and global context
-import usbr.wat.plugins.actionpanel.editors.NewPlanningSetDialog;  // New/Edit dialog for a Set
+import usbr.wat.plugins.actionpanel.editors.planning.NewPlanningSetDialog;  // New/Edit dialog for a Set
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;             // The Set model this action creates
 import usbr.wat.plugins.actionpanel.ui.AbstractSimulationPanel;             // Base panel type that exposes simulation group operations to the UI
-import usbr.wat.plugins.actionpanel.ui.PlanningSetPanel;                    // UI panel that lists and manages SimulationGroup entries in the forecast workflow
+import usbr.wat.plugins.actionpanel.ui.planning.PlanningSetPanel;                    // UI panel that lists and manages PrescribedSimulationGroup entries in the forecast workflow
 
 /**
  * Action that creates a new {@link PlanningSet}.

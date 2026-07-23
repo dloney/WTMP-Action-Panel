@@ -5,8 +5,8 @@ import java.awt.event.ActionEvent;                                              
 import javax.swing.AbstractAction;                                                  // Swing base class for encapsulating an action that can be attached to UI components
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                              // Plugin entry point used to obtain the Actions window and global context
-import usbr.wat.plugins.actionpanel.editors.NewPlanningSetDialog;                   // Dialog used to create or edit a simulation group's metadata and settings
-import usbr.wat.plugins.actionpanel.model.AbstractPlanningSet;                      // Base type representing a simulation group used by the actions
+import usbr.wat.plugins.actionpanel.editors.planning.NewPlanningSetDialog;                   // Dialog used to create or edit a simulation group's metadata and settings
+import usbr.wat.plugins.actionpanel.model.planning.AbstractPlanningSet;                      // Base type representing a simulation group used by the actions
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;                     // Planning-specific simulation group type used by the planning panel
 
 /**

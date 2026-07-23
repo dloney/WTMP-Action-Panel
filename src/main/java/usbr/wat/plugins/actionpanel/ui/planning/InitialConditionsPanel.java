@@ -62,17 +62,13 @@ import rma.util.RMAIO;                                                      // P
 
 import usbr.wat.plugins.actionpanel.actions.ReviewDataAction;               // Provides ReviewDataAction, the Swing Action for triggering a data review workflow
 import usbr.wat.plugins.actionpanel.actions.UpdateDataAction;               // Provides UpdateDataAction, the Swing Action for triggering a data update workflow
-import usbr.wat.plugins.actionpanel.model.planning.PlanningConfigFiles;     // Provides PlanningConfigFiles for resolving config file paths relative to the project
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;        // Provides PlanningSimGroup, the top-level model grouping planning simulations together
-import usbr.wat.plugins.actionpanel.model.planning.IcReservoirInfo;         // Provides IcReservoirInfo, a model object holding per-reservoir initial condition metadata
-import usbr.wat.plugins.actionpanel.model.planning.InitialConditions;       // Provides InitialConditions, the model object storing selected temperature-depth profiles
-import usbr.wat.plugins.actionpanel.model.planning.Profile;                 // Provides Profile, representing a single dated temperature-depth profile read from CSV
+import usbr.wat.plugins.actionpanel.model.planning.*;
 
 /**
  * Panel that displays and manages the Initial Conditions tab within the Planning
  * Action Panel. It presents per-reservoir tables of dated temperature-depth profiles
  * (loaded from CSV files), renders the currently selected profile as a paired-data
- * plot, and persists the user's selection back to the PlanningSimGroup model.
+ * plot, and persists the user's selection back to the PlanningSimulationGroup model.
  *
  * Each reservoir gets one RmaJTable (for profile selection) and one G2dPanel
  * (for the corresponding temperature-depth plot). Both are stored together in a
@@ -80,7 +76,7 @@ import usbr.wat.plugins.actionpanel.model.planning.Profile;                 // P
  *
  * @see AbstractPlanningPanel
  * @see InitialConditions
- * @see PlanningSimGroup
+ * @see PlanningSimulationGroup
  */
 public class InitialConditionsPanel extends AbstractPlanningPanel<InitialConditions> {
 	/**
@@ -166,9 +162,9 @@ public class InitialConditionsPanel extends AbstractPlanningPanel<InitialConditi
 	private boolean _ignoreTableModification = false;
 
 	/**
-	 * The PlanningSimGroup currently displayed by this panel; null when no simulation is selected.
+	 * The PlanningSimulationGroup currently displayed by this panel; null when no simulation is selected.
 	 */
-	private PlanningSimGroup _fsg;
+	private PlanningSimulationGroup _fsg;
 
 	/**
 	 * Constructs a new InitialConditionsPanel and registers all required event listeners.
@@ -853,14 +849,14 @@ public class InitialConditionsPanel extends AbstractPlanningPanel<InitialConditi
 	}
 
 	/**
-	 * Removal of initial condition data from a PlanningSimGroup is not currently
+	 * Removal of initial condition data from a PlanningSimulationGroup is not currently
 	 * supported; this method intentionally does nothing.
 	 *
-	 * @param fsg  the PlanningSimGroup from which data would be removed
+	 * @param fsg  the PlanningSimulationGroup from which data would be removed
 	 * @param data the InitialConditions object that would be removed
 	 */
 	@Override
-	protected void removeData(PlanningSimGroup fsg, InitialConditions data) {
+	protected void removeData(PlanningSimulationGroup fsg, InitialConditions data) {
 		//not currently supported
 	}
 
@@ -1028,7 +1024,7 @@ public class InitialConditionsPanel extends AbstractPlanningPanel<InitialConditi
 	@Override
 	protected void savePanel() {
 		// Retrieve the planning simulation group that holds the initial conditions
-		PlanningSimGroup simGrp = _planningPanel.getSimulationGroup();
+		PlanningSimulationGroup simGrp = _planningPanel.getSimulationGroup();
 
 		// Only proceed if a valid simulation group is available
 		if (simGrp != null) {
@@ -1104,15 +1100,15 @@ public class InitialConditionsPanel extends AbstractPlanningPanel<InitialConditi
 	}
 
 	/**
-	 * Loads the panel for the given PlanningSimGroup: rebuilds the plots panel,
+	 * Loads the panel for the given PlanningSimulationGroup: rebuilds the plots panel,
 	 * restores previously selected profiles to the tables, redraws all plots,
 	 * and refreshes the upper summary table.
 	 *
-	 * @param fsg the PlanningSimGroup whose InitialConditions should be displayed,
+	 * @param fsg the PlanningSimulationGroup whose InitialConditions should be displayed,
 	 *            or null to disable the panel
 	 */
 	@Override
-	public void fillPanel(PlanningSimGroup fsg) {
+	public void fillPanel(PlanningSimulationGroup fsg) {
 		// Disable the entire panel when no simulation group is provided
 		setEnabled(fsg != null);
 		clearTableSelections();

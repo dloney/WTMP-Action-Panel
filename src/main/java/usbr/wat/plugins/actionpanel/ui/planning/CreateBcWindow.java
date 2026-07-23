@@ -16,10 +16,7 @@ import rma.swing.ButtonCmdPanel;                                                
 import rma.swing.RmaInsets;                                                     // Provides RmaInsets for standard inset constants used in GridBagConstraints
 import rma.swing.RmaJTable;                                                     // Provides RmaJTable as the base Swing table class for the operations and meteorology selection tables
 
-import usbr.wat.plugins.actionpanel.model.planning.BcData;                      // Provides BcData as the output data type constructed from each selected operations-meteorology pair
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;            // Provides PlanningSimGroup for retrieving the available operations and meteorology data to display
-import usbr.wat.plugins.actionpanel.model.planning.MeteorlogicData;             // Provides MeteorlogicData as the data type for rows in the meteorology selection table
-import usbr.wat.plugins.actionpanel.model.planning.OperationsData;              // Provides OperationsData as the data type for rows in the operations selection table
+import usbr.wat.plugins.actionpanel.model.planning.*;
 
 /**
  * A modal dialog that allows the user to select one or more operations records and one
@@ -45,7 +42,7 @@ import usbr.wat.plugins.actionpanel.model.planning.OperationsData;              
  */
 public class CreateBcWindow extends ImportPlanningWindow {
 	// The planning simulation group from which available operations and meteorology data are drawn
-	private final PlanningSimGroup _fsg;
+	private final PlanningSimulationGroup _fsg;
 
 	// The OK/Cancel button row at the bottom of the dialog
 	private ButtonCmdPanel _cmdPanel;
@@ -64,12 +61,12 @@ public class CreateBcWindow extends ImportPlanningWindow {
 	 * listeners, packs the dialog to its preferred size, and centres it over the
 	 * parent window.
 	 *
-	 * @param fsg    the {@link PlanningSimGroup} whose operations and meteorology data
+	 * @param fsg    the {@link PlanningSimulationGroup} whose operations and meteorology data
 	 *               are populated into the selection tables; must not be {@code null}
 	 * @param parent the {@link Window} over which this dialog is centred; passed to
 	 *               the {@link ImportPlanningWindow} superclass constructor
 	 */
-	public CreateBcWindow(PlanningSimGroup fsg, Window parent) {
+	public CreateBcWindow(PlanningSimulationGroup fsg, Window parent) {
 		// Initialise the superclass as a modal dialog with the given title
 		super(parent, "Create Boundary Conditions", true);
 
@@ -321,16 +318,16 @@ public class CreateBcWindow extends ImportPlanningWindow {
 
 	/**
 	 * Populates the operations and meteorology selection tables with data from the
-	 * given {@link PlanningSimGroup}, resetting the cancelled state and clearing any
+	 * given {@link PlanningSimulationGroup}, resetting the cancelled state and clearing any
 	 * previously displayed rows before loading the new data.
 	 *
 	 * Each table row contains a {@link Boolean#FALSE} checkbox value in column 0 and
 	 * the corresponding data object in column 1.
 	 *
-	 * @param fsg the {@link PlanningSimGroup} whose operations and meteorology data
+	 * @param fsg the {@link PlanningSimulationGroup} whose operations and meteorology data
 	 *            are loaded into the tables; must not be {@code null}
 	 */
-	public void fillForm(PlanningSimGroup fsg) {
+	public void fillForm(PlanningSimulationGroup fsg) {
 		// Default to cancelled until the user explicitly clicks OK
 		_canceled = true;
 

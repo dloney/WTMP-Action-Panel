@@ -1,4 +1,4 @@
-package usbr.wat.plugins.actionpanel.model;
+package usbr.wat.plugins.actionpanel.model.forecast;
 
 import java.util.List; // Import List interface for holding collections of ensemble report information objects in method parameters
 
@@ -6,7 +6,8 @@ import javax.swing.Action; // Import Action class representing a menu item or to
 
 import usbr.wat.plugins.actionpanel.ActionsWindow; // Import main window container class where available actions are registered and managed
 import usbr.wat.plugins.actionpanel.io.ReportOptions; // Import options class controlling report output settings such as format, headers/footers, and type
-import usbr.wat.plugins.actionpanel.model.forecast.EnsembleReportInfo; // Import data model representing information about a specific ensemble member in the forecast context
+import usbr.wat.plugins.actionpanel.model.ReportPlugin;
+import usbr.wat.plugins.actionpanel.model.SimulationReportInfo;
 import usbr.wat.plugins.actionpanel.ui.UsbrPanel; // Import UI panel component where the action will be anchored or displayed to trigger report generation
 
 

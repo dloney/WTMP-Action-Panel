@@ -14,7 +14,6 @@ import java.util.List;                                                      // P
 import java.util.Vector;                                                    // Provides Vector as the row data container required by RmaJTable's row insertion methods
 import java.util.logging.Level;                                             // Provides Level for categorising log messages (CONFIG used for script result logging)
 import java.util.logging.Logger;                                            // Provides Logger for recording script execution results and directory creation failures
-import java.util.stream.Collectors;                                         // Provides Collectors for terminal stream operations (not directly used; retained for potential use)
 
 import javax.swing.JButton;                                                 // Provides JButton for the "Create B.C. Sets..." button in the lower panel
 import javax.swing.JOptionPane;                                             // Provides JOptionPane for displaying error and confirmation dialogs
@@ -32,7 +31,7 @@ import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                      // P
 import usbr.wat.plugins.actionpanel.model.planning.BcData;                  // Provides BcData as the typed data item this panel manages (boundary condition set records)
 import usbr.wat.plugins.actionpanel.model.planning.EnsembleSet;             // Provides EnsembleSet for identifying ensemble sets that depend on boundary condition data being deleted
 import usbr.wat.plugins.actionpanel.model.planning.PlanningConfigFiles;     // Provides PlanningConfigFiles for resolving the project-relative flow pattern configuration file path
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;        // Provides PlanningSimGroup as the top-level data container holding all planning data for a simulation
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSimulationGroup;        // Provides PlanningSimulationGroup as the top-level data container holding all planning data for a simulation
 import usbr.wat.plugins.actionpanel.model.planning.MeteorlogicData;         // Provides MeteorlogicData for looking up the meteorology record referenced by a boundary condition set
 import usbr.wat.plugins.actionpanel.model.planning.OperationsData;          // Provides OperationsData for looking up the operations record referenced by a boundary condition set
 import usbr.wat.plugins.actionpanel.ui.BoundaryConditionPlotPanel;          // Provides BoundaryConditionPlotPanel for rendering the time-series plot of the selected BC set
@@ -77,7 +76,7 @@ public class BcPanel extends AbstractPlanningPanel<BcData> {
 	private BoundaryConditionPlotPanel _plotPanel;
 
 	// The currently active planning simulation group; set when fillPanel is called
-	private PlanningSimGroup _fsg;
+	private PlanningSimulationGroup _fsg;
 
 	/**
 	 * Constructs a {@code BcPanel} and delegates all shared initialisation to the
@@ -488,17 +487,17 @@ public class BcPanel extends AbstractPlanningPanel<BcData> {
 
 	/**
 	 * Populates the BC table and plot panel with data from the given
-	 * {@link PlanningSimGroup}, replacing any previously displayed data.
+	 * {@link PlanningSimulationGroup}, replacing any previously displayed data.
 	 *
 	 * Enables or disables the entire panel based on whether {@code fsg} is non-null.
 	 * If the simulation group has at least one BC set, the plot panel is pre-populated
 	 * with the first item's data.
 	 *
-	 * @param fsg the {@link PlanningSimGroup} whose BC data is to be displayed, or
+	 * @param fsg the {@link PlanningSimulationGroup} whose BC data is to be displayed, or
 	 *            {@code null} to clear and disable the panel
 	 */
 	@Override
-	public void fillPanel(PlanningSimGroup fsg) {
+	public void fillPanel(PlanningSimulationGroup fsg) {
 		// Enable or disable the panel based on whether a simulation group is present
 		setEnabled(fsg != null);
 		_fsg = fsg;
@@ -608,14 +607,14 @@ public class BcPanel extends AbstractPlanningPanel<BcData> {
 	}
 
 	/**
-	 * Removes the given {@link BcData} item from the supplied {@link PlanningSimGroup}'s
+	 * Removes the given {@link BcData} item from the supplied {@link PlanningSimulationGroup}'s
 	 * internal BC data list.
 	 *
-	 * @param fsg  the {@link PlanningSimGroup} from which the BC data is removed
+	 * @param fsg  the {@link PlanningSimulationGroup} from which the BC data is removed
 	 * @param data the {@link BcData} item to remove
 	 */
 	@Override
-	protected void removeData(PlanningSimGroup fsg, BcData data) {
+	protected void removeData(PlanningSimulationGroup fsg, BcData data) {
 		fsg.removeBcData(data);
 	}
 

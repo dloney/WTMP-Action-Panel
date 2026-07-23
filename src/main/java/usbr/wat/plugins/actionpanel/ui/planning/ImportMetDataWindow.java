@@ -17,7 +17,6 @@ import java.util.ArrayList;                                         // Provides 
 import java.util.HashMap;                                           // Provides HashMap for caching MetTableModel instances keyed by config file path
 import java.util.List;                                              // Provides the List interface for ordered collections of years, identifiers, and data sets
 import java.util.Map;                                               // Provides the Map interface for keyed lookups of table models, averages, and selection state
-import java.util.Set;                                               // Provides Set; retained for potential use with map entry sets
 import java.util.Vector;                                            // Provides Vector as the row data container required by RmaJTable's row append methods
 
 import javax.swing.AbstractAction;                                  // Provides AbstractAction as the base class for the "Copy to Clipboard" and "Select All" popup actions
@@ -27,7 +26,6 @@ import javax.swing.JLabel;                                          // Provides 
 import javax.swing.JOptionPane;                                     // Provides JOptionPane for validation error messages, error confirmation, and error detail dialogs
 import javax.swing.JPopupMenu;                                      // Provides JPopupMenu for the right-click context menu on the error display editor pane
 import javax.swing.JScrollPane;                                     // Provides JScrollPane for wrapping the error editor pane with always-on horizontal scrolling
-import javax.swing.JTextArea;                                       // Provides JTextArea; retained as a common Swing text component import
 import javax.swing.ScrollPaneConstants;                             // Provides ScrollPaneConstants for the HORIZONTAL_SCROLLBAR_ALWAYS policy on the error scroll pane
 import javax.swing.table.JTableHeader;                              // Provides JTableHeader as the base type checked when applying tooltip strings to the table header
 import javax.swing.table.TableModel;                                // Provides TableModel as the type parameter for the TableRowSorter applied to the met table
@@ -59,9 +57,8 @@ import rma.util.RMAIO;                                              // Provides 
 
 import usbr.wat.plugins.actionpanel.io.planning.MetConfigFileReader;    // Provides MetConfigFileReader for parsing the selected met config file and its DSS source entries
 import usbr.wat.plugins.actionpanel.model.planning.PlanningConfigFiles; // Provides PlanningConfigFiles for resolving the project-relative paths to config file folders
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;    // Provides PlanningSimGroup as the simulation group passed to fillForm (not currently used directly)
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSimulationGroup;    // Provides PlanningSimulationGroup as the simulation group passed to fillForm (not currently used directly)
 import usbr.wat.plugins.actionpanel.model.planning.MetDataDssValidator; // Provides MetDataDssValidator for reading DSS records and computing per-year seasonal air temperature averages
-import usbr.wat.plugins.actionpanel.model.planning.MetDataType;         // Provides MetDataType for classifying the type of meteorology data being imported
 import usbr.wat.plugins.actionpanel.model.planning.MeteorlogicData;     // Provides MeteorlogicData as the output data type constructed for each selected year
 
 /**
@@ -904,11 +901,11 @@ public class ImportMetDataWindow extends ImportPlanningWindow {
 	 * Populates the data source combo box with available met config files and resets
 	 * the cancelled state in preparation for a new user interaction.
 	 *
-	 * @param fsg the {@link PlanningSimGroup} for the current simulation group; not
+	 * @param fsg the {@link PlanningSimulationGroup} for the current simulation group; not
 	 *            used directly in the current implementation but provided for future
 	 *            context-sensitive filtering
 	 */
-	public void fillForm(PlanningSimGroup fsg) {
+	public void fillForm(PlanningSimulationGroup fsg) {
 		// Reload the config file combo with files found in the met config files folder
 		fillMetDataCombo();
 

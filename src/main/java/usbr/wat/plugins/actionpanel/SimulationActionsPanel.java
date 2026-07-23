@@ -13,11 +13,11 @@ import rma.swing.RmaInsets;                                                     
 
 import usbr.wat.plugins.actionpanel.actions.DeleteSimulationResultsAction;              // Action to delete saved simulation results from storage
 import usbr.wat.plugins.actionpanel.actions.DisplayReportSelectorAction;                // Action to display a selector for available reports in workflows
-import usbr.wat.plugins.actionpanel.actions.RunSimulationAction;                        // Action to run simulations in prescribed conditions workflows
-import usbr.wat.plugins.actionpanel.actions.SaveSimulationResultsAction;                // Action to persist generated simulation results
+import usbr.wat.plugins.actionpanel.actions.prescribed.RunSimulationAction;                        // Action to run simulations in prescribed conditions workflows
+import usbr.wat.plugins.actionpanel.actions.prescribed.SaveSimulationResultsAction;                // Action to persist generated simulation results
 import usbr.wat.plugins.actionpanel.actions.forecast.RunForecastSimulationAction;       // Action to run simulations in forecast workflows
 import usbr.wat.plugins.actionpanel.actions.planning.RunPlanningSimulationAction;
-import usbr.wat.plugins.actionpanel.model.ForecastReportingPlugin;                      // Reporting plugin interface for forecast-specific report actions
+import usbr.wat.plugins.actionpanel.model.forecast.ForecastReportingPlugin;                      // Reporting plugin interface for forecast-specific report actions
 import usbr.wat.plugins.actionpanel.model.ReportPlugin;                                 // Base reporting plugin interface used by the reports manager
 import usbr.wat.plugins.actionpanel.model.ReportsManager;                               // Manager that provides registered reporting plugins available to the UI
 import usbr.wat.plugins.actionpanel.ui.PrescribedPanel;                                // Panel type for prescribed conditions workflows

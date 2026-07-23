@@ -14,7 +14,7 @@ import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                          
 import usbr.wat.plugins.actionpanel.actions.planning.DeletePlanningSimGroupAction;  // Action that deletes the selected planning simulation group
 import usbr.wat.plugins.actionpanel.actions.planning.EditPlanningSimGroupAction;    // Action that opens the editor for the selected planning simulation group
 import usbr.wat.plugins.actionpanel.actions.planning.NewPlanningSimGroupAction;     // Action that opens the creation dialog for a new planning simulation group
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;                // Planning-specific simulation group model managed by this panel
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSimulationGroup;                // Planning-specific simulation group model managed by this panel
 import usbr.wat.plugins.actionpanel.ui.BaseSimulationGroupPanel;					// Imports the common class between this and forecast
 import usbr.wat.plugins.actionpanel.ui.AbstractSimulationPanel;					    // Imports the common class between this and forecast
 
@@ -24,7 +24,7 @@ import usbr.wat.plugins.actionpanel.ui.AbstractSimulationPanel;					    // Impor
  *
  * This class extends BaseSimulationGroupPanel to provide planning-specific
  * implementations of the three action factory methods and the combo-box selection
- * handler. It manages PlanningSimGroup objects rather than the standard SimulationGroup
+ * handler. It manages PlanningSimulationGroup objects rather than the standard PrescribedSimulationGroup
  * type used by PrescribedSimulationGroupPanel.
  *
  * In addition to the controls inherited from BaseSimulationGroupPanel, this panel
@@ -166,10 +166,10 @@ public class SimulationGroupPanel extends BaseSimulationGroupPanel {
 			return;
 		}
 
-		// Resolve the full PlanningSimGroup from the proxy, or null if nothing is selected
-		PlanningSimGroup simGroup = null;
+		// Resolve the full PlanningSimulationGroup from the proxy, or null if nothing is selected
+		PlanningSimulationGroup simGroup = null;
 		if (proxy != null) {
-			simGroup = (PlanningSimGroup) proxy.loadManager();
+			simGroup = (PlanningSimulationGroup) proxy.loadManager();
 		}
 
 		// Update the parent panel and Edit button state with the resolved group
@@ -181,14 +181,14 @@ public class SimulationGroupPanel extends BaseSimulationGroupPanel {
 	 * Returns the Class type used to query the project's manager list when loading
 	 * the simulation group combo box.
 	 *
-	 * Returning PlanningSimGroup.class ensures that only planning simulation groups
+	 * Returning PlanningSimulationGroup.class ensures that only planning simulation groups
 	 * are shown in this panel's combo box.
 	 *
-	 * @return PlanningSimGroup.class
+	 * @return PlanningSimulationGroup.class
 	 */
 	@Override
 	protected Class getSimGroupClass() {
-		return PlanningSimGroup.class;
+		return PlanningSimulationGroup.class;
 	}
 
 
@@ -201,7 +201,7 @@ public class SimulationGroupPanel extends BaseSimulationGroupPanel {
 	 *
 	 * @param simGroup the planning simulation group to display; null clears the parent panel
 	 */
-	private void fillForm(PlanningSimGroup simGroup) {
+	private void fillForm(PlanningSimulationGroup simGroup) {
 		// Enable the Edit button only when a valid group is currently selected
 		boolean enabled = simGroup != null;
 		_editButton.setEnabled(enabled);

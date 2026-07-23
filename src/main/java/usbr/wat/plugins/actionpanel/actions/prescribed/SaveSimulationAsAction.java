@@ -1,4 +1,4 @@
-package usbr.wat.plugins.actionpanel.actions;
+package usbr.wat.plugins.actionpanel.actions.prescribed;
 
 import java.awt.event.ActionEvent;                                              // Event type delivered when a user triggers a bound action (for example, a button press)
 
@@ -10,8 +10,8 @@ import hec2.wat.model.WatSimulation;                                            
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                          // Provides access to the plugin singleton and its actions window
 import usbr.wat.plugins.actionpanel.commands.SaveSimulationToGroupCmd;          // Command that copies a simulation into a group under a new name/description
-import usbr.wat.plugins.actionpanel.model.SimulationGroup;                      // Concrete type representing a simulation group managed within the plugin
-import usbr.wat.plugins.actionpanel.ui.SaveSimulationAsDialog;                  // Dialog used to capture "Save As" inputs (new name and description)
+import usbr.wat.plugins.actionpanel.model.prescribed.PrescribedSimulationGroup;                      // Concrete type representing a simulation group managed within the plugin
+import usbr.wat.plugins.actionpanel.ui.prescribed.SaveSimulationAsDialog;                  // Dialog used to capture "Save As" inputs (new name and description)
 import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                               // Base USBR panel type implemented by workflow panels
 
 /**
@@ -19,7 +19,7 @@ import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                               
  *
  * This action presents a "Save Simulation As..." dialog to the user, collects
  * the desired name and description, and then executes a command to create a copy
- * of the source simulation in the specified {@link SimulationGroup}.
+ * of the source simulation in the specified {@link PrescribedSimulationGroup}.
  */
 public class SaveSimulationAsAction extends AbstractAction {
 	/**
@@ -44,7 +44,7 @@ public class SaveSimulationAsAction extends AbstractAction {
 	/**
 	 * Handles the user-triggered event.
 	 *
-	 * This action is invoked programmatically via {@link #saveSimulationAs(SimulationGroup, WatSimulation)},
+	 * This action is invoked programmatically via {@link #saveSimulationAs(PrescribedSimulationGroup, WatSimulation)},
 	 * so the default actionPerformed is intentionally empty.
 	 *
 	 * @param e the action event that initiated this operation
@@ -63,7 +63,7 @@ public class SaveSimulationAsAction extends AbstractAction {
 	 * @param srcSim   the source simulation to copy
 	 * @return true if the simulation was saved and added successfully; false otherwise
 	 */
-	public boolean saveSimulationAs(SimulationGroup simGroup, WatSimulation srcSim) {
+	public boolean saveSimulationAs(PrescribedSimulationGroup simGroup, WatSimulation srcSim) {
 		// Validate inputs to ensure both a target group and source simulation are provided
 		if (simGroup == null || srcSim == null) {
 			return false;

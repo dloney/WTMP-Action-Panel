@@ -45,7 +45,7 @@ import rma.swing.table.RmaTableModel;     // Provides addRow, insertRow, deleteR
 import rma.util.RMAConst;                 // Provides the HEC_UNDEFINED_DOUBLE sentinel value used in user-defined value arrays
 
 import usbr.wat.plugins.actionpanel.model.planning.EnsembleSet;              // Identifies ensemble sets that depend on a temperature target set
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;         // Top-level model holding temperature target sets and analysis period
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSimulationGroup;         // Top-level model holding temperature target sets and analysis period
 import usbr.wat.plugins.actionpanel.model.planning.TemperatureTargetSet;     // Model object displayed and saved by this panel
 import usbr.wat.plugins.actionpanel.model.planning.TemperatureTargetTimeStep; // Provides the REGULAR_HOURLY constant used during interpolation
 import usbr.wat.plugins.actionpanel.ui.planning.AbstractPlanningPanel;       // Base class supplying the upper table and shared planning UI
@@ -57,7 +57,7 @@ import usbr.wat.plugins.actionpanel.ui.planning.PlanningPanel;               // 
  * Action Panel. It presents:
  *
  * 1. An upper table (inherited _tempTargetTable) listing all TemperatureTargetSet
- *    objects belonging to the active PlanningSimGroup.
+ *    objects belonging to the active PlanningSimulationGroup.
  * 2. A read-only info table (_ttInfoTable) showing the selected set's name,
  *    description, and river location.
  * 3. An "Import/Create T.T. Set..." button that opens the TempTargetImportDialog.
@@ -115,9 +115,9 @@ public class TempTargetPanel extends AbstractPlanningPanel<TemperatureTargetSet>
 	private int _topTableRowSelected;
 
 	/**
-	 * The PlanningSimGroup currently loaded into the panel; null when no group is active.
+	 * The PlanningSimulationGroup currently loaded into the panel; null when no group is active.
 	 */
-	private PlanningSimGroup _fsg;
+	private PlanningSimulationGroup _fsg;
 
 	/**
 	 * The default auto-resize mode of the time-series table, captured at construction
@@ -488,7 +488,7 @@ public class TempTargetPanel extends AbstractPlanningPanel<TemperatureTargetSet>
 	@Override
 	protected void savePanel() {
 		// Retrieve the currently active simulation group from the parent planning panel
-		PlanningSimGroup simGrp = _planningPanel.getSimulationGroup();
+		PlanningSimulationGroup simGrp = _planningPanel.getSimulationGroup();
 
 		if (simGrp != null && simGrp.equals(_fsg) && _selectedTempTargetSet != null && _ttTable.getRowCount() > 0 && isModified()) {
 			// Commit any pending edits in both tables before reading their values
@@ -624,11 +624,11 @@ public class TempTargetPanel extends AbstractPlanningPanel<TemperatureTargetSet>
 	 * Returns the list of DSS pathnames for all written records.
 	 *
 	 * @param tempTargetSet the set whose time series should be saved to DSS
-	 * @param simGrp        the PlanningSimGroup providing the analysis period and group name
+	 * @param simGrp        the PlanningSimulationGroup providing the analysis period and group name
 	 * @return a List of DSSPathname objects for all records written to DSS
 	 * @throws TempTargetSaveFailedException if the analysis period is unset or a DSS write fails
 	 */
-	private List<DSSPathname> saveImported(TemperatureTargetSet tempTargetSet, PlanningSimGroup simGrp) throws TempTargetSaveFailedException {
+	private List<DSSPathname> saveImported(TemperatureTargetSet tempTargetSet, PlanningSimulationGroup simGrp) throws TempTargetSaveFailedException {
 		// Initialize the list that will accumulate DSS pathnames for all written records
 		List<DSSPathname> retVal = new ArrayList<>();
 
@@ -681,7 +681,7 @@ public class TempTargetPanel extends AbstractPlanningPanel<TemperatureTargetSet>
 	 * @param simGrp the planningSimGroup whose name determines the subdirectory
 	 * @return the project-relative directory path string (without trailing slash)
 	 */
-	private String getSimGroupDirectory(PlanningSimGroup simGrp) {
+	private String getSimGroupDirectory(PlanningSimulationGroup simGrp) {
 		// Construct the project-relative path for the simulation group's DSS output directory
 		String planningSimGroupDirectory = "planning/simGroups/" + simGrp.getName();
 
@@ -704,11 +704,11 @@ public class TempTargetPanel extends AbstractPlanningPanel<TemperatureTargetSet>
 	 * TimeSeriesContainer per target column, writing each via saveTimeSeries.
 	 *
 	 * @param tempTargetSet the user-defined set whose edited values are to be saved
-	 * @param simGrp        the PlanningSimGroup providing the analysis period
+	 * @param simGrp        the PlanningSimulationGroup providing the analysis period
 	 * @return a List of DSSPathname objects for all records written
 	 * @throws TempTargetSaveFailedException if any DSS write fails
 	 */
-	private List<DSSPathname> saveUserDefinedTable(TemperatureTargetSet tempTargetSet, PlanningSimGroup simGrp) throws TempTargetSaveFailedException {
+	private List<DSSPathname> saveUserDefinedTable(TemperatureTargetSet tempTargetSet, PlanningSimulationGroup simGrp) throws TempTargetSaveFailedException {
 		// Initialize the list that will accumulate DSS pathnames for all written records
 		List<DSSPathname> retVal = new ArrayList<>();
 
@@ -885,14 +885,14 @@ public class TempTargetPanel extends AbstractPlanningPanel<TemperatureTargetSet>
 	}
 
 	/**
-	 * Loads the panel for the given PlanningSimGroup: clears any previous state,
+	 * Loads the panel for the given PlanningSimulationGroup: clears any previous state,
 	 * resets the selected set, and populates the upper temperature target table with
 	 * all sets from the group. Enables the Import/Create button only when a group is set.
 	 *
-	 * @param fsg the PlanningSimGroup to display, or null to disable the panel
+	 * @param fsg the PlanningSimulationGroup to display, or null to disable the panel
 	 */
 	@Override
-	public void fillPanel(PlanningSimGroup fsg) {
+	public void fillPanel(PlanningSimulationGroup fsg) {
 		if (fsg != null) {
 			// Clear any stale content from the previous group before repopulating
 			clearPanel();
@@ -1157,11 +1157,11 @@ public class TempTargetPanel extends AbstractPlanningPanel<TemperatureTargetSet>
 	 * Removes the given TemperatureTargetSet from the active planningSimGroup's
 	 * temperature target set list.
 	 *
-	 * @param fsg  the PlanningSimGroup from which the data is removed
+	 * @param fsg  the PlanningSimulationGroup from which the data is removed
 	 * @param data the TemperatureTargetSet to remove
 	 */
 	@Override
-	protected void removeData(PlanningSimGroup fsg, TemperatureTargetSet data) {
+	protected void removeData(PlanningSimulationGroup fsg, TemperatureTargetSet data) {
 		// Delegate the removal to the simulation group's built-in remove method
 		fsg.removeTemperatureTargetSet(data);
 	}

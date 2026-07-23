@@ -43,15 +43,15 @@ import rma.util.RMAIO;                                                          
 import usbr.wat.plugins.actionpanel.ActionsWindow;                                  // The parent Actions Window panel
 import usbr.wat.plugins.actionpanel.commands.AbstractNewSimulationGroupCmd;         // Abstract command for creating a new simulation group
 import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup;                  // Base class for all simulation group types
-import usbr.wat.plugins.actionpanel.model.SimulationGroup;                          // Standard (non-forecast) simulation group model
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;                // Forecast-specific simulation group model
+import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimulationGroup;
+import usbr.wat.plugins.actionpanel.model.prescribed.PrescribedSimulationGroup;
 
 /**
  * Dialog for creating or editing a Simulation Group within the WTMP Action Panel.
  *
  * This dialog allows users to define a new simulation group or modify an existing one
  * by specifying a name, description, analysis period, and one or more WAT simulations.
- * It supports both standard SimulationGroup and ForecastSimGroup types by accepting
+ * It supports both standard PrescribedSimulationGroup and ForecastSimulationGroup types by accepting
  * the relevant class and command class at runtime via setters.
  *
  * When creating a new group, the dialog uses reflection to instantiate the appropriate
@@ -96,7 +96,7 @@ public class NewSimulationGroupDialog extends RmaJDialog {
 	// The simulation group being edited; null when creating a new group
 	private AbstractSimulationGroup _simGroup;
 
-	// The concrete class type of the simulation group to create (e.g., SimulationGroup or ForecastSimGroup)
+	// The concrete class type of the simulation group to create (e.g., PrescribedSimulationGroup or ForecastSimulationGroup)
 	private Class<? extends AbstractSimulationGroup> _simGroupClass;
 
 	// The concrete command class used to execute the group creation
@@ -355,7 +355,7 @@ public class NewSimulationGroupDialog extends RmaJDialog {
 	 * assigned to any existing simulation group.
 	 *
 	 * Retrieves all simulations from the current project and filters out those
-	 * that are already part of a SimulationGroup or ForecastSimGroup. Only base
+	 * that are already part of a PrescribedSimulationGroup or ForecastSimulationGroup. Only base
 	 * WatSimulation instances (not FRA subclasses) are included.
 	 */
 	private void fillTable() {
@@ -372,10 +372,10 @@ public class NewSimulationGroupDialog extends RmaJDialog {
 		Vector row;
 
 		// Retrieve all standard simulation groups in the project
-		List<SimulationGroup> simGroups = proj.getManagerListForType(SimulationGroup.class);
+		List<PrescribedSimulationGroup> simGroups = proj.getManagerListForType(PrescribedSimulationGroup.class);
 
 		// Retrieve all forecast simulation groups in the project
-		List<ForecastSimGroup> fsimGroups = proj.getManagerListForType(ForecastSimGroup.class);
+		List<ForecastSimulationGroup> fsimGroups = proj.getManagerListForType(ForecastSimulationGroup.class);
 
 		// Combine both group types into one list for membership checks
 		List<AbstractSimulationGroup> allSimGroups = new ArrayList<>();
@@ -848,9 +848,9 @@ public class NewSimulationGroupDialog extends RmaJDialog {
 		if (_simGroup == null) {
 			String name = _nameDescPanel.getName();
 
-			// Check if a SimulationGroup or ForecastSimGroup with this name already exists
-			if (proj.getManagerProxy(name, SimulationGroup.class) != null ||
-					proj.getManagerProxy(name, ForecastSimGroup.class) != null) {
+			// Check if a PrescribedSimulationGroup or ForecastSimulationGroup with this name already exists
+			if (proj.getManagerProxy(name, PrescribedSimulationGroup.class) != null ||
+					proj.getManagerProxy(name, ForecastSimulationGroup.class) != null) {
 				// Inform the user that the name is already taken
 				JOptionPane.showMessageDialog(this, "A Simulation Group named " + name + " already exists. Please enter a unique name",
 						"Duplicate Name", JOptionPane.INFORMATION_MESSAGE);

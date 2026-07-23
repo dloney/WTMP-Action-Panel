@@ -2,12 +2,7 @@ package usbr.wat.plugins.actionpanel.actions.forecast;
 
 import java.awt.event.ActionEvent;                                                              // Event type delivered when a user triggers a bound action (for example, a button press)
 
-import java.util.ArrayList;                                                                     // Resizable lists and related collection utilities
-import java.util.HashMap;                                                                       // Map implementation used to store keyed collections (import present even if unused here)
-import java.util.Iterator;                                                                      // Iterator used to traverse collections
 import java.util.List;                                                                          // Collections interface used for lists of simulations or ensemble sets
-import java.util.Map;                                                                           // Map interface (import present even if unused here)
-import java.util.Set;                                                                           // Set interface (import present even if unused here)
 import java.util.StringTokenizer;                                                               // Tokenizer for parsing comma- and dash-separated numeric ranges
 
 import javax.swing.AbstractAction;                                                              // Swing base class for encapsulating an action that can be attached to UI components
@@ -20,11 +15,9 @@ import rma.util.IntArray;                                                       
 import hec2.wat.model.WatSimulation;                                                            // WAT model type representing a single simulation scenario or run
 
 import usbr.wat.plugins.actionpanel.ActionsWindow;                                              // Main actions window used as the UI parent for dialogs and context
-import usbr.wat.plugins.actionpanel.editors.iterationCompute.UsgsComputeSelectorDialog;         // Dialog that lets users select computations to run and monitors progress (import present even if unused here)
-import usbr.wat.plugins.actionpanel.model.UsbrComputable;                                       // Interface for computable tasks consumed by forecast compute workflows (import present even if unused here)
 import usbr.wat.plugins.actionpanel.model.forecast.EnsembleSet;                                 // Forecast model representing a collection of ensemble members grouped for computation
 import usbr.wat.plugins.actionpanel.model.forecast.ForecastActionComputable;                    // Computable wrapper used to initiate forecast calculations from actions
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;                            // Forecast-specific simulation group type used by the forecast panel
+import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimulationGroup;                            // Forecast-specific simulation group type used by the forecast panel
 import usbr.wat.plugins.actionpanel.ui.forecast.SimulationPanel;                                // Panel for forecast workflows that displays and manages simulations and ensemble sets
 
 /**
@@ -98,7 +91,7 @@ public class RunForecastSimulationAction extends AbstractAction {
 	public void computeSimulationAction(boolean recomputeAll) {
 
 		// Retrieve the active forecast simulation group from the forecast panel
-		ForecastSimGroup simGroup = _parent.getForecastPanel().getSimulationGroup();
+		ForecastSimulationGroup simGroup = _parent.getForecastPanel().getSimulationGroup();
 
 		// Require a selected simulation group before computing
 		if (simGroup == null) {

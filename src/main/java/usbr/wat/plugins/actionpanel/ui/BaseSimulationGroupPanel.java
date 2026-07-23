@@ -455,7 +455,7 @@ public abstract class BaseSimulationGroupPanel extends EnabledJPanel {
 	 * Returns the Class of the simulation group type that this panel manages.
 	 *
 	 * Used by loadSimulationGroupCombo to query the correct manager list from the project.
-	 * For example, a specific subclass would return a ForecastSimGroup.class or PlanningSimGroup.class.
+	 * For example, a specific subclass would return a ForecastSimulationGroup.class or PlanningSimulationGroup.class.
 	 *
 	 * @return the concrete simulation group class managed by this panel subclass
 	 */

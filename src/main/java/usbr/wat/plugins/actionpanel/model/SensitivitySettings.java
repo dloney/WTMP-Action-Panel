@@ -1,7 +1,6 @@
 package usbr.wat.plugins.actionpanel.model;
 
 import org.jdom.Element; // JDOM XML Element used for serializing and deserializing pre/post-compute settings
-
 import hec.lang.NamedType; // HEC base class providing a name field; inherited but not actively used here
 
 /**

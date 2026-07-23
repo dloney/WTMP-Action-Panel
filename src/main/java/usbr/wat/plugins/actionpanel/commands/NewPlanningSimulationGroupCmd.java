@@ -7,10 +7,11 @@ import com.rma.model.Project;                                                   
 
 import hec2.wat.model.WatAnalysisPeriod;                                            // WAT model type representing the analysis period associated with a simulation group
 import hec2.wat.model.WatSimulation;                                                // WAT model type representing a single simulation scenario or run
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;                // Planning-specific simulation group type used by the planning panel and commands
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSimulationGroup;                // Planning-specific simulation group type used by the planning panel and commands
+
 
 /**
- * Command for creating a new {@link PlanningSimGroup} and populating it with simulations.
+ * Command for creating a new {@link PlanningSimulationGroup} and populating it with simulations.
  *
  *
  * This command extends {@code AbstractNewSimulationGroupCmd} to tailor creation for
@@ -40,12 +41,12 @@ public class NewPlanningSimulationGroupCmd extends AbstractNewSimulationGroupCmd
 	/**
 	 * Returns the file extension used for planning simulation group files.
 	 *
-	 * @return the file extension associated with {@link PlanningSimGroup}
+	 * @return the file extension associated with {@link PlanningSimulationGroup}
 	 */
 	@Override
 	public String getExtension() {
 		// Delegate to the planning group's static file extension constant
-		return PlanningSimGroup.FILE_EXT;
+		return PlanningSimulationGroup.FILE_EXT;
 	}
 
 	/**
@@ -56,7 +57,7 @@ public class NewPlanningSimulationGroupCmd extends AbstractNewSimulationGroupCmd
 	@Override
 	public String getManagerClass() {
 		// Provide the planning simulation group's class name to the framework
-		return PlanningSimGroup.class.getName();
+		return PlanningSimulationGroup.class.getName();
 	}
 
 	/**
@@ -73,12 +74,12 @@ public class NewPlanningSimulationGroupCmd extends AbstractNewSimulationGroupCmd
 	/**
 	 * Returns the created planning simulation group.
 	 *
-	 * @return the {@link PlanningSimGroup} produced by this command
+	 * @return the {@link PlanningSimulationGroup} produced by this command
 	 */
 	@Override
-	public PlanningSimGroup getSimulationGroup() {
+	public PlanningSimulationGroup getSimulationGroup() {
 		// Narrow the base simulation group type to the planning-specific type
-		return (PlanningSimGroup) super.getSimulationGroup();
+		return (PlanningSimulationGroup) super.getSimulationGroup();
 	}
 
 }

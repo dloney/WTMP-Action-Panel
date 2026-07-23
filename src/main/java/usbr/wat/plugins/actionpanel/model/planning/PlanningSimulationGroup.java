@@ -1,6 +1,6 @@
-package usbr.wat.plugins.actionpanel.model.forecast;
+package usbr.wat.plugins.actionpanel.model.planning;
 
-import java.util.ArrayList; // Use ArrayList for resizable collection storage of forecast-specific objects
+import java.util.ArrayList; // Use ArrayList for resizable collection storage of planning-specific objects
 import java.util.Collection; // Interface defining common behavior of all Java collections
 import java.util.HashMap; // Map class implementing hash table backed by array list storage
 import java.util.Iterator; // Standard interface for element-by-element iteration over collections
@@ -16,17 +16,12 @@ import hec2.wat.model.WatSimulation; // Base class representing a computable WAT
 
 import org.jdom.Element; // Core JDOM element class representing XML elements in the document structure
 
-import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup; 			// Parent abstract class with group-level loading/saving
-import usbr.wat.plugins.actionpanel.model.forecast.BcData;					// Import the BC data class
-import usbr.wat.plugins.actionpanel.model.forecast.EnsembleSet;				// Import the forecast ensemble set class
-import usbr.wat.plugins.actionpanel.model.forecast.InitialConditions;		// Import the initial conditions class
-import usbr.wat.plugins.actionpanel.model.forecast.MeteorlogicData;			// Import the meterologic data class
-import usbr.wat.plugins.actionpanel.model.forecast.OperationsData;			// Import the operations data class
-import usbr.wat.plugins.actionpanel.model.forecast.TemperatureTargetSet;	// Import the temperature target set class
+import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup; // Parent abstract class with group-level loading/saving
+
 
 /**
- * ForecastSimGroup is a simulation group subclass specifically designed for forecast analysis workflows.
- * It extends AbstractSimulationGroup to manage forecast-specific data including boundary conditions, initial conditions,
+ * PlanningSimulationGroup is a simulation group subclass specifically designed for planning analysis workflows.
+ * It extends AbstractSimulationGroup to manage planning-specific data including boundary conditions, initial conditions,
  * meteorological data, operations data, and ensemble sets with temperature target configurations. The class handles
  * XML persistence of non-simulation-level data that must be loaded or saved before individual simulation settings are processed.
  *
@@ -45,12 +40,12 @@ import usbr.wat.plugins.actionpanel.model.forecast.TemperatureTargetSet;	// Impo
  *   Loading configuration from XML files during project load operations
  *   Saving updated configuration back to disk before simulation compute
  *   Managing ensemble collection sequences with automatic index assignment
- *   Removing and replacing forecast configurations while maintaining references
+ *   Removing and replacing planning configurations while maintaining references
  *
  */
 
-public class ForecastSimGroup extends AbstractSimulationGroup {
-	// List holding temperature target set objects for each model alternative in the forecast configuration
+public class PlanningSimulationGroup extends AbstractSimulationGroup {
+	// List holding temperature target set objects for each model alternative in the planning configuration
 	private List<TemperatureTargetSet> _tempTargetSets = new ArrayList<>(); // Collection of temp target configs
 
 	// Single initial conditions object representing starting state data for ensemble members
@@ -72,7 +67,7 @@ public class ForecastSimGroup extends AbstractSimulationGroup {
 	private Map<String, Map<String, int[]>> _ensembleSetIndexing = new HashMap<>(); // Nested map: simName -> (enSetName -> [startCollection, endCollection])
 
 	// Default constructor with empty initialization
-	public ForecastSimGroup() {
+	public PlanningSimulationGroup() {
 		super(); // Invoke superclass default constructor
 	}
 
@@ -81,7 +76,7 @@ public class ForecastSimGroup extends AbstractSimulationGroup {
 	 * This method loads all boundary condition, initial condition, temperature target, and ensemble set definitions
 	 * from the JDOM element before individual simulation settings are processed during their own loading phase.
 	 *
-	 * @param root The JDOM root element containing serialized forecast group configuration data
+	 * @param root The JDOM root element containing serialized planning group configuration data
 	 */
 	@Override
 	protected void finishLoading(Element root) {
@@ -451,13 +446,13 @@ public class ForecastSimGroup extends AbstractSimulationGroup {
 	 */
 	@Override
 	protected String getSimulationGroupType() {
-		return "ForecastSimulationGroup"; // Return string literal identifying this group's XML root tag
+		return "PlanningSimulationGroup"; // Return string literal identifying this group's XML root tag
 	}
 
 	/**
 	 * Loads settings for specific simulations from the configuration file.
 	 * This placeholder method is called during individual simulation loading but contains no logic
-	 * as forecast-specific configuration is handled at the group level rather than per-simulation.
+	 * as planning-specific configuration is handled at the group level rather than per-simulation.
 	 */
 	@Override
 	protected void loadSimulationSettings(Element simElem, String simName) {
@@ -644,7 +639,7 @@ public class ForecastSimGroup extends AbstractSimulationGroup {
 	/**
 	 * Saves settings for specific simulations to XML during group saving phase.
 	 * This placeholder method is called during individual simulation saving but contains no logic
-	 * as forecast-specific configuration is handled at the group level rather than per-simulation.
+	 * as planning-specific configuration is handled at the group level rather than per-simulation.
 	 */
 	@Override
 	protected void saveSimulationSettings(Element simelem, String simName) {
@@ -652,7 +647,7 @@ public class ForecastSimGroup extends AbstractSimulationGroup {
 	}
 
 	/**
-	 * Sets initial conditions object for this forecast simulation group.
+	 * Sets initial conditions object for this planning simulation group.
 	 * Marks the group as modified after assignment to trigger persistence on next save operation.
 	 *
 	 * @param ics The InitialConditions object representing starting state configuration
@@ -663,7 +658,7 @@ public class ForecastSimGroup extends AbstractSimulationGroup {
 	}
 
 	/**
-	 * Returns the current initial conditions object for this forecast simulation group.
+	 * Returns the current initial conditions object for this planning simulation group.
 	 *
 	 * @return The InitialConditions object, or null if not yet configured
 	 */
@@ -672,7 +667,7 @@ public class ForecastSimGroup extends AbstractSimulationGroup {
 	}
 
 	/**
-	 * Sets a new collection of temperature target sets for this forecast simulation group.
+	 * Sets a new collection of temperature target sets for this planning simulation group.
 	 * Clears existing TTTS list and adds new items if provided, then marks as modified.
 	 *
 	 * @param tt The List<EnsembleSet> of TemperatureTargetSet objects to set
@@ -688,7 +683,7 @@ public class ForecastSimGroup extends AbstractSimulationGroup {
 	}
 
 	/**
-	 * Returns the current collection of temperature target sets for this forecast simulation group.
+	 * Returns the current collection of temperature target sets for this planning simulation group.
 	 *
 	 * @return List containing TemperatureTargetSet objects currently associated with this group
 	 */
@@ -697,7 +692,7 @@ public class ForecastSimGroup extends AbstractSimulationGroup {
 	}
 
 	/**
-	 * Returns the current collection of meteorology data definitions for this forecast simulation group.
+	 * Returns the current collection of meteorology data definitions for this planning simulation group.
 	 *
 	 * @return List containing MeteorlogicData objects currently associated with this group
 	 */
@@ -706,7 +701,7 @@ public class ForecastSimGroup extends AbstractSimulationGroup {
 	}
 
 	/**
-	 * Sets a new collection of meteorology data definitions for this forecast simulation group.
+	 * Sets a new collection of meteorology data definitions for this planning simulation group.
 	 * Clears existing MET list and adds new items if provided, then marks as modified.
 	 *
 	 * @param metDataList The List<MeteorlogicData> of MET objects to set
@@ -724,7 +719,7 @@ public class ForecastSimGroup extends AbstractSimulationGroup {
 
 
 	/**
-	 * Returns the current collection of operations data definitions for this forecast simulation group.
+	 * Returns the current collection of operations data definitions for this planning simulation group.
 	 *
 	 * @return List containing OperationsData objects currently associated with this group
 	 */
@@ -733,7 +728,7 @@ public class ForecastSimGroup extends AbstractSimulationGroup {
 	}
 
 	/**
-	 * Sets a new collection of operations data definitions for this forecast simulation group.
+	 * Sets a new collection of operations data definitions for this planning simulation group.
 	 * Clears existing OPS list and adds new items if provided, then marks as modified.
 	 *
 	 * @param opsDataList The List<OperationsData> of OPS objects to set
@@ -967,7 +962,7 @@ public class ForecastSimGroup extends AbstractSimulationGroup {
 
 		// If no indexing map exists yet, use default configuration
 		if ( ensembleIndexMap == null ) {
-			Integer max = Integer.getInteger("Forecast.EnsembleSetRange", 500); // Get configured range or use default value of 500
+			Integer max = Integer.getInteger("Planning.EnsembleSetRange", 500); // Get configured range or use default value of 500
 			return new int []{0,max.intValue()-1}; // Return initial range starting at 0 with configurable end
 		}
 
@@ -984,7 +979,7 @@ public class ForecastSimGroup extends AbstractSimulationGroup {
 
 		int[] indexs = new int[2]; // Create new array to hold new start and end values
 		indexs[0] = max+1; // Set next start value after highest existing range
-		indexs[1] = indexs[0]+ Integer.getInteger("Forecast.EnsembleSetRange", 500); // Set end value using configured range default
+		indexs[1] = indexs[0]+ Integer.getInteger("Planning.EnsembleSetRange", 500); // Set end value using configured range default
 		indexs[1]--; // Adjust end to be one less than the range size (exclusive upper bound)
 
 		return indexs; // Return new array containing start and end collection indices

@@ -1,4 +1,4 @@
-package usbr.wat.plugins.actionpanel.model;
+package usbr.wat.plugins.actionpanel.model.planning;
 
 import java.util.ArrayList; // Import ArrayList for creating dynamic lists to store simulations and metadata objects
 import java.util.Collections; // Import Collections utility for thread-safe operations and unmodifiable list creation

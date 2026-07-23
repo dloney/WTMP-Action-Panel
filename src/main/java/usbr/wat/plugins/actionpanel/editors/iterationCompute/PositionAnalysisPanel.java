@@ -7,8 +7,8 @@ import javax.swing.border.TitledBorder; // Titled border that labels this panel 
 
 import hec2.plugin.model.ModelAlternative; // Represents a model alternative configuration within a WAT simulation
 
-import usbr.wat.plugins.actionpanel.editors.EditIterationSettingsDialog;  // Hosting dialog providing simulation and alternative context
-import usbr.wat.plugins.actionpanel.editors.PositionAnalysisBcPanel;      // Specialized BC panel that also calculates the maximum annual element count
+import usbr.wat.plugins.actionpanel.editors.prescribed.EditIterationSettingsDialog;  // Hosting dialog providing simulation and alternative context
+import usbr.wat.plugins.actionpanel.editors.prescribed.PositionAnalysisBcPanel;      // Specialized BC panel that also calculates the maximum annual element count
 import usbr.wat.plugins.actionpanel.model.ModelAltIterationSettings;      // Per-model-alternative BC settings retrieved from PositionAnalysisSettings
 import usbr.wat.plugins.actionpanel.model.PositionAnalysisSettings;       // Data model holding BC assignments and max-element configuration for position analysis
 

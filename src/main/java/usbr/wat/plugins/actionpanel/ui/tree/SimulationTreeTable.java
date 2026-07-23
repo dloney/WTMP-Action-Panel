@@ -53,7 +53,7 @@ import rma.swing.table.RmaTableModelInterface;              // Provides RmaTable
 import rma.util.RMAIO;                                      // Provides RMAIO for boolean parsing used when reading selected-column checkbox values
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;              // Provides ActionPanelPlugin for accessing the singleton plugin instance and its windows
-import usbr.wat.plugins.actionpanel.actions.SaveSimulationAsAction; // Provides SaveSimulationAsAction for the "Save As..." context menu action
+import usbr.wat.plugins.actionpanel.actions.prescribed.SaveSimulationAsAction; // Provides SaveSimulationAsAction for the "Save As..." context menu action
 import usbr.wat.plugins.actionpanel.model.ResultsData;              // Provides ResultsData for identifying selected ResultsData rows in the tree-table
 import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                   // Provides UsbrPanel for the parent panel reference that drives simulation actions
 

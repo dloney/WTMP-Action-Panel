@@ -8,7 +8,7 @@ import com.rma.model.Project;                                                   
 import hec2.wat.model.WatAnalysisPeriod;                                            // WAT model type representing the analysis period associated with a simulation group
 import hec2.wat.model.WatSimulation;                                                // WAT model type representing a single simulation scenario or run
 import usbr.wat.plugins.actionpanel.model.planning.PlanningSet;                     // Planning-specific simulation group type used by the planning panel and commands
-import usbr.wat.plugins.actionpanel.model.AbstractPlanningSet;						// Gives access to path variables
+
 
 /**
  * Command for creating a new {@link PlanningSet} and populating it with simulations.

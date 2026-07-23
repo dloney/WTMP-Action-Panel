@@ -23,8 +23,8 @@ import rma.swing.RmaInsets;                                                     
 import rma.swing.RmaJDialog;                                                    // Provides RmaJDialog as the base non-modal dialog class this window extends
 import rma.swing.RmaJTable;                                                     // Provides RmaJTable as the base Swing table class for the ensemble F-part display table
 
-import usbr.wat.plugins.actionpanel.ActionsWindow;                              // Provides ActionsWindow; retained for potential future reference within this package
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;            // Provides PlanningSimGroup for retrieving the ensemble set F-part index map
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSimulationGroup;            // Provides PlanningSimulationGroup for retrieving the ensemble set F-part index map
+
 
 /**
  * A non-modal informational dialog that displays the HEC-DSS F-part collection start
@@ -40,7 +40,7 @@ import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;            
  * their values as numbers rather than strings. The dialog has a single Close button
  * and does not modify any data.
  *
- * @see PlanningSimGroup#getSimulationEnsembleSetIndexing(WatSimulation)
+ * @see PlanningSimulationGroup#getSimulationEnsembleSetIndexing(WatSimulation)
  * @see NumericComparator
  */
 public class EnsembleFPartMapDlg extends RmaJDialog {
@@ -188,14 +188,14 @@ public class EnsembleFPartMapDlg extends RmaJDialog {
 	 * with a {@link NumericComparator} is installed on both index columns so that
 	 * clicking a column header sorts numerically rather than lexicographically.
 	 *
-	 * @param simGroup   the {@link PlanningSimGroup} that provides the ensemble set
+	 * @param simGroup   the {@link PlanningSimulationGroup} that provides the ensemble set
 	 *                   F-part index mapping via
-	 *                   {@link PlanningSimGroup#getSimulationEnsembleSetIndexing(WatSimulation)};
+	 *                   {@link PlanningSimulationGroup#getSimulationEnsembleSetIndexing(WatSimulation)};
 	 *                   must not be {@code null}
 	 * @param simulation the {@link WatSimulation} whose ensemble set indexing is
 	 *                   displayed; must not be {@code null}
 	 */
-	public void fillForm(PlanningSimGroup simGroup, WatSimulation simulation) {
+	public void fillForm(PlanningSimulationGroup simGroup, WatSimulation simulation) {
 		// Clear any previously displayed rows before reloading
 		_ensembleTable.deleteCells();
 

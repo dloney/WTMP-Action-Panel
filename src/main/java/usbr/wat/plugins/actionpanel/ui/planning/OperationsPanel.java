@@ -22,7 +22,6 @@ import java.util.regex.Pattern;                                 // Provides Patt
 import java.util.stream.Collectors;                             // Provides Collectors for terminal stream operations such as collecting cascade dependents to a List
 
 import javax.swing.JButton;                                     // Provides JButton for the "Import..." action button in the lower panel
-import javax.swing.JOptionPane;                                 // Provides JOptionPane for displaying modal error and confirmation dialogs to the user
 import javax.swing.UIManager;                                   // Provides UIManager for retrieving the current Swing look-and-feel table font
 
 import com.rma.model.Project;                                   // Provides Project for resolving relative operations file paths to absolute paths
@@ -46,13 +45,13 @@ import rma.swing.RmaJTable;                                     // Provides RmaJ
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                  // Provides ActionPanelPlugin for accessing the singleton plugin instance and its window
 import usbr.wat.plugins.actionpanel.model.planning.BcData;              // Provides BcData, the boundary condition data model used to detect operations data dependencies
 import usbr.wat.plugins.actionpanel.model.planning.EnsembleSet;         // Provides EnsembleSet for identifying ensemble sets that depend on boundary condition data
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;    // Provides PlanningSimGroup, the top-level model grouping all planning simulation data
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSimulationGroup;    // Provides PlanningSimulationGroup, the top-level model grouping all planning simulation data
 import usbr.wat.plugins.actionpanel.model.planning.OperationsData;      // Provides OperationsData, the model object representing a single operations dataset and its file path
 
 /**
  * Panel that displays and manages the Operations tab within the Planning Action Panel.
  * It presents a table of available operations datasets loaded from the active
- * PlanningSimGroup, a detail info table showing the selected dataset's metadata,
+ * PlanningSimulationGroup, a detail info table showing the selected dataset's metadata,
  * and an ExcelTable for rendering the contents of the associated operations file
  * (either a .csv or a .xlsx converted to CSV on the fly).
  *
@@ -154,9 +153,9 @@ public class OperationsPanel extends AbstractPlanningPanel<OperationsData> {
 	private RmaJTable _excelTable;
 
 	/**
-	 * The PlanningSimGroup currently displayed by this panel; null when no simulation is active.
+	 * The PlanningSimulationGroup currently displayed by this panel; null when no simulation is active.
 	 */
-	private PlanningSimGroup _fsg;
+	private PlanningSimulationGroup _fsg;
 
 	/**
 	 * Constructs a new OperationsPanel and wires it to the parent PlanningPanel.
@@ -251,7 +250,7 @@ public class OperationsPanel extends AbstractPlanningPanel<OperationsData> {
 
 	/**
 	 * Opens the ImportOperationsWindow to let the user select and import an operations
-	 * dataset into the current PlanningSimGroup. If a pre-constructed dialog is provided
+	 * dataset into the current PlanningSimulationGroup. If a pre-constructed dialog is provided
 	 * it is used directly; otherwise a new one is created. Aborts silently if the user
 	 * cancels the dialog.
 	 *
@@ -318,14 +317,14 @@ public class OperationsPanel extends AbstractPlanningPanel<OperationsData> {
 	}
 
 	/**
-	 * Loads the panel for the given PlanningSimGroup: clears any previous state,
+	 * Loads the panel for the given PlanningSimulationGroup: clears any previous state,
 	 * populates the upper operations table with all datasets in the group, and
 	 * displays the last dataset's file contents in the ExcelTable area.
 	 *
-	 * @param fsg the PlanningSimGroup whose operations data should be displayed, or null to disable
+	 * @param fsg the PlanningSimulationGroup whose operations data should be displayed, or null to disable
 	 */
 	@Override
-	public void fillPanel(PlanningSimGroup fsg) {
+	public void fillPanel(PlanningSimulationGroup fsg) {
 		// Reset the lower panel before repopulating to avoid stale content
 		clearPanel();
 
@@ -359,7 +358,7 @@ public class OperationsPanel extends AbstractPlanningPanel<OperationsData> {
 	/**
 	 * Resets the lower panel by removing the current ExcelTable, replacing it with a
 	 * fresh empty RmaJTable placeholder, and triggering a layout refresh. Also disables
-	 * the panel when no PlanningSimGroup is loaded.
+	 * the panel when no PlanningSimulationGroup is loaded.
 	 */
 	@Override
 	protected void clearPanel() {
@@ -393,14 +392,14 @@ public class OperationsPanel extends AbstractPlanningPanel<OperationsData> {
 	}
 
 	/**
-	 * Removes the given OperationsData entry from the active PlanningSimGroup's
+	 * Removes the given OperationsData entry from the active PlanningSimulationGroup's
 	 * operations data list.
 	 *
-	 * @param fsg  the PlanningSimGroup from which the data is removed
+	 * @param fsg  the PlanningSimulationGroup from which the data is removed
 	 * @param data the OperationsData entry to remove
 	 */
 	@Override
-	protected void removeData(PlanningSimGroup fsg, OperationsData data) {
+	protected void removeData(PlanningSimulationGroup fsg, OperationsData data) {
 		fsg.removeOperationsData(data);
 	}
 

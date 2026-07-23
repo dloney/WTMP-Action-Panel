@@ -14,7 +14,7 @@ import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                          
 import usbr.wat.plugins.actionpanel.actions.forecast.DeleteForecastSimGroupAction;  // Action that deletes the selected forecast simulation group
 import usbr.wat.plugins.actionpanel.actions.forecast.EditForecastSimGroupAction;    // Action that opens the editor for the selected forecast simulation group
 import usbr.wat.plugins.actionpanel.actions.forecast.NewForecastSimGroupAction;     // Action that opens the creation dialog for a new forecast simulation group
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;                // Forecast-specific simulation group model managed by this panel
+import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimulationGroup;                // Forecast-specific simulation group model managed by this panel
 import usbr.wat.plugins.actionpanel.ui.BaseSimulationGroupPanel;					// Imports the common class between this and forecast
 import usbr.wat.plugins.actionpanel.ui.AbstractSimulationPanel;					    // Imports the common class between this and forecast
 
@@ -24,7 +24,7 @@ import usbr.wat.plugins.actionpanel.ui.AbstractSimulationPanel;					    // Impor
  *
  * This class extends BaseSimulationGroupPanel to provide forecast-specific
  * implementations of the three action factory methods and the combo-box selection
- * handler. It manages ForecastSimGroup objects rather than the standard SimulationGroup
+ * handler. It manages ForecastSimulationGroup objects rather than the standard PrescribedSimulationGroup
  * type used by PrescribedSimulationGroupPanel.
  *
  * In addition to the controls inherited from BaseSimulationGroupPanel, this panel
@@ -166,10 +166,10 @@ public class SimulationGroupPanel extends BaseSimulationGroupPanel {
 			return;
 		}
 
-		// Resolve the full ForecastSimGroup from the proxy, or null if nothing is selected
-		ForecastSimGroup simGroup = null;
+		// Resolve the full ForecastSimulationGroup from the proxy, or null if nothing is selected
+		ForecastSimulationGroup simGroup = null;
 		if (proxy != null) {
-			simGroup = (ForecastSimGroup) proxy.loadManager();
+			simGroup = (ForecastSimulationGroup) proxy.loadManager();
 		}
 
 		// Update the parent panel and Edit button state with the resolved group
@@ -181,14 +181,14 @@ public class SimulationGroupPanel extends BaseSimulationGroupPanel {
 	 * Returns the Class type used to query the project's manager list when loading
 	 * the simulation group combo box.
 	 *
-	 * Returning ForecastSimGroup.class ensures that only forecast simulation groups
+	 * Returning ForecastSimulationGroup.class ensures that only forecast simulation groups
 	 * are shown in this panel's combo box.
 	 *
-	 * @return ForecastSimGroup.class
+	 * @return ForecastSimulationGroup.class
 	 */
 	@Override
 	protected Class getSimGroupClass() {
-		return ForecastSimGroup.class;
+		return ForecastSimulationGroup.class;
 	}
 
 
@@ -201,7 +201,7 @@ public class SimulationGroupPanel extends BaseSimulationGroupPanel {
 	 *
 	 * @param simGroup the forecast simulation group to display; null clears the parent panel
 	 */
-	private void fillForm(ForecastSimGroup simGroup) {
+	private void fillForm(ForecastSimulationGroup simGroup) {
 		// Enable the Edit button only when a valid group is currently selected
 		boolean enabled = simGroup != null;
 		_editButton.setEnabled(enabled);

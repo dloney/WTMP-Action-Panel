@@ -27,17 +27,12 @@ import rma.swing.RmaJTable;                                 // Provides RmaJTabl
 import rma.util.RMAIO;                                      // Provides RMAIO for file path utilities such as concatPath and isFullPath
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                  // Provides ActionPanelPlugin for accessing the singleton plugin instance and its window
-import usbr.wat.plugins.actionpanel.model.forecast.BcData;              // Provides BcData, the boundary condition data model used to detect met data dependencies
-import usbr.wat.plugins.actionpanel.model.forecast.EnsembleSet;         // Provides EnsembleSet for identifying ensemble sets that depend on boundary condition data
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastConfigFiles; // Provides ForecastConfigFiles for resolving project-relative config file paths
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;    // Provides ForecastSimGroup, the top-level model grouping all forecast simulation data
-import usbr.wat.plugins.actionpanel.model.forecast.MeteorlogicData;     // Provides MeteorlogicData, the model object representing a single meteorologic dataset
-import usbr.wat.plugins.actionpanel.ui.forecast.MetPlotPanel;                    // Provides MetPlotPanel for rendering time-series plots of meteorologic station data
+import usbr.wat.plugins.actionpanel.model.forecast.*;
 
 /**
  * Panel that displays and manages the Meteorology tab within the Forecast Action Panel.
  * It presents a table of available meteorologic datasets loaded from the active
- * ForecastSimGroup, a detail info table showing the selected dataset's metadata,
+ * ForecastSimulationGroup, a detail info table showing the selected dataset's metadata,
  * and a MetPlotPanel for visualising time-series data at individual met stations.
  *
  * Users can import new meteorologic datasets via the "Import..." button, select rows
@@ -75,9 +70,9 @@ public class MeteorologyPanel extends AbstractForecastPanel<MeteorlogicData> {
 	private MetPlotPanel _plotPanel;
 
 	/**
-	 * The ForecastSimGroup currently displayed by this panel; null when no simulation is active.
+	 * The ForecastSimulationGroup currently displayed by this panel; null when no simulation is active.
 	 */
-	private ForecastSimGroup _fsg;
+	private ForecastSimulationGroup _fsg;
 
 	/**
 	 * Constructs a new MeteorologyPanel and wires it to the parent ForecastPanel.
@@ -176,7 +171,7 @@ public class MeteorologyPanel extends AbstractForecastPanel<MeteorlogicData> {
 
 	/**
 	 * Clears the plot panel when the panel is reset. Also disables the panel if
-	 * no ForecastSimGroup is currently loaded.
+	 * no ForecastSimulationGroup is currently loaded.
 	 */
 	@Override
 	protected void clearPanel() {
@@ -190,20 +185,20 @@ public class MeteorologyPanel extends AbstractForecastPanel<MeteorlogicData> {
 	}
 
 	/**
-	 * Removes the given MeteorlogicData entry from the active ForecastSimGroup's
+	 * Removes the given MeteorlogicData entry from the active ForecastSimulationGroup's
 	 * meteorology data list.
 	 *
-	 * @param fsg  the ForecastSimGroup from which the data is removed
+	 * @param fsg  the ForecastSimulationGroup from which the data is removed
 	 * @param data the MeteorlogicData entry to remove
 	 */
 	@Override
-	protected void removeData(ForecastSimGroup fsg, MeteorlogicData data) {
+	protected void removeData(ForecastSimulationGroup fsg, MeteorlogicData data) {
 		fsg.removeMetData(data);
 	}
 
 	/**
 	 * Opens the ImportMetDataWindow to let the user select and import one or more
-	 * meteorologic datasets into the current ForecastSimGroup. If a pre-constructed
+	 * meteorologic datasets into the current ForecastSimulationGroup. If a pre-constructed
 	 * dialog is provided it is used directly; otherwise a new one is created.
 	 * Each dataset returned by the dialog is passed through the shared importData
 	 * helper; import stops early if any individual import fails.
@@ -291,14 +286,14 @@ public class MeteorologyPanel extends AbstractForecastPanel<MeteorlogicData> {
 	}
 
 	/**
-	 * Loads the panel for the given ForecastSimGroup: populates the upper met table
+	 * Loads the panel for the given ForecastSimulationGroup: populates the upper met table
 	 * with all meteorologic datasets stored in the group and refreshes the navigation
 	 * panel. Disables the panel when the group is null.
 	 *
-	 * @param fsg the ForecastSimGroup whose met data should be displayed, or null to disable
+	 * @param fsg the ForecastSimulationGroup whose met data should be displayed, or null to disable
 	 */
 	@Override
-	public void fillPanel(ForecastSimGroup fsg) {
+	public void fillPanel(ForecastSimulationGroup fsg) {
 		setEnabled(fsg != null);
 		_fsg = fsg;
 

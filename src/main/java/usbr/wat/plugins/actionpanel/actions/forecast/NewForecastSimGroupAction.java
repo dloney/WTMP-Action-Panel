@@ -4,12 +4,12 @@ import java.awt.event.ActionEvent;                                              
 import javax.swing.AbstractAction;                                                  // Swing base class for encapsulating an action that can be attached to UI components
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                              // Plugin entry point used to obtain the Actions window and global context
-import usbr.wat.plugins.actionpanel.commands.NewForecastSimulationGroupCmd;         // Command class that constructs a new ForecastSimGroup for creation workflows
+import usbr.wat.plugins.actionpanel.commands.NewForecastSimulationGroupCmd;         // Command class that constructs a new ForecastSimulationGroup for creation workflows
 import usbr.wat.plugins.actionpanel.editors.NewSimulationGroupDialog;               // Dialog used to create or edit a simulation group’s metadata and settings
 import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup;                  // Base type representing a simulation group used by the actions
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;                // Forecast-specific simulation group type used by the forecast panel
+import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimulationGroup;                // Forecast-specific simulation group type used by the forecast panel
 import usbr.wat.plugins.actionpanel.ui.AbstractSimulationPanel;                     // Base panel type that exposes simulation group operations to the UI
-import usbr.wat.plugins.actionpanel.ui.forecast.SimulationGroupPanel;                        // UI panel that lists and manages SimulationGroup entries in the forecast workflow
+import usbr.wat.plugins.actionpanel.ui.forecast.SimulationGroupPanel;                        // UI panel that lists and manages PrescribedSimulationGroup entries in the forecast workflow
 
 /**
  * Action that creates a new forecast simulation group.
@@ -66,8 +66,8 @@ public class NewForecastSimGroupAction extends AbstractAction {
 				"New Forecast Simulation Group"
 		);
 
-		// Specify the concrete ForecastSimGroup class to be created
-		dlg.setSimulationGroupClass(ForecastSimGroup.class);
+		// Specify the concrete ForecastSimulationGroup class to be created
+		dlg.setSimulationGroupClass(ForecastSimulationGroup.class);
 
 		// Provide the factory/command used to instantiate and configure the forecast group
 		dlg.setSimulationGroupFactory(NewForecastSimulationGroupCmd.class);
@@ -93,7 +93,7 @@ public class NewForecastSimGroupAction extends AbstractAction {
 		ActionPanelPlugin.getInstance()
 				.getActionsWindow()
 				.getForecastPanel()
-				.setSimulationGroup((ForecastSimGroup) sg);
+				.setSimulationGroup((ForecastSimulationGroup) sg);
 
 		// Add the new group to the UI list and optionally select it
 		_simGroupPanel.addSimulationGroup(sg, true);

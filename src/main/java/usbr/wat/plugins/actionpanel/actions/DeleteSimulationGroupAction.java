@@ -14,12 +14,13 @@ import com.rma.model.Project;                                               // A
 
 import hec2.wat.model.WatSimulation;                                        // WAT model type representing a single simulation scenario or run
 
-import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                      // Plugin entry point used to obtain the Actions window and global context
-import usbr.wat.plugins.actionpanel.ActionsWindow;                          // Main actions window used as the UI parent for dialogs and status updates
-import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup;          // Base type representing a simulation group used by the actions
-import usbr.wat.plugins.actionpanel.model.SimulationGroup;                  // Concrete type representing a simulation group managed within the plugin
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;        // Forecast-specific simulation group type used by the forecast panel
-import usbr.wat.plugins.actionpanel.ui.BaseSimulationGroupPanel;            // Panel exposing common simulation-group functionality and flags
+import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                      		// Plugin entry point used to obtain the Actions window and global context
+import usbr.wat.plugins.actionpanel.ActionsWindow;                          		// Main actions window used as the UI parent for dialogs and status updates
+import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup;          		// Base type representing a simulation group used by the actions
+import usbr.wat.plugins.actionpanel.model.prescribed.PrescribedSimulationGroup;     // Concrete type representing a simulation group managed within the plugin
+import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimulationGroup;        		// Forecast-specific simulation group type used by the forecast panel
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSimulationGroup;        		// Planning-specific simulation group type used by the forecast panel
+import usbr.wat.plugins.actionpanel.ui.BaseSimulationGroupPanel;            		// Panel exposing common simulation-group functionality and flags
 
 
 /**
@@ -143,13 +144,16 @@ public class DeleteSimulationGroupAction extends AbstractAction {
 	 */
 	private void cleanUI(ManagerProxy proxy) {
 
-		if ( proxy.getClassName().equals(ForecastSimGroup.class.getName()) ) {
-			// Notify forecast panel if the deleted group is a ForecastSimGroup
+		if ( proxy.getClassName().equals(ForecastSimulationGroup.class.getName()) ) {
+			// Notify forecast panel if the deleted group is a ForecastSimulationGroup
 			ActionPanelPlugin.getInstance().getActionsWindow().getForecastPanel().simulationGroupDeleted(proxy);
 
-		} else if ( proxy.getClassName().equals(SimulationGroup.class.getName()) ) {
-			// Notify workflow panel if the deleted group is a regular SimulationGroup
-			// TODO: Either this is general and needs to have the prescribed panel removed or this setup needs to move to the prescribed
+		} else if ( proxy.getClassName().equals(PlanningSimulationGroup.class.getName()) ) {
+				// Notify forecast panel if the deleted group is a ForecastSimulationGroup
+				ActionPanelPlugin.getInstance().getActionsWindow().getPlanningPanel().simulationGroupDeleted(proxy);
+
+		} else if ( proxy.getClassName().equals(PrescribedSimulationGroup.class.getName()) ) {
+			// Notify workflow panel if the deleted group is a regular PrescribedSimulationGroup
 			ActionPanelPlugin.getInstance().getActionsWindow().getPrescribedPanel().getSimulationPanel().simulationGroupDeleted(proxy);
 		}
 	}

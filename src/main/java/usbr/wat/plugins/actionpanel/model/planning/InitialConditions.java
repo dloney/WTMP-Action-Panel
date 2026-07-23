@@ -18,7 +18,7 @@ import hec.lang.NamedType; // HEC base class providing a name field; the name st
 
 /**
  * Named data object mapping each reservoir name to the IC (Initial Conditions)
- * Profile selected for a planning compute run within a PlanningSimGroup.
+ * Profile selected for a planning compute run within a PlanningSimulationGroup.
  *
  * The internal map (_icMap) stores one Profile per reservoir. A Profile carries the
  * DSS file name and DSS path from which the reservoir's initial conditions should be

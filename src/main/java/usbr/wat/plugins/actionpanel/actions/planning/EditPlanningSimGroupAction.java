@@ -7,11 +7,11 @@ import javax.swing.AbstractAction;                                              
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                              // Plugin entry point used to obtain the Actions window and global context
 import usbr.wat.plugins.actionpanel.editors.NewSimulationGroupDialog;               // Dialog used to create or edit a simulation group's metadata and settings
 import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup;                  // Base type representing a simulation group used by the actions
-import usbr.wat.plugins.actionpanel.model.SimulationGroup;                          // Concrete type representing a simulation group (import present even if unused directly here)
-import usbr.wat.plugins.actionpanel.model.planning.PlanningSimGroup;                // Planning-specific simulation group type used by the planning panel
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSimulationGroup;                // Planning-specific simulation group type used by the planning panel
+
 
 /**
- * Action that opens the editor to modify a planning {@link PlanningSimGroup}.
+ * Action that opens the editor to modify a planning {@link PlanningSimulationGroup}.
  *
  * When invoked, this action constructs and shows the edit dialog pre-populated
  * with the current planning simulation group. If the user confirms changes,
@@ -44,7 +44,7 @@ public class EditPlanningSimGroupAction extends AbstractAction {
 		);
 
 		// Retrieve the current planning simulation group from the planning panel
-		PlanningSimGroup simGroup = ActionPanelPlugin.getInstance()
+		PlanningSimulationGroup simGroup = ActionPanelPlugin.getInstance()
 				.getActionsWindow()
 				.getPlanningPanel()
 				.getSimulationGroup();
@@ -67,6 +67,6 @@ public class EditPlanningSimGroupAction extends AbstractAction {
 		ActionPanelPlugin.getInstance()
 				.getActionsWindow()
 				.getPlanningPanel()
-				.setSimulationGroup((PlanningSimGroup) sg);
+				.setSimulationGroup((PlanningSimulationGroup) sg);
 	}
 }

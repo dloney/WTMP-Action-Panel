@@ -12,10 +12,9 @@ import rma.swing.RmaInsets;          // Constants for common GridBagLayout inset
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                      // Singleton plugin entry point providing access to the actions window
 import usbr.wat.plugins.actionpanel.actions.DeleteSimulationGroupAction;    // Action that deletes the selected simulation group
-import usbr.wat.plugins.actionpanel.actions.EditSimulationGroupAction;      // Action that opens the editor for the selected simulation group
+import usbr.wat.plugins.actionpanel.actions.prescribed.EditPrescribedSimulationGroupAction;
 import usbr.wat.plugins.actionpanel.actions.NewSimulationGroupAction;       // Action that opens the dialog to create a new simulation group
-import usbr.wat.plugins.actionpanel.model.SimulationGroup;                  // Standard (non-forecast) simulation group model managed by this panel
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;        // Forecast simulation group model (imported for type context; not used directly)
+import usbr.wat.plugins.actionpanel.model.prescribed.PrescribedSimulationGroup;
 
 
 /**
@@ -23,7 +22,7 @@ import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;        // F
  *
  * This class extends BaseSimulationGroupPanel to provide the prescribed-specific
  * implementations of the three action factory methods and the combo-box selection
- * handler. It manages SimulationGroup objects (as opposed to ForecastSimGroup objects
+ * handler. It manages PrescribedSimulationGroup objects (as opposed to ForecastSimulationGroup objects
  * managed by the forecast equivalent).
  *
  * Beyond the controls inherited from BaseSimulationGroupPanel, this panel appends a
@@ -96,7 +95,7 @@ public class PrescribedSimulationGroupPanel extends BaseSimulationGroupPanel {
 	 * Both the owning PrescribedPanel and this panel are passed to the action so that
 	 * after a group is created it can be added to the combo box and selected.
 	 *
-	 * @return a NewSimulationGroupAction configured with the parent PrescribedPanel
+	 * @return a NewPrescribedSimulationGroupAction configured with the parent PrescribedPanel
 	 * and this panel
 	 */
 	@Override
@@ -111,12 +110,12 @@ public class PrescribedSimulationGroupPanel extends BaseSimulationGroupPanel {
 	 * The actions window and the parent simulation panel are passed to the action to
 	 * provide the dialog with the necessary context for editing.
 	 *
-	 * @return an EditSimulationGroupAction configured with the current actions window
+	 * @return an EditPrescribedSimulationGroupAction configured with the current actions window
 	 * and parent panel
 	 */
 	@Override
 	protected Action getEditSimGroupAction() {
-		return new EditSimulationGroupAction(
+		return new EditPrescribedSimulationGroupAction(
 				ActionPanelPlugin.getInstance().getActionsWindow(), _parent);
 	}
 
@@ -142,11 +141,11 @@ public class PrescribedSimulationGroupPanel extends BaseSimulationGroupPanel {
 		// Retrieve the proxy for the newly selected item; may be null if nothing is selected
 		ManagerProxy proxy = (ManagerProxy) _simulationGroupCombo.getSelectedItem();
 
-		SimulationGroup simGroup = null;
+		PrescribedSimulationGroup simGroup = null;
 
 		if (proxy != null) {
-			// Load the full SimulationGroup model object from the lightweight proxy
-			simGroup = (SimulationGroup) proxy.loadManager();
+			// Load the full PrescribedSimulationGroup model object from the lightweight proxy
+			simGroup = (PrescribedSimulationGroup) proxy.loadManager();
 		}
 
 		// Update the parent panel and button states with the resolved group
@@ -163,7 +162,7 @@ public class PrescribedSimulationGroupPanel extends BaseSimulationGroupPanel {
 	 *
 	 * @param simGroup the simulation group to display; null clears the parent panel
 	 */
-	private void fillForm(SimulationGroup simGroup) {
+	private void fillForm(PrescribedSimulationGroup simGroup) {
 		// Enable the Edit button only when a valid group is selected
 		boolean enabled = simGroup != null;
 		_editButton.setEnabled(enabled);
@@ -177,13 +176,13 @@ public class PrescribedSimulationGroupPanel extends BaseSimulationGroupPanel {
 	 * Returns the Class type used to query the project's manager list when loading
 	 * the simulation group combo box.
 	 *
-	 * Returning SimulationGroup.class ensures that only standard prescribed simulation
+	 * Returning PrescribedSimulationGroup.class ensures that only standard prescribed simulation
 	 * groups (not forecast groups) are shown in this panel's combo box.
 	 *
-	 * @return SimulationGroup.class
+	 * @return PrescribedSimulationGroup.class
 	 */
 	@Override
 	protected Class getSimGroupClass() {
-		return SimulationGroup.class;
+		return PrescribedSimulationGroup.class;
 	}
 }

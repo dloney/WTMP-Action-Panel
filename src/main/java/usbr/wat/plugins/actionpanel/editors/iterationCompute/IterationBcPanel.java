@@ -52,7 +52,7 @@ import rma.swing.RmaJDialog;            // Base class for RMA dialog windows
 import rma.swing.RmaJTable;             // RMA-extended table with utility row management methods
 import rma.util.RMAIO;                  // RMA I/O utility providing path, string, and file helpers
 
-import usbr.wat.plugins.actionpanel.editors.EditIterationSettingsDialog; // Dialog that hosts this panel
+import usbr.wat.plugins.actionpanel.editors.prescribed.EditIterationSettingsDialog; // Dialog that hosts this panel
 import usbr.wat.plugins.actionpanel.model.ModelAltIterationSettings;     // Settings model holding BC DSS assignments for a model alternative
 
 /**

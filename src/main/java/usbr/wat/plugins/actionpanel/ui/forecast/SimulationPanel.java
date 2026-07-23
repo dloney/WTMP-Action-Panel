@@ -12,7 +12,6 @@ import java.util.HashSet;                           // Provides HashSet for dedu
 import java.util.Iterator;                          // Provides Iterator for traversing the sorted member list when building a CSV string
 import java.util.List;                              // Provides the List interface for ordered collections of EnsembleSet and related types
 import java.util.Set;                               // Provides the Set interface used for deduplicating computed ensemble members
-import java.util.StringTokenizer;                   // Provides StringTokenizer (imported but reserved for potential classpath parsing use)
 import java.util.Vector;                            // Provides Vector for constructing table row data passed to RmaJTable.appendRow
 
 import javax.swing.JButton;                         // Provides JButton for the Edit Ensemble Set action button
@@ -55,14 +54,13 @@ import rma.util.IntArray;                           // Provides IntArray (import
 import rma.util.IntVector;                          // Provides IntVector for storing the list of previously computed ensemble members per EnsembleSet
 import rma.util.RMAIO;                              // Provides RMAIO for string manipulation utilities such as removeChar
 
-import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                          // Provides ActionPanelPlugin for accessing the singleton plugin instance and its window
 import usbr.wat.plugins.actionpanel.ActionsWindow;                              // Provides ActionsWindow, the top-level plugin window that owns this panel
 import usbr.wat.plugins.actionpanel.SimulationActionsPanel;                     // Provides SimulationActionsPanel for the compute/run action buttons at the bottom
 import usbr.wat.plugins.actionpanel.actions.forecast.EditEnsembleSetAction;     // Provides EditEnsembleSetAction, the Swing Action for the Edit Ensemble Set button
 import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup;              // Provides AbstractSimulationGroup, the base type for simulation groupings
 import usbr.wat.plugins.actionpanel.model.ResultsData;                          // Provides ResultsData for retrieving the currently selected simulation results
 import usbr.wat.plugins.actionpanel.model.forecast.EnsembleSet;                 // Provides EnsembleSet, the model object linking boundary conditions to a set of ensemble members
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;            // Provides ForecastSimGroup, the top-level model for a forecast simulation group
+import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimulationGroup;            // Provides ForecastSimulationGroup, the top-level model for a forecast simulation group
 import usbr.wat.plugins.actionpanel.ui.AbstractSimulationPanel;                 // Provides AbstractSimulationPanel, the base class supplying the simulation tree table and legend
 import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                               // Provides UsbrPanel, the marker interface for USBR-specific panel implementations
 import usbr.wat.plugins.actionpanel.ui.tree.SimulationTreeTable;                // Provides SimulationTreeTable, the custom tree-table used to display WAT simulations
@@ -87,7 +85,7 @@ import usbr.wat.plugins.actionpanel.ui.tree.SimulationTreeTableModel;           
  *
  * @see AbstractSimulationPanel
  * @see EnsembleSet
- * @see ForecastSimGroup
+ * @see ForecastSimulationGroup
  */
 public class SimulationPanel extends AbstractSimulationPanel
 		implements UsbrPanel {
@@ -718,7 +716,7 @@ public class SimulationPanel extends AbstractSimulationPanel
 			}
 
 			// Mark the simulation group as modified since member sets may have changed
-			ForecastSimGroup simGroup = _parentPanel.getSimulationGroup();
+			ForecastSimulationGroup simGroup = _parentPanel.getSimulationGroup();
 			if (simGroup != null) {
 				simGroup.setModified(true);
 			}
@@ -739,7 +737,7 @@ public class SimulationPanel extends AbstractSimulationPanel
 			WatSimulation simulation = (WatSimulation) _simulationTable.getValueAt(row, 0);
 			_columnGroup.setHeaderValue(simulation.getName());
 
-			ForecastSimGroup simGroup = _parentPanel.getSimulationGroup();
+			ForecastSimulationGroup simGroup = _parentPanel.getSimulationGroup();
 			List<EnsembleSet> esets = simGroup.getEnsembleSetsFor(simulation);
 
 			_editEnsembleButton.setEnabled(true);
@@ -780,17 +778,17 @@ public class SimulationPanel extends AbstractSimulationPanel
 
 	/**
 	 * Updates the panel to display the given simulation group. When the group is a
-	 * ForecastSimGroup, the parent panel is optionally updated, the simulation table
+	 * ForecastSimulationGroup, the parent panel is optionally updated, the simulation table
 	 * and ensemble table are refreshed, the Analysis Period labels are updated, and
-	 * the panel is enabled. When the group is not a ForecastSimGroup (or is null),
+	 * the panel is enabled. When the group is not a ForecastSimulationGroup (or is null),
 	 * the parent and tables are cleared similarly.
 	 *
 	 * @param asg       the AbstractSimulationGroup to display
 	 * @param setParent true to also propagate the group to the parent ForecastPanel
 	 */
 	public void setSimulationGroup(AbstractSimulationGroup asg, boolean setParent) {
-		if (asg instanceof ForecastSimGroup) {
-			ForecastSimGroup fsg = (ForecastSimGroup) asg;
+		if (asg instanceof ForecastSimulationGroup) {
+			ForecastSimulationGroup fsg = (ForecastSimulationGroup) asg;
 
 			// Propagate the new group to the parent panel so other tabs stay in sync
 			if (setParent) {
@@ -808,7 +806,7 @@ public class SimulationPanel extends AbstractSimulationPanel
 			refreshSimTableSelection();
 
 		} else {
-			// Clear the parent panel's simulation group when the group is not a ForecastSimGroup
+			// Clear the parent panel's simulation group when the group is not a ForecastSimulationGroup
 			if (setParent) {
 				_parentPanel.setSimulationGroup(null);
 			}

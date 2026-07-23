@@ -10,7 +10,7 @@ import hec2.wat.model.WatSimulation;                                            
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                          // Plugin entry point used to obtain the Actions window and global context
 import usbr.wat.plugins.actionpanel.model.forecast.EnsembleSet;                 // Forecast model representing a group of simulations and its ensemble sets
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimGroup;            // Forecast-specific simulation group type used by the forecast panel
+import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimulationGroup;            // Forecast-specific simulation group type used by the forecast panel
 import usbr.wat.plugins.actionpanel.ui.forecast.EditEnsembleSetWindow;          // Dialog window for editing ensemble sets tied to a forecast simulation
 import usbr.wat.plugins.actionpanel.ui.forecast.SimulationPanel;                // Panel for forecast workflows that displays and manages simulations and ensemble sets
 
@@ -63,7 +63,7 @@ public class EditEnsembleSetAction extends AbstractAction {
 		EditEnsembleSetWindow dlg = new EditEnsembleSetWindow(ActionPanelPlugin.getInstance().getActionsWindow());
 
 		// Retrieve the active forecast simulation group from the forecast panel
-		ForecastSimGroup simGroup = ActionPanelPlugin.getInstance().getActionsWindow().getForecastPanel().getSimulationGroup();
+		ForecastSimulationGroup simGroup = ActionPanelPlugin.getInstance().getActionsWindow().getForecastPanel().getSimulationGroup();
 
 		// Retrieve the currently selected forecast simulation
 		WatSimulation simulation = ActionPanelPlugin.getInstance().getActionsWindow().getForecastPanel().getSelectedSimulation();

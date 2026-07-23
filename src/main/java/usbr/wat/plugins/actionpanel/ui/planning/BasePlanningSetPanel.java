@@ -1,4 +1,4 @@
-package usbr.wat.plugins.actionpanel.ui;
+package usbr.wat.plugins.actionpanel.ui.planning;
 
 import java.awt.EventQueue;          // Provides invokeLater for scheduling work on the Event Dispatch Thread
 import java.awt.GridBagConstraints;  // Specifies per-cell layout constraints for GridBagLayout
@@ -26,7 +26,8 @@ import rma.util.RMASort;                 // RMA utility providing a quicksort im
 
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                  // Singleton plugin entry point providing access to the actions window
 import usbr.wat.plugins.actionpanel.actions.UpdateModelsAction;         // Action that triggers a model update for the current actions window
-import usbr.wat.plugins.actionpanel.model.AbstractPlanningSet; 		// Import the abstract simulation group to allow cross workflow operation
+import usbr.wat.plugins.actionpanel.model.planning.AbstractPlanningSet; 		// Import the abstract simulation group to allow cross workflow operation
+import usbr.wat.plugins.actionpanel.ui.AbstractSimulationPanel;
 
 
 /**
