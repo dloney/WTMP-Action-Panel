@@ -204,17 +204,6 @@ public class ActionsWindow extends RmaJDialog {
 		return _planningPanel;
 	}
 
-	/**
-	 * Returns the panel used for the workflow workflow.
-	 *
-	 * @return the planning panel
-	 */
-	public SimulationPanel getWorkflowSimulationPanel()
-	{
-		return _planningPanel;
-	}
-
-
 
 	/**
 	 * Inserts the WTMP tab into the host application's project pane.
