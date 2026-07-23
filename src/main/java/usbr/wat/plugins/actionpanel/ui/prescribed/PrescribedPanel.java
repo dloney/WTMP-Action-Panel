@@ -35,14 +35,15 @@ import rma.swing.RmaInsets;              // Constants for common GridBagLayout i
 import rma.swing.RmaJList;               // RMA-enhanced JList component
 import rma.swing.list.RmaListModel;      // RMA list model used as the backing model for the status list
 
-import usbr.wat.plugins.actionpanel.ActionPanelPlugin;              // Singleton plugin entry point providing access to the actions window
-import usbr.wat.plugins.actionpanel.ActionsPanel;                   // Left-side panel containing action buttons for the simulation group
-import usbr.wat.plugins.actionpanel.ActionsWindow;                  // Top-level WTMP actions window that owns this panel
-import usbr.wat.plugins.actionpanel.SimulationActionsPanel;         // Bottom panel hosting simulation-level action buttons
-import usbr.wat.plugins.actionpanel.model.*;
-import usbr.wat.plugins.actionpanel.model.prescribed.PrescribedSimulationGroup;
-import usbr.wat.plugins.actionpanel.ui.tree.SimulationTreeTable;    // Custom tree-table component displaying simulations and their results
-import usbr.wat.plugins.actionpanel.ui.tree.SimulationTreeTableModel; // Tree-table model backing the simulation table
+import usbr.wat.plugins.actionpanel.ActionPanelPlugin;              				// Singleton plugin entry point providing access to the actions window
+import usbr.wat.plugins.actionpanel.ActionsPanel;                   				// Left-side panel containing action buttons for the simulation group
+import usbr.wat.plugins.actionpanel.ActionsWindow;                  				// Top-level WTMP actions window that owns this panel
+import usbr.wat.plugins.actionpanel.SimulationActionsPanel;         				// Bottom panel hosting simulation-level action buttons
+import usbr.wat.plugins.actionpanel.model.*;										// Make everything from the model package available
+import usbr.wat.plugins.actionpanel.model.prescribed.PrescribedSimulationGroup;		// Import the prescribed simulation group
+import usbr.wat.plugins.actionpanel.ui.tree.SimulationTreeTable;    				// Custom tree-table component displaying simulations and their results
+import usbr.wat.plugins.actionpanel.ui.tree.SimulationTreeTableModel; 				// Tree-table model backing the simulation table
+import usbr.wat.plugins.actionpanel.ui.AbstractSimulationPanel;						// Make the abstract simulation panel available
 
 
 /**

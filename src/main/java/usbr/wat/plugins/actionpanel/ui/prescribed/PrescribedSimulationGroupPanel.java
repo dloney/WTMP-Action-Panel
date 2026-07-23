@@ -13,7 +13,7 @@ import rma.swing.RmaInsets;          // Constants for common GridBagLayout inset
 import usbr.wat.plugins.actionpanel.ActionPanelPlugin;                      // Singleton plugin entry point providing access to the actions window
 import usbr.wat.plugins.actionpanel.actions.DeleteSimulationGroupAction;    // Action that deletes the selected simulation group
 import usbr.wat.plugins.actionpanel.actions.prescribed.EditPrescribedSimulationGroupAction;
-import usbr.wat.plugins.actionpanel.actions.NewSimulationGroupAction;       // Action that opens the dialog to create a new simulation group
+import usbr.wat.plugins.actionpanel.actions.prescribed.NewPrescribedSimulationGroupAction;       // Action that opens the dialog to create a new simulation group
 import usbr.wat.plugins.actionpanel.model.prescribed.PrescribedSimulationGroup;
 
 

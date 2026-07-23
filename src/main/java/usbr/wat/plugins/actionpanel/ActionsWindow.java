@@ -42,8 +42,8 @@ import usbr.wat.plugins.actionpanel.model.*;
 import usbr.wat.plugins.actionpanel.model.prescribed.MissingManagersChecker;
 import usbr.wat.plugins.actionpanel.model.prescribed.PrescribedSimulationGroup;
 import usbr.wat.plugins.actionpanel.ui.ActionsProjectTab;                               // Project tab that surfaces WTMP workflow actions within the host application
-import usbr.wat.plugins.actionpanel.ui.PrescribedPanel;                                 // Panel for prescribed conditions workflows including data review and simulation editing
-import usbr.wat.plugins.actionpanel.ui.prescribed.SimulationGroupNode;                             // Node type used in the project tree to represent a simulation group
+import usbr.wat.plugins.actionpanel.ui.prescribed.PrescribedPanel;                      // Panel for prescribed conditions workflows including data review and simulation editing
+import usbr.wat.plugins.actionpanel.ui.prescribed.SimulationGroupNode;                  // Node type used in the project tree to represent a simulation group
 import usbr.wat.plugins.actionpanel.ui.forecast.ForecastPanel;                          // Panel for forecast conditions workflows including forecast-specific simulations
 import usbr.wat.plugins.actionpanel.ui.planning.PlanningPanel;                          // Panel for the Planning workflow, hosting the Set/Simulation Group pairing and its six sub-tabs
 

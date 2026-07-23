@@ -1,13 +1,13 @@
 package usbr.wat.plugins.actionpanel.actions.prescribed;
 
-import java.awt.event.ActionEvent;												// Event type delivered when a user triggers a bound action (for example, a button press)
+import java.awt.event.ActionEvent;														// Event type delivered when a user triggers a bound action (for example, a button press)
 
-import usbr.wat.plugins.actionpanel.ActionPanelPlugin;							// Plugin entry point used to obtain the Actions window and global context
-import usbr.wat.plugins.actionpanel.commands.NewSimulationGroupCmd;				// Command class that constructs a new PrescribedSimulationGroup instance for creation workflows
-import usbr.wat.plugins.actionpanel.editors.NewSimulationGroupDialog;			// Dialog used to create or edit a simulation group’s metadata and settings
-import usbr.wat.plugins.actionpanel.model.prescribed.PrescribedSimulationGroup;
-import usbr.wat.plugins.actionpanel.ui.PrescribedPanel;						    // Panel for prescribed conditions providing access to the active simulation group
-import usbr.wat.plugins.actionpanel.ui.PrescribedSimulationGroupPanel;			// UI panel that lists and manages PrescribedSimulationGroup entries in the prescribed workflow
+import usbr.wat.plugins.actionpanel.ActionPanelPlugin;									// Plugin entry point used to obtain the Actions window and global context
+import usbr.wat.plugins.actionpanel.commands.NewSimulationGroupCmd;						// Command class that constructs a new PrescribedSimulationGroup instance for creation workflows
+import usbr.wat.plugins.actionpanel.editors.NewSimulationGroupDialog;					// Dialog used to create or edit a simulation group’s metadata and settings
+import usbr.wat.plugins.actionpanel.model.prescribed.PrescribedSimulationGroup;			// Get the prescribed workflow simulation group
+import usbr.wat.plugins.actionpanel.ui.prescribed.PrescribedPanel;						// Panel for prescribed conditions providing access to the active simulation group
+import usbr.wat.plugins.actionpanel.ui.prescribed.PrescribedSimulationGroupPanel;		// UI panel that lists and manages PrescribedSimulationGroup entries in the prescribed workflow
 
 /**
  * Action that creates a new Simulation Group in the prescribed workflow.
