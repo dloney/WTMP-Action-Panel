@@ -1,19 +1,13 @@
 package usbr.wat.plugins.actionpanel.actions;
 
-import java.awt.EventQueue;														// AWT utility to schedule tasks on the Event Dispatch Thread (EDT)
 import java.awt.event.ActionEvent;												// Event type delivered when a user triggers a bound action (for example, a button press)
 
-import java.util.Iterator;														// Iterator interface for traversing collections (import present even if unused here)
-import java.util.List;															// Collections interface used for lists of report info (import present even if unused here)
-
 import javax.swing.AbstractAction;												// Swing base class for encapsulating an action attached to UI components
-import javax.swing.JOptionPane;													// Swing utility for showing dialogs (import present even if unused here)
 
 import com.rma.io.FileManagerImpl;												// File manager implementation for filesystem operations (import present even if unused here)
 
 import usbr.wat.plugins.actionpanel.ActionsWindow;								// Main actions window used as the UI parent for dialogs and context
-import usbr.wat.plugins.actionpanel.editors.DisplayReportsSelector;				// Editor dialog that lets users select reports to create or view
-import usbr.wat.plugins.actionpanel.model.SimulationReportInfo;					// Model holding per-simulation report information and paths (import present even if unused here)
+import usbr.wat.plugins.actionpanel.editors.forecast.DisplayReportsSelector;				// Editor dialog that lets users select reports to create or view
 import usbr.wat.plugins.actionpanel.ui.UsbrPanel;								// Base USBR panel type implemented by workflow panels
 
 /**
