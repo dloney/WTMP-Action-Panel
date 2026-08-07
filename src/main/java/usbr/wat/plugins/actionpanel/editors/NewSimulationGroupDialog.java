@@ -43,8 +43,9 @@ import rma.util.RMAIO;                                                          
 import usbr.wat.plugins.actionpanel.ActionsWindow;                                  // The parent Actions Window panel
 import usbr.wat.plugins.actionpanel.commands.AbstractNewSimulationGroupCmd;         // Abstract command for creating a new simulation group
 import usbr.wat.plugins.actionpanel.model.AbstractSimulationGroup;                  // Base class for all simulation group types
-import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimulationGroup;
-import usbr.wat.plugins.actionpanel.model.prescribed.PrescribedSimulationGroup;
+import usbr.wat.plugins.actionpanel.model.forecast.ForecastSimulationGroup;			// Imports the forecast simulation group
+import usbr.wat.plugins.actionpanel.model.prescribed.PrescribedSimulationGroup;		// Imports the prescribed simulation group
+import usbr.wat.plugins.actionpanel.model.planning.PlanningSimulationGroup;			// Imports the planning simulation group
 
 /**
  * Dialog for creating or editing a Simulation Group within the WTMP Action Panel.

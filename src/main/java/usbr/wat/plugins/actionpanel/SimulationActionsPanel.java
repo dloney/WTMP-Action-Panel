@@ -12,7 +12,7 @@ import rma.swing.EnabledJPanel;                                                 
 import rma.swing.RmaInsets;                                                             // Standardized insets utility for consistent component padding and spacing
 
 import usbr.wat.plugins.actionpanel.actions.DeleteSimulationResultsAction;              // Action to delete saved simulation results from storage
-import usbr.wat.plugins.actionpanel.actions.DisplayReportSelectorAction;                // Action to display a selector for available reports in workflows
+import usbr.wat.plugins.actionpanel.actions.forecast.DisplayReportSelectorAction;                // Action to display a selector for available reports in workflows
 import usbr.wat.plugins.actionpanel.actions.prescribed.RunSimulationAction;             // Action to run simulations in prescribed conditions workflows
 import usbr.wat.plugins.actionpanel.actions.prescribed.SaveSimulationResultsAction;     // Action to persist generated simulation results
 import usbr.wat.plugins.actionpanel.actions.forecast.RunForecastSimulationAction;       // Action to run simulations in forecast workflows
