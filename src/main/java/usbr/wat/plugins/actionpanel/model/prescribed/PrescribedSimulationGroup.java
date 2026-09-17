@@ -228,6 +228,18 @@ public class PrescribedSimulationGroup extends AbstractSimulationGroup {
 	/**
 	 * Returns the XML type identifier string for this simulation group subclass.
 	 *
+	 * This is the literal root element name written to and read from every
+	 * .simgrp file on disk. As of the calibration-to-prescribed rename, this is
+	 * deliberately "PrescribedSimulationGroup" rather than the legacy
+	 * "SimulationGroup" value, establishing the permanent naming convention for
+	 * this workflow going forward. This is an intentional breaking change:
+	 * .simgrp files written before this change used the "SimulationGroup" root
+	 * element and will no longer load correctly (see the hardened mismatch
+	 * handling in AbstractSimulationGroup.loadDocument(), which now surfaces
+	 * this as an explicit failure rather than silently producing an empty,
+	 * "Untitled" group). Existing prescribed simulation groups must be
+	 * recreated after upgrading.
+	 *
 	 * @return "PrescribedSimulationGroup"
 	 */
 	@Override

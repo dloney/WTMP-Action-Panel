@@ -368,32 +368,43 @@ public abstract class AbstractSimulationGroup extends AbstractXMLManager {
 			initForLoading(); // Call abstract method for subclass-specific initialization
 			setIgnoreModifiedEvents(true); // Disable modification event listeners during load operation
 
-			// Verify root element matches expected group type
-			if (getSimulationGroupType().equals(root.getName())) {
-				XMLUtilities.loadNamedType(root, this); // Load class metadata from XML root into instance
-				_apName = XMLUtilities.getChildElementAsString(root, "AnalysisPeriod", null); // Extract analysis period name from root
-				Element simsNode = root.getChild("Simulations"); // Get simulations container child element
-
-				// Only proceed if Simulations container exists
-				if (simsNode != null) {
-					List simKidNodes = simsNode.getChildren("Simulation"); // Get list of all simulation child elements
-					Element simElem; // Declare loop variable for simulation element iteration
-
-					// Iterate through each simulation child
-					for (int i = 0; i < simKidNodes.size(); i++) {
-						simElem = (Element) simKidNodes.get(i); // Get current simulation element
-
-						String simName = XMLUtilities.getChildElementAsString(simElem, "Name", true, null); // Extract name attribute from element
-						String simClass = XMLUtilities.getChildElementAsString(simElem, "Class", true, null); // Extract class attribute from element
-
-						_simulationInfo.add(new SimulationInfo(simName, simClass)); // Create and add info record to list
-
-						loadSimulationSettings(simElem, simName); // Call abstract method for subclass-specific settings load
-					}
-				}
-
-				finishLoading(root); // Call abstract method for subclass-specific finishing operations
+			// Verify root element matches expected group type. A mismatch means this
+			// file was not written by this subclass's current XML format (for example,
+			// a legacy .simgrp file saved under an old root element name before a
+			// naming-convention change). Loading such a file would otherwise silently
+			// leave the group's name, description, and simulations unpopulated, which
+			// surfaces to the user as a confusing, unlabeled "Untitled" entry with no
+			// indication anything went wrong. Fail loudly instead.
+			if (!getSimulationGroupType().equals(root.getName())) {
+				System.out.println("loadDocument:root element \"" + root.getName()
+						+ "\" does not match expected type \"" + getSimulationGroupType()
+						+ "\" - file was not loaded"); // Log the mismatch for diagnosis
+				return false; // Return failure so callers can detect and report the bad/legacy file
 			}
+
+			XMLUtilities.loadNamedType(root, this); // Load class metadata from XML root into instance
+			_apName = XMLUtilities.getChildElementAsString(root, "AnalysisPeriod", null); // Extract analysis period name from root
+			Element simsNode = root.getChild("Simulations"); // Get simulations container child element
+
+			// Only proceed if Simulations container exists
+			if (simsNode != null) {
+				List simKidNodes = simsNode.getChildren("Simulation"); // Get list of all simulation child elements
+				Element simElem; // Declare loop variable for simulation element iteration
+
+				// Iterate through each simulation child
+				for (int i = 0; i < simKidNodes.size(); i++) {
+					simElem = (Element) simKidNodes.get(i); // Get current simulation element
+
+					String simName = XMLUtilities.getChildElementAsString(simElem, "Name", true, null); // Extract name attribute from element
+					String simClass = XMLUtilities.getChildElementAsString(simElem, "Class", true, null); // Extract class attribute from element
+
+					_simulationInfo.add(new SimulationInfo(simName, simClass)); // Create and add info record to list
+
+					loadSimulationSettings(simElem, simName); // Call abstract method for subclass-specific settings load
+				}
+			}
+
+			finishLoading(root); // Call abstract method for subclass-specific finishing operations
 		} finally {
 			// Ensure flag is reset regardless of success or exception
 			setIgnoreModifiedEvents(true); // Reset event listener state

@@ -1,7 +1,7 @@
 package usbr.wat.plugins.actionpanel.model;
 
-import java.util.List; // Ordered collection interface for the list of SimulationReportInfo objects passed to createReport
-import usbr.wat.plugins.actionpanel.io.ReportOptions; // Carries user-selected output type and header/footer flag for the report
+import java.util.List; 										// Ordered collection interface for the list of SimulationReportInfo objects passed to createReport
+import usbr.wat.plugins.actionpanel.io.ReportOptions; 		// Carries user-selected output type and header/footer flag for the report
 
 /**
  * Plugin interface for report generators within the WTMP Action Panel.

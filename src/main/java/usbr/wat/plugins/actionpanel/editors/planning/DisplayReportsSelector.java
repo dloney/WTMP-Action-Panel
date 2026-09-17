@@ -20,6 +20,7 @@ import usbr.wat.plugins.actionpanel.io.ReportOptions;                       // O
 import usbr.wat.plugins.actionpanel.model.ReportPlugin;                     // Base reporting plugin interface used by the reports manager
 import usbr.wat.plugins.actionpanel.model.ReportsManager;                   // Manager that provides registered reporting plugins available to the UI
 import usbr.wat.plugins.actionpanel.model.SimulationReportInfo;             // Model holding per-simulation report information and paths
+import usbr.wat.plugins.actionpanel.model.forecast.ForecastReportingPlugin; // Used to exclude forecast-specific plugins from this planning-workflow selector
 import usbr.wat.plugins.actionpanel.model.planning.PlanningReportingPlugin; // Reporting plugin interface for planning-specific report actions
 import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                           // Base USBR panel type implemented by workflow panels
 

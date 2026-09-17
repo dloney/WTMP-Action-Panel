@@ -12,18 +12,18 @@ import rma.swing.EnabledJPanel;                                                 
 import rma.swing.RmaInsets;                                                             // Standardized insets utility for consistent component padding and spacing
 
 import usbr.wat.plugins.actionpanel.actions.DeleteSimulationResultsAction;              // Action to delete saved simulation results from storage
-import usbr.wat.plugins.actionpanel.actions.forecast.DisplayReportSelectorAction;                // Action to display a selector for available reports in workflows
+import usbr.wat.plugins.actionpanel.actions.forecast.DisplayReportSelectorAction;       // Action to display a selector for available reports in workflows
 import usbr.wat.plugins.actionpanel.actions.prescribed.RunSimulationAction;             // Action to run simulations in prescribed conditions workflows
 import usbr.wat.plugins.actionpanel.actions.prescribed.SaveSimulationResultsAction;     // Action to persist generated simulation results
 import usbr.wat.plugins.actionpanel.actions.forecast.RunForecastSimulationAction;       // Action to run simulations in forecast workflows
-import usbr.wat.plugins.actionpanel.actions.planning.RunPlanningSimulationAction;
+import usbr.wat.plugins.actionpanel.actions.planning.RunPlanningSimulationAction;		// Action to run simulations in planning workflows
 import usbr.wat.plugins.actionpanel.model.forecast.ForecastReportingPlugin;             // Reporting plugin interface for forecast-specific report actions
 import usbr.wat.plugins.actionpanel.model.ReportPlugin;                                 // Base reporting plugin interface used by the reports manager
 import usbr.wat.plugins.actionpanel.model.ReportsManager;                               // Manager that provides registered reporting plugins available to the UI
-import usbr.wat.plugins.actionpanel.ui.planning.PlanningSimulationPanel;
+import usbr.wat.plugins.actionpanel.ui.planning.PlanningSimulationPanel;				// Reporting plugin interface for planning-specific report actions
 import usbr.wat.plugins.actionpanel.ui.prescribed.PrescribedPanel;                      // Panel type for prescribed conditions workflows
 import usbr.wat.plugins.actionpanel.ui.UsbrPanel;                                       // Base USBR panel type implemented by workflow panels
-import usbr.wat.plugins.actionpanel.ui.forecast.ForecastSimulationPanel;                        // Panel type for  simulations
+import usbr.wat.plugins.actionpanel.ui.forecast.ForecastSimulationPanel;                // Panel type for  simulations
 
 /**
  * Panel hosting simulation-related actions for the WTMP plugin.
