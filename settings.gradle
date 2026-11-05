@@ -47,7 +47,7 @@ dependencyResolutionManagement {
         }
         maven {
             name = 'GitHub Mirror'
-            url = uri('https://maven.pkg.github.com/doi-bor/WTMP-HEC-Public')
+            url = uri('https://maven.pkg.github.com/doi-bor/WTMP-HEC-Internal')
             credentials {
                         username = System.getenv("GITHUB_ACTOR")
                         password = System.getenv("GITHUB_TOKEN")
